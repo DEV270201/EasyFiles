@@ -1,13 +1,14 @@
 const express = require('express');
+const { NotFoundError } = require('./handlers/Error');
 const app = express();
-
-console.log("hey");
-app.use((req,res,next)=>{
+ 
+app.use((_req,_res,next)=>{
     if(process.env.ENV == 'development'){
         console.log("in the development mode....");
     }
     next();
 });
+
 app.use(express.json());
 app.use(express.urlencoded({extended : false}));
 
@@ -19,19 +20,28 @@ app.get("/",(req,res)=>{
 
 //request for serving the favicon
 app.get("/favicon.ico",(req,res)=>{
-   res.sendStatus(204);
+   return res.sendStatus(204);
 });
 
-app.all("*",(req,res,next)=>{
-   return next("not able to find the route");
+app.all("*",(_req,_res,next)=>{
+   return next(new NotFoundError("Sorry,this page does not exists"));
 });
 
-app.use((err,req,res,next)=>{
-   console.log(err);
-   console.log("error middleware..");
-   res.status(400).json({
-    error : "page not found"
-   })
+//global error middleware
+app.use((error,_req,res,_)=>{
+   console.log("entered the global error middleware...");
+   let err = {...error};
+   console.log('Error codeee: ', err);
+   err.statusCode = err.statusCode || 500;
+   err.msg = err.statusCode == 500 ? 'Sorry,something went wrong!' : err.msg;
+
+   //sending the error response
+   res.status(err.statusCode).json({
+    status : "Failed",
+    error : err.msg,
+    name : err.name
+   });
+
 });
 
 module.exports = app;
