@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { config } = require('dotenv');
+const bucket = require('./utils/Bucket');
 
 //loading the .env contents in the process.env variable
 config({ path: "./config.env" });
