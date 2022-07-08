@@ -7,8 +7,7 @@ mongoose.connection.on("connected",()=>{
    bucket = new mongoose.mongo.GridFSBucket(database,{
     bucketName : "uploads"
    });
-//    console.log(bucket);
 console.log("bucket created...");
-});
-
+// console.log(bucket);
 module.exports = bucket;
+});

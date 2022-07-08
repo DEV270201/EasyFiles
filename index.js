@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { config } = require('dotenv');
-const bucket = require('./utils/Bucket');
+require('./utils/Bucket');
 
 //loading the .env contents in the process.env variable
 config({ path: "./config.env" });
@@ -19,11 +19,12 @@ const connect_database = () => {
 connect_database();
 
 let port = process.env.PORT || 4000;
-app.listen(port, () => {
-    console.log(`server is listening on ${port}....`);
-});
 
 process.on("unhandledRejection", (reason) => {
     console.log("error : ", reason.message);
     console.log("in the handler");
+});
+
+app.listen(port, () => {
+    console.log(`server is listening on ${port}....`);
 });
