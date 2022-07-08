@@ -13,11 +13,17 @@ const storage = new GridFsStorage({
                 console.log("extension : ",path.extname(u_file.originalname));
                 reject(new ClientError("not a valid type of file.."));
             }
-            const file_name = u_file.originalname;
+            const file_name = req.body.filename + '@' + Date.now();
+
+            //attaching the property to the request object
+            req.filename = file_name;
+            console.log("name of the file : ",file_name);
+
             const fileInfo = {
                 filename : file_name,
                 bucketName : "uploads"
             }
+            //uploading the files to gridfs
             resolve(fileInfo);
         });
     }

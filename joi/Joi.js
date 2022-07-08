@@ -12,6 +12,7 @@ exports.uploader = (req,res,next)=>{
           console.log("result : ",result.error.details[0].message.replace(/"/g,""));
           return next(new ClientError(result.error.details[0].message.replace(/"/g,"")));
       }else{
+        req.filename = req.body.filename;
         next();
       }
 }

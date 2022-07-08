@@ -7,11 +7,9 @@ exports.Uploader = async(req,filename)=>{
       let file = {
         filename
       }
-
       //saving the file in the database
       await File.create(file);
       return;
-
     }catch(err){
         console.log("Error in uploader : ",err);
         throw err;

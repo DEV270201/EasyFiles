@@ -9,8 +9,8 @@ const {Uploader} = require("../controllers/Contoller");
 //allowing only single files to upload
 router.post("/",[uploader,upload.single('file')],async (req,res,next)=>{
   try{
-    console.log("helloo : ",req.body.filename);
-    // await Uploader(req,filename);
+    console.log("helloo : ",req.filename);
+    await Uploader(req,req.filename);
      return res.status(201).json({
        status : "success",
        msg : "file uploaded successfully.."
@@ -29,7 +29,6 @@ router.get('/:fname',async (req,res,next)=>{
      if(!file){
        return next(new ClientError('no such file exists...'));
      }
-
      //piping the file chunks to the response
      bucket.openDownloadStreamByName(req.params.fname).pipe(res);
   }catch(err){
