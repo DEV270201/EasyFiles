@@ -1,18 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const upload = require("../utils/Upload");
+const {ClientError} = require("../handlers/Error");
+const {uploader} = require("../joi/Joi");
+const {Uploader} = require("../controllers/Contoller");
 
 //uploading the files to gridfs
 //allowing only single files to upload
-router.post("/",upload.single("file"),(req,res)=>{
+router.post("/",async (req,res,next)=>{
   try{
-     console.log("id : ",req.file.mimetype);
+    console.log("helloo : ",req.body.filename);
+    let {filename} = await uploader(req.body);
+    console.log("filename : ",filename);
+    upload.single("file");
+    await Uploader(req,filename);
      return res.status(201).json({
        status : "success",
        msg : "file uploaded successfully.."
      });
   }catch(err){
      console.log("errrrrrrrrrrrrr : ",err);
+     return next(err);
   }
 });
 
