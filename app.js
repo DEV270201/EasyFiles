@@ -14,43 +14,11 @@ app.use((_req,_res,next)=>{
 app.use(express.json());
 app.use(express.urlencoded({extended : false}));
 
-app.use("/",require("./routes/home"));
+app.use("/files",require("./routes/home"));
 
 //request for serving the favicon
 app.get("/favicon.ico",(req,res)=>{
    return res.sendStatus(204);
-});
-
-//uploading the files
-//allowing only single files to upload
-app.post("/",upload.single("file"),(req,res)=>{
-   try{
-      console.log("id : ",req.file.mimetype);
-      return res.status(201).json({
-        status : "success",
-        msg : "file uploaded successfully.."
-      });
-   }catch(err){
-      console.log("errrrrrrrrrrrrr : ",err);
-   }
-});
-
-app.get('/:fname',async (req,res,next)=>{
-  //requiring the bucket to fetch the files
-  const bucket = require("./utils/Bucket");
-  try{
-     const file = await bucket.find({filename : req.params.fname}).toArray();
-     console.log("FILE : ",file);
-     if(!file){
-       return next(new ClientError('no such file exists...'));
-     }
-
-     //piping the file chunks to the response
-     bucket.openDownloadStreamByName(req.params.fname).pipe(res);
-  }catch(err){
-   console.log("error : ",err);
-   return next(err);
-  }
 });
 
 app.all("*",(_req,_res,next)=>{
