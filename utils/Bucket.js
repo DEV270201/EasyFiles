@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 let bucket;
 mongoose.connection.on("connected", () => {
    try {
+      console.log("connected to the database successfully...");
       let database = mongoose.connections[0].db;
       bucket = new mongoose.mongo.GridFSBucket(database, {
          bucketName: "uploads"

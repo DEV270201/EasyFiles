@@ -1,8 +1,10 @@
 const express = require('express');
 const { NotFoundError } = require('./handlers/Error');
 const app = express();
+const helmet = require('helmet');
 
 //middlewares
+app.use(helmet());
 app.use((_req,_res,next)=>{
     if(process.env.ENV == 'development'){
         console.log("in the development mode....");

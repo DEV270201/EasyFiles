@@ -18,12 +18,17 @@ const connect_database = () => {
 
 connect_database();
 
-let port = process.env.PORT || 4000;
+mongoose.connection.on('error',(err)=>{
+  console.log("cannot connect to the database :(");
+  console.log("Database Connection Error : ",err);
+});
 
 process.on("unhandledRejection", (reason) => {
     console.log("error : ", reason.message);
     console.log("in the handler");
 });
+
+let port = process.env.PORT || 4000;
 
 app.listen(port, () => {
     console.log(`server is listening on ${port}....`);
