@@ -15,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended : false}));
 
 //API 
+app.use("/user",require("./routes/user"));
 app.use("/files",require("./routes/home"));
 
 //request for serving the favicon

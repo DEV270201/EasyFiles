@@ -11,7 +11,17 @@ exports.Uploader = async(req,filename)=>{
       await File.create(file);
       return;
     }catch(err){
-        console.log("Error in uploader : ",err);
+        console.log("Error in uploader controller: ",err);
         throw err;
     }
+}
+
+exports.RegisterUser = async(user)=>{
+  try{
+     await User.create({email : user.email,username : user.username,password : user.password});
+     return;
+  }catch(err){
+    console.log("Error in register controller : ",err);
+    throw err;
+  }
 }

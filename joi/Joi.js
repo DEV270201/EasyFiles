@@ -3,7 +3,7 @@ const joi = require('joi');
 const {ClientError} = require("../handlers/Error");
 
 //made this function synchronous
-exports.uploader = (req,res,next)=>{
+exports.UploaderJoi = (req,res,next)=>{
     const schema = joi.object().keys({
         filename : joi.string().max(50).regex(/^[a-zA-z0-9]+$/),
     });
