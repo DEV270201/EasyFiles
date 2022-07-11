@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {RegisterJoi} = require("../joi/Joi");
-const {RegisterUser} = require("../controllers/Contoller");
+const {RegisterUser,LoginUser} = require("../controllers/Contoller");
 
 router.post("/register",async (req,res,next)=>{
    try{
@@ -13,6 +13,19 @@ router.post("/register",async (req,res,next)=>{
       });
    }catch(err){
       console.log("user register : ",err);
+      return next(err);
+   }
+});
+
+router.post('/login',async(req,res,next)=>{
+   try{
+      await LoginUser(req,res);
+      res.status(200).json({
+         status : "success",
+         msg : "User logged in successfully"
+      });
+   }catch(err){
+      console.log("user login : ",err);
       return next(err);
    }
 });
