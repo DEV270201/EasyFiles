@@ -7,8 +7,8 @@ const FileSchema = new mongoose.Schema({
     },
 
    uploadedBy : {
-    type : String,
-    default : "myname"
+    type : mongoose.Schema.Types.ObjectId,
+    ref : "User"
    },
 
    filetype : {
