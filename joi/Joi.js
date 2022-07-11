@@ -31,6 +31,12 @@ exports.RegisterJoi = async (body)=>{
      return await schema.validateAsync(body);
    }catch(err){
     console.log("register joi : ",err);
-    throw err;
+    if(err.details[0].message.includes('email')){
+      throw new ClientError("Invalid Email ID");
+    }else if(err.details[0].message.includes('password')){
+      throw new ClientError("Please enter the password as mentioned");
+    }else{
+      throw new ClientError(err.details[0].message.replace(/"/g,""));
+    }
    }
 }

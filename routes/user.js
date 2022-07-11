@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {RegisterJoi} = require("../joi/Joi");
+const {RegisterUser} = require("../controllers/Contoller");
 
 router.post("/register",async (req,res,next)=>{
    try{
