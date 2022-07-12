@@ -28,7 +28,7 @@ process.on("unhandledRejection", (reason) => {
     console.log("in the handler");
 });
 
-let port = process.env.PORT || 4000;
+let port = process.env.PORT || 5000;
 
 app.listen(port, () => {
     console.log(`server is listening on ${port}....`);

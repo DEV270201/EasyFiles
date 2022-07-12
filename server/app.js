@@ -2,9 +2,14 @@ const express = require('express');
 const { NotFoundError, ClientError } = require('./handlers/Error');
 const app = express();
 const helmet = require('helmet');
+const cors = require('cors');
 
 //middlewares
 app.use(helmet());
+app.use(cors({
+   origin: ['http://localhost:3000'],
+   credentials: true,
+}))
 app.use((_req,_res,next)=>{
     if(process.env.ENV == 'development'){
         console.log("in the development mode....");
