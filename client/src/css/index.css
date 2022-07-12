@@ -8,3 +8,16 @@
     padding: 15px;
     height: 75px;
 }
+
+.mybtn{
+    width : 125px;
+}
+
+.myform:focus{
+    box-shadow: inset 0 -1px 0 #ddd;
+    border-color: var(--greyish);
+}
+
+.myform{
+    outline: none !important;
+}

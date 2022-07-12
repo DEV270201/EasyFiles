@@ -11,9 +11,9 @@ const Navbar = () => {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav ml-auto mb-2 mb-lg-0">
+                        <ul className="navbar-nav ml-auto mb-2 mb-lg-0 list">
                             <li className="nav-item">
-                                <NavLink className="nav-link" aria-current="page" to="/" activeStyle={{color : "red"}}>Home</NavLink>
+                                <NavLink activeClassName="active" className="nav-link" aria-current="page" to="/" activeStyle={{color : "red"}}>Home</NavLink>
                             </li>
                             <li className="nav-item">
                                 <NavLink className="nav-link" to="/user/register">Register</NavLink>

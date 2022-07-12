@@ -4,6 +4,7 @@ import { Switch,Route,Redirect,withRouter } from 'react-router-dom';
 import Login from './Login';
 import Register from './Register';
 import Home from './Home';
+import Footer from './Footer';
 
 const App = ()=>{
    return(
@@ -15,6 +16,7 @@ const App = ()=>{
         <Route exact component={withRouter(Login)} path="/user/login"/>
         <Redirect to="/" />
     </Switch>
+    <Footer />
     </>
    );
 }
