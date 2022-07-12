@@ -4,7 +4,7 @@ const Register = () => {
     return (
         <>
             <div className="container p-3">
-                <div className="outer">
+                <div className="outer" style={{marginBottom : '35px'}}>
                     <h4 className="text-center font-weight-light mt-1 mb-2">Register Yourself...</h4>
                     <div className="inputs">
                         <label htmlFor="Email">Email address*</label>

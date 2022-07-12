@@ -3,8 +3,8 @@ import React from 'react';
 const Footer = ()=>{
    return(
     <>
-     <div className='fixed-bottom bg-dark'>
-      <p className='font-weight-light text-center text-light mt-3'>Developed By : Devansh Shah</p>
+     <div className='fixed-bottom bg-dark footer'>
+      <div className='font-weight-light text-light'>Developed By : Devansh Shah</div>
      </div>
     </>
    )
