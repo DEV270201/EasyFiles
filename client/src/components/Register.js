@@ -41,8 +41,13 @@ const Register = () => {
         }
         setLoad(false);
        }catch(err){
-        console.log("Register Err : ",err);
         setLoad(false);
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.response.data.error
+        });
+        return;
        }
     }
     return (
