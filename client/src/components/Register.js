@@ -3,8 +3,8 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import {useHistory} from 'react-router-dom';
 
-//here i am going to use uncontrolled components becuase i don't need controlled components.
-//you can change based on your needs and requirements
+//Here I am going to use uncontrolled components because I don't feel the of need controlled components.
+//You can change based on your needs and requirements.
 
 const Register = () => {
     let history = useHistory();
