@@ -35,7 +35,7 @@ exports.RegisterUser = async(user)=>{
 exports.LoginUser = async (req,res)=>{
   try{
     const signJWT = async (user_id) => {
-      return await promisify(jwt.sign)(user_id, process.env.JWT_SECRET);
+      return await promisify(jwt.sign)({id : user_id}, process.env.JWT_SECRET);
     };
 
     let user_name = String(req.body.username);
