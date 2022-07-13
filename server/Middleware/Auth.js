@@ -5,7 +5,7 @@ const User = require('../models/User');
 
 const Auth = async (req,_res,next)=>{
     try{      
-        let token = req.cookies.jwt;
+        let token = req.cookies.s_Id;
         if(!token){
             return next(new AuthenticationError("User not logged in!"));
         }

@@ -3,13 +3,15 @@ const { NotFoundError, ClientError } = require('./handlers/Error');
 const app = express();
 const helmet = require('helmet');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 //middlewares
 app.use(helmet());
 app.use(cors({
    origin: ['http://localhost:3000'],
    credentials: true,
-}))
+}));
+app.use(cookieParser());
 app.use((_req,_res,next)=>{
     if(process.env.ENV == 'development'){
         console.log("in the development mode....");
@@ -18,11 +20,9 @@ app.use((_req,_res,next)=>{
 });
 app.use(express.json());
 app.use(express.urlencoded({extended : false}));
-
 //API 
 app.use("/user",require("./routes/user"));
 app.use("/files",require("./routes/home"));
-
 //request for serving the favicon
 app.get("/favicon.ico",(req,res)=>{
    return res.sendStatus(204);
