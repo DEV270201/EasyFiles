@@ -42,19 +42,16 @@ const handleDuplicateError = (err)=>{
 //global error middleware
 app.use((error,_req,res,_)=>{
    console.log("entered the global error middleware...");
-   console.log('Error : ', error);
    let err = {...error};
-
+   
    err.statusCode = err.statusCode || 500;
    err.msg = err.statusCode == 500 ? 'Sorry,something went wrong!' : err.msg;
-
-   if(err.msg.includes('required pattern') && err.msg.includes('filename')){
-      err.msg = 'Filename cannot contain special characters..'
-   }
+   
    if(err.code === 11000){
       err = handleDuplicateError(err);
    }
-
+   
+   console.log('Error : ', err);
    //sending the error response
    res.status(err.statusCode).json({
     status : "Failed",

@@ -1,16 +1,19 @@
-import React,{useRef,useState} from "react";
+import React,{useRef,useState,useContext} from "react";
 import Swal from 'sweetalert2';
 import {useHistory} from 'react-router-dom';
 import axios from "axios";
+import { LoginContext } from "../context/LoginContext";
 
 //Here I am going to use uncontrolled components because I don't feel the of need controlled components.
 //You can change based on your needs and requirements.
 
 const Login = () => {
+    console.log("login page...");
     const uref = useRef(null);
     const pref = useRef(null);
     const history = useHistory();
     const [load,setLoad] = useState(false);
+    const {setLoginStatus} = useContext(LoginContext);
 
     const login = async ()=>{
        try{
@@ -26,6 +29,7 @@ const Login = () => {
                 text: response.data.msg
               });
              history.push("/");
+             setLoginStatus(true);
         }
        }catch(err){
         console.log("Login err : ",err);
@@ -50,6 +54,7 @@ const Login = () => {
                         <label htmlFor="Password">Password*</label>
                         <input type="password" className="form-control myform" id="Password" name="password" ref={pref} required/>
                         <button className="btn btn-outline-dark mybtn mt-3" disabled={load ? true : false} onClick={login}>{load ? 'Loading...' : 'Login'}</button>
+                        {/* <button className="btn btn-outline-dark mybtn mt-3" onClick={hello}>Click</button> */}
                     </div>
                 </div>
             </div>

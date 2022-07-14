@@ -7,6 +7,7 @@ import {useHistory} from 'react-router-dom';
 //You can change based on your needs and requirements.
 
 const Register = () => {
+    console.log("register page...");
     let history = useHistory();
     const eref = useRef(null);
     const uref = useRef(null);

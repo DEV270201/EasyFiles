@@ -8,7 +8,8 @@ const { promisify } = require('util');
 exports.Uploader = async(req,filename)=>{
     try{
       let file = {
-        filename
+        filename,
+        uploadedBy : req.user.id
       }
       //saving the file in the database
       await File.create(file);

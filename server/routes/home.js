@@ -2,12 +2,12 @@ const express = require('express');
 const router = express.Router();
 const upload = require("../utils/Upload");
 const {ClientError} = require("../handlers/Error");
-const {UploaderJoi} = require("../joi/Joi");
 const {Uploader} = require("../controllers/Contoller");
+const Auth = require('../Middleware/Auth');
 
 //uploading the files to gridfs
 //allowing only single files to upload
-router.post("/",[UploaderJoi,upload.single('file')],async (req,res,next)=>{
+router.post("/",[Auth,upload.single('file')],async (req,res,next)=>{
   try{
     console.log("helloo : ",req.filename);
     await Uploader(req,req.filename);

@@ -4,6 +4,8 @@ const multer = require('multer');
 const path = require('path');
 const { ClientError } = require('../handlers/Error');
 
+let pattern = /^[a-zA-Z0-9]+$/;
+
 const storage = new GridFsStorage({
     url : process.env.DATABASE,
     file : (req,u_file)=>{
@@ -12,12 +14,19 @@ const storage = new GridFsStorage({
             if(path.extname(u_file.originalname) !== '.pdf'){
                 console.log("extension : ",path.extname(u_file.originalname));
                 reject(new ClientError("not a valid type of file.."));
+                return;
             }
+
+            if(!pattern.test(req.body.filename)){
+                reject(new ClientError("Filename should not contain special characaters."));
+                return;
+            }
+
             const file_name = req.body.filename + '@' + Date.now();
 
             //attaching the property to the request object
             req.filename = file_name;
-            console.log("name of the file : ",file_name);
+            console.log("name of the file ha bhai: ",file_name);
 
             const fileInfo = {
                 filename : file_name,
