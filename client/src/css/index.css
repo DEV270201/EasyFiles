@@ -32,3 +32,8 @@
 .logout:hover{
     cursor: pointer;
 }
+
+.active{
+    /* background-color: rgb(34, 34, 34); */
+    border-radius: 10px;
+}
