@@ -5,6 +5,17 @@ const jwt = require('jsonwebtoken');
 const { ClientError } = require('../handlers/Error');
 const { promisify } = require('util');
 
+
+exports.Fetcher = async(req)=>{
+  try {
+    let files = await File.find({});
+    return files;
+  }catch(err){
+    console.log("Error in fetcher controller: ",err);
+    throw err;
+  }
+}
+
 exports.Uploader = async(req,filename)=>{
     try{
       let file = {
