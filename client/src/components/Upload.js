@@ -25,7 +25,7 @@ const Upload = () => {
         try {
             console.log("file : ", fref.current.files[0]);
             setLoad(true);
-            let response = await axios.post('/files', {
+            let response = await axios.post('/files/upload', {
                 filename: fnref.current.value,
                 file: fref.current.files[0]
             }, {

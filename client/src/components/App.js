@@ -7,6 +7,7 @@ import Home from './Home';
 import Footer from './Footer';
 import LoginContextProvider from '../context/LoginContext';
 import Upload from './Upload';
+import Files from './Files';
 
 const App = () => {
     return (
@@ -16,6 +17,7 @@ const App = () => {
                 <Switch>
                     <Route exact component={withRouter(Home)} path="/" />
                     <Route exact component={withRouter(Upload)} path="/upload" />
+                    <Route exact component={withRouter(Files)} path="/files" />
                     <Route exact component={withRouter(Register)} path="/user/register" />
                     <Route exact component={withRouter(Login)} path="/user/login" />
                     <Redirect to="/" />

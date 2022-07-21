@@ -1,4 +1,4 @@
-import React,{useRef,useState,useContext} from "react";
+import React,{useRef,useState,useContext,useEffect} from "react";
 import Swal from 'sweetalert2';
 import {useHistory} from 'react-router-dom';
 import axios from "axios";
@@ -13,7 +13,13 @@ const Login = () => {
     const pref = useRef(null);
     const history = useHistory();
     const [load,setLoad] = useState(false);
-    const {setLoginStatus} = useContext(LoginContext);
+    const {isLoggedIn,setLoginStatus} = useContext(LoginContext);
+
+    useEffect(()=>{
+       if(isLoggedIn){
+        history.push('/');
+       }
+    },[]);
 
     const login = async ()=>{
        try{

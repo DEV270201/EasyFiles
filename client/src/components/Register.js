@@ -1,7 +1,8 @@
-import React,{useRef,useState} from "react";
+import React,{useRef,useState,useEffect,useContext} from "react";
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import {useHistory} from 'react-router-dom';
+import { LoginContext } from './../context/LoginContext';
 
 //Here I am going to use uncontrolled components because I don't feel the of need controlled components.
 //You can change based on your needs and requirements.
@@ -14,6 +15,13 @@ const Register = () => {
     const pref = useRef(null);
     const cpref = useRef(null);
     const [load,setLoad] = useState(false);
+    const {isLoggedIn} = useContext(LoginContext);
+
+    useEffect(()=>{
+       if(isLoggedIn){
+           history.push('/');
+       }
+    },[]);
     
     const register = async ()=>{
        try{

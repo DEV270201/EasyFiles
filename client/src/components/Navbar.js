@@ -57,6 +57,9 @@ const Navbar = () => {
                                         <li className={`nav-item ${location.pathname === '/upload' ? 'active' : ''}`}>
                                             <NavLink activeClassName="active" className="nav-link" aria-current="page" to="/upload" >Upload</NavLink>
                                         </li>
+                                        <li className={`nav-item ${location.pathname === '/files' ? 'active' : ''}`}>
+                                            <NavLink activeClassName="active" className="nav-link" aria-current="page" to="/files" >Files</NavLink>
+                                        </li>
                                         <li className="nav-item">
                                             <div className="nav-link logout" onClick={logout}>Logout</div>
                                         </li>
