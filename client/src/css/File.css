@@ -1,0 +1,18 @@
+.file{
+    width: 100%;
+    background-color: whitesmoke;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+.filename{
+    font-size: 16px;
+}
+
+.filedate{
+    font-size: 10px;
+}
