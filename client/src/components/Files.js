@@ -60,7 +60,7 @@ const Files = () => {
                                        </>
                                         :
                                         <>
-                                        <h4 className="text-center font-weight-light my-2">Explore new PDF files!</h4>
+                                        <h4 className="text-left font-weight-light my-2">Explore new PDF files!</h4>
                                         {
                                         searchRes.map((file, index) => {
                                             return <div key={index}>

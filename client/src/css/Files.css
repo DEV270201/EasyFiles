@@ -5,4 +5,12 @@
     right:30px;
     height:30px;
     overflow: hidden;
+
+}
+
+@media(max-width:640px){
+    .files_search{
+        top : 89%;
+        width: 200px;
+    }
 }
