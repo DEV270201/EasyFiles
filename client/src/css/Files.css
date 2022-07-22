@@ -1,0 +1,8 @@
+.files_search{
+    position:fixed;
+    width:300px;
+    top:100px;
+    right:30px;
+    height:30px;
+    overflow: hidden;
+}

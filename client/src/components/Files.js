@@ -50,7 +50,7 @@ const Files = () => {
                                 </>
                                 :
                                 <>
-                                    <div style={{position:'fixed',width:'300px',backgroundColor : "yellow",top:'100px',right:"30px"}}>
+                                    <div className='files_search'>
                                         <Search searchpdf={searchpdf}/>
                                     </div>
                                      {
