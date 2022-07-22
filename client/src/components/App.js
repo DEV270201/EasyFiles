@@ -15,11 +15,13 @@ const App = () => {
             <LoginContextProvider>
                 <Navbar />
                 <Switch>
+                    <div style={{paddingTop : '75px'}}>
                     <Route exact component={withRouter(Home)} path="/" />
                     <Route exact component={withRouter(Upload)} path="/upload" />
                     <Route exact component={withRouter(Files)} path="/files" />
                     <Route exact component={withRouter(Register)} path="/user/register" />
                     <Route exact component={withRouter(Login)} path="/user/login" />
+                    </div>
                     <Redirect to="/" />
                 </Switch>
             </LoginContextProvider>
