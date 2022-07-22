@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import File from "./File";
 import axios from "axios";
 import Swal from 'sweetalert2';
+import '../css/Files.css';
+import Search from './Search';
 
 const Files = () => {
     const [files, setFiles] = useState([]);
+    const [searchRes,setSearchRes] = useState("");
 
     useEffect(() => {
         console.log("mounted");
@@ -25,6 +28,16 @@ const Files = () => {
         getFiles();
     }, []);
 
+    useEffect(()=>{
+       setSearchRes(files);
+    },[files]);
+    
+    const searchpdf = (val)=>{
+        console.log(val);
+       let results = !val ? files : files.filter((file)=> { return file.filename.toLowerCase().includes(val.toLocaleLowerCase());});
+        setSearchRes(results);
+    }
+
     return (
         <>
             <div className="container p-3 overflow-y-scroll">
@@ -37,13 +50,25 @@ const Files = () => {
                                 </>
                                 :
                                 <>
-                                    <h4 className="text-center font-weight-light my-2">Explore new PDF files!</h4>
-                                    {
-                                        files.map((file, index) => {
+                                    <div style={{position:'fixed',width:'300px',backgroundColor : "yellow",top:'100px',right:"30px"}}>
+                                        <Search searchpdf={searchpdf}/>
+                                    </div>
+                                     {
+                                         searchRes.length===0 ? 
+                                         <> 
+                                    <h4 className="text-center font-weight-light my-5">No such file found :(</h4>
+                                       </>
+                                        :
+                                        <>
+                                        <h4 className="text-center font-weight-light my-2">Explore new PDF files!</h4>
+                                        {
+                                        searchRes.map((file, index) => {
                                             return <div key={index}>
                                                 <File file={file} />
                                             </div>
-                                        })
+                                        }) 
+                                        }
+                                        </>
                                     }
                                 </>
                         }

@@ -1,0 +1,15 @@
+.search_outer{
+    display: flex;
+    width: 100%;
+}
+
+.search_input{
+    width: 80%;
+}
+
+.search_btn{
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
