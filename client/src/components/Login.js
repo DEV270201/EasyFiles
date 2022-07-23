@@ -2,7 +2,7 @@ import React,{useRef,useState,useContext,useEffect} from "react";
 import Swal from 'sweetalert2';
 import {useHistory} from 'react-router-dom';
 import axios from "axios";
-import { LoginContext } from "../context/LoginContext";
+import { UserContext } from "../context/UserContext";
 
 //Here I am going to use uncontrolled components because I don't feel the of need controlled components.
 //You can change based on your needs and requirements.
@@ -13,7 +13,7 @@ const Login = () => {
     const pref = useRef(null);
     const history = useHistory();
     const [load,setLoad] = useState(false);
-    const {isLoggedIn,setLoginStatus} = useContext(LoginContext);
+    const {isLoggedIn,setLoginStatus,Theme} = useContext(UserContext);
 
     useEffect(()=>{
        if(isLoggedIn){
@@ -53,11 +53,11 @@ const Login = () => {
         <>
             <div className="container p-3">
                 <div className="outer">
-                    <h4 className="text-center font-weight-light mt-1 mb-2">Login Yourself...</h4>
+                    <h4 className="text-center font-weight-light mt-1 mb-2"  style={{color : `${Theme.textColor}`}}>Login Yourself...</h4>
                     <div className="inputs">
-                        <label htmlFor="Username">Username*</label>
+                        <div className="label" htmlFor="Username" style={{color : `${Theme.textColor}`}}>Username*</div>
                         <input type="text" className="form-control myform" id="Username" aria-describedby="emailHelp" name="username" ref={uref} required/>
-                        <label htmlFor="Password">Password*</label>
+                        <div className="label" htmlFor="Password" style={{color : `${Theme.textColor}`}}>Password*</div>
                         <input type="password" className="form-control myform" id="Password" name="password" ref={pref} required/>
                         <button className="btn btn-outline-dark mybtn mt-3" disabled={load ? true : false} onClick={login}>{load ? 'Loading...' : 'Login'}</button>
                         {/* <button className="btn btn-outline-dark mybtn mt-3" onClick={hello}>Click</button> */}

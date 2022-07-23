@@ -1,0 +1,93 @@
+.modal_menu{
+    position: fixed;
+    height: 100vh;
+    width: 50%;
+    top: 75px;
+    left: -100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: 0.75s ease-in-out;
+}
+
+.modal_menubtn{
+	position: fixed;
+	top: 85px;
+	left: 20px;	
+}
+
+.modal_menubtn:hover{
+	cursor: pointer;
+}
+
+.modal_closebtn{
+	position: absolute;
+    right: 20px;
+}
+
+.modal_closebtn:hover{
+	cursor: pointer;
+}
+
+.activeDiv{
+    left: 0%;
+}
+
+input[type=checkbox]{
+	height: 0;
+	width: 0;
+	/* visibility: hidden; */
+    display: none;
+}
+
+label {
+	cursor: pointer;
+	text-indent: -9999px;
+	width: 60px;
+	height: 23px;
+	background: grey;
+	display: block;
+	border-radius: 100px;
+	position: relative;
+}
+
+label:after {
+	content: '';
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	width: 15px;
+	height: 13px;
+	background: #fff;
+	border-radius: 90%;
+	transition: 0.3s;
+}
+
+input:checked + label {
+	background: dodgerblue;
+
+}
+
+input:checked + label:after {
+	left: calc(100% - 5px);
+	transform: translateX(-100%);
+}
+
+.toggle{
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 25px;
+    /* margin-right: 35px; */
+    /* background-color: #bada55; */
+}
+
+.toggle > h5{
+    font-weight: 100;
+    color: white;
+}
+
+.tog{
+	font-family: 'Prompt', sans-serif;
+}

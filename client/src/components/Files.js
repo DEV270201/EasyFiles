@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import File from "./File";
 import axios from "axios";
 import Swal from 'sweetalert2';
 import '../css/Files.css';
 import Search from './Search';
+import { UserContext } from '../context/UserContext';
 
 const Files = () => {
     const [files, setFiles] = useState([]);
     const [searchRes,setSearchRes] = useState("");
+    const {Theme} = useContext(UserContext);
 
     useEffect(() => {
         console.log("mounted");
@@ -46,7 +48,7 @@ const Files = () => {
                         {
                             files.length === 0 ?
                                 <>
-                                    <h4 className="text-center font-weight-light mt-2">No PDF files yet :(</h4>
+                                    <h4 className="text-center font-weight-light mt-2" style={{color : `${Theme.textColor}`}}>No PDF files yet :(</h4>
                                 </>
                                 :
                                 <>
@@ -56,11 +58,11 @@ const Files = () => {
                                      {
                                          searchRes.length===0 ? 
                                          <> 
-                                    <h4 className="text-center font-weight-light my-5">No such file found :(</h4>
+                                    <h4 className="text-center font-weight-light my-5" style={{color : `${Theme.textColor}`}}>No such file found :(</h4>
                                        </>
                                         :
                                         <>
-                                        <h4 className="text-left font-weight-light my-2">Explore new PDF files!</h4>
+                                        <h4 className="text-left font-weight-light my-2" style={{color : `${Theme.textColor}`}}>Explore new PDF files!</h4>
                                         {
                                         searchRes.map((file, index) => {
                                             return <div key={index}>

@@ -11,6 +11,7 @@
 
 .mybtn{
     width : 100px;
+    text-align: center;
 }
 
 .myform:focus{
@@ -27,6 +28,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #121212;
+
 }
 
 .logout:hover{
@@ -36,4 +39,9 @@
 .active{
     /* background-color: rgb(34, 34, 34); */
     border-radius: 10px;
+}
+
+/* for all labels */
+.label{
+    margin-bottom: 5px;
 }

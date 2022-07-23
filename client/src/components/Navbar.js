@@ -1,6 +1,6 @@
 import React, { useContext,useState } from "react";
 import { NavLink } from "react-router-dom";
-import { LoginContext } from "../context/LoginContext";
+import { UserContext } from "../context/UserContext";
 import Swal from 'sweetalert2';
 import axios from "axios";
 import { useHistory } from "react-router-dom";
@@ -10,7 +10,7 @@ import { faFilePdf,faBars } from "@fortawesome/free-solid-svg-icons";
 import '../css/Navbar.css';
 
 const Navbar = () => {
-    const { isLoggedIn,setLoginStatus } = useContext(LoginContext);
+    const { isLoggedIn,setLoginStatus } = useContext(UserContext);
     const history = useHistory();
     // const location = useLocation();
     const [menu,setMenu] = useState(false);
@@ -40,7 +40,7 @@ const Navbar = () => {
          <nav className="nav_bar">
                 <div className="menu_logo" onClick={() => setMenu(!menu)}><FontAwesomeIcon icon={faBars} color="white" size="lg" /></div>
                 <h5 className="nav_logo"><NavLink to="/" exact><FontAwesomeIcon size="lg" className="pdf" icon={faFilePdf} />yourMinePDF</NavLink></h5>
-                <ul className={menu ? "list active" : "list"}>
+                <ul className={menu ? "list activeList" : "list"}>
                     <li><NavLink onClick={()=> setMenu(false)} className="nav_link" exact to="/" >Home</NavLink></li>
                     {
                         !isLoggedIn ? 

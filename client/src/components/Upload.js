@@ -2,7 +2,7 @@ import React, { useRef, useState, useContext, useEffect } from "react";
 import Swal from 'sweetalert2';
 import { useHistory } from 'react-router-dom';
 import axios from "axios";
-import { LoginContext } from "../context/LoginContext";
+import { UserContext } from "../context/UserContext";
 
 //Here I am going to use uncontrolled components because I don't feel the of need controlled components.
 //You can change based on your needs and requirements.
@@ -13,7 +13,7 @@ const Upload = () => {
     const fnref = useRef(null);
     const history = useHistory();
     const [load, setLoad] = useState(false);
-    const { isLoggedIn } = useContext(LoginContext);
+    const { isLoggedIn,Theme } = useContext(UserContext);
 
     useEffect(() => {
         if (!isLoggedIn) {
@@ -60,18 +60,18 @@ const Upload = () => {
         <>
             <div className="container p-3">
                 <div className="outer">
-                    <h4 className="text-center font-weight-light mt-1 mb-2">Upload your PDF here...</h4>
+                    <h4 className="text-center font-weight-light mt-1 mb-2" style={{color : `${Theme.textColor}`}}>Upload your PDF here...</h4>
                     <div className="inputs">
-                        <label htmlFor="file">File*</label>
+                        <div className="label" htmlFor="file" style={{color : `${Theme.textColor}`}}>File*</div>
                         <input type="file" className="form-control myform" id="file" aria-describedby="emailHelp" name="file" ref={fref} required />
-                        <label htmlFor="Filename">File Name*</label>
+                        <div className="label" htmlFor="Filename" style={{color : `${Theme.textColor}`}}>File Name*</div>
                         <input type="text" className="form-control myform" id="Filename" name="filename" ref={fnref} required />
                         <button className="btn btn-outline-dark mybtn mt-3" disabled={load ? true : false} onClick={upload}>{load ? 'Loading...' : 'Upload'}</button>
                         {/* <button className="btn btn-outline-dark mybtn mt-3" onClick={hello}>Click</button> */}
                     </div>
                     <div className="mt-3">
-                        <div>NOTE : </div>
-                        <div>1] Name of the file should be free from the special characters.</div>
+                        <div style={{color : `${Theme.textColor}`}}>NOTE : </div>
+                        <div style={{color : `${Theme.textColor}`}}>1] Name of the file should be free from the special characters.</div>
                     </div>
                 </div>
             </div>

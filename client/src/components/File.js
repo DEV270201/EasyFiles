@@ -1,10 +1,13 @@
-import React from "react";
+import React,{useContext} from "react";
 import "../css/File.css";
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { saveAs } from 'file-saver';
+import {UserContext} from "../context/UserContext";
 
 const File = ({ file }) => {
+
+  const {Theme} = useContext(UserContext);
 
   const openFile = async () => {
     try {
@@ -38,10 +41,10 @@ const File = ({ file }) => {
 
   return (
     <>
-      <div className="file my-3">
+      <div className="file my-3" style={{backgroundColor : `${Theme.surfaceColor}`}}>
         <div className="d-flex flex-column justify-center">
-          <div className="filename">{file.filename.substring(0, file.filename.indexOf('@'))}</div>
-          <div className="filedate">{file.dateUploded.substring(0, file.dateUploded.indexOf('T'))}</div>
+          <div className="filename" style={{color : `${Theme.textColor}`}}>{file.filename.substring(0, file.filename.indexOf('@'))}</div>
+          <div className="filedate" style={{color : `${Theme.textColor}`}}>{file.dateUploded.substring(0, file.dateUploded.indexOf('T'))}</div>
         </div>
         <button className="btn btn-outline-dark mybtn" onClick={openFile}>Download</button>
       </div>
