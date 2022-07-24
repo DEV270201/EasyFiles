@@ -66,7 +66,7 @@ const Upload = () => {
                         <input type="file" className="form-control myform" id="file" aria-describedby="emailHelp" name="file" ref={fref} required />
                         <div className="label" htmlFor="Filename" style={{color : `${Theme.textColor}`}}>File Name*</div>
                         <input type="text" className="form-control myform" id="Filename" name="filename" ref={fnref} required />
-                        <button className="btn btn-outline-dark mybtn mt-3" disabled={load ? true : false} onClick={upload}>{load ? 'Loading...' : 'Upload'}</button>
+                        <button className={`btn mybtn mt-3 ${Theme.theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light'}`} disabled={load ? true : false} onClick={upload}>{load ? 'Loading...' : 'Upload'}</button>
                         {/* <button className="btn btn-outline-dark mybtn mt-3" onClick={hello}>Click</button> */}
                     </div>
                     <div className="mt-3">

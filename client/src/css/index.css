@@ -17,6 +17,7 @@
 .myform:focus{
     box-shadow: inset 0 -1px 0 #ddd;
     border-color: var(--greyish);
+    outline: none;
 }
 
 .myform{

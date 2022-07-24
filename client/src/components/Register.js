@@ -73,7 +73,7 @@ const Register = () => {
                         <input type="password" className="form-control myform" id="Password" name="password" ref={pref} required/>
                         <div className="label" htmlFor="ConfirmPassword"  style={{color : `${Theme.textColor}`}}>Confirm Password*</div>
                         <input type="password" className="form-control myform" id="ConfirmPassword" name="confirmpassword" ref={cpref} required/>
-                        <button className="btn btn-outline-dark mybtn mt-3" disabled={load ? true : false} onClick={register}>{load ? 'Loading...' : 'Register'}</button>
+                        <button className={`btn mybtn mt-3 ${Theme.theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light'}`} disabled={load ? true : false} onClick={register}>{load ? 'Loading...' : 'Register'}</button>
                     </div>
                     <div className="mt-3">
                     <div  style={{color : `${Theme.textColor}`}}>NOTE : </div>

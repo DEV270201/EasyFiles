@@ -12,7 +12,7 @@
 
 .modal_menubtn{
 	position: fixed;
-	top: 85px;
+	top: 80px;
 	left: 20px;	
 }
 
@@ -90,4 +90,10 @@ input:checked + label:after {
 
 .tog{
 	font-family: 'Prompt', sans-serif;
+}
+
+@media(max-width:768px){
+   .modal_menu{
+	width:75%;
+   }
 }

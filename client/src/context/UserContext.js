@@ -8,15 +8,15 @@ const UserContextProvider = ({children}) => {
         textColor : '#FBF7F0',
         backgroundColor : '#121212',
         primaryColor : '#BB86FC',
-        surfaceColor : '#121212d9',
+        surfaceColor : '#2C2C2A',
         theme : 'dark'
     }
 
     const lightTheme = {
         textColor : '#555555',
-        backgroundColor : '#FBF7F0',
-        primaryColor : '#D9E4DD',
-        surfaceColor : '#F1FDF3',
+        backgroundColor : '#F8F9F5',
+        primaryColor : '#8ABAD3FF',
+        surfaceColor : '#f8f8ff',
         theme : 'light'
     }
     

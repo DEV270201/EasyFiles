@@ -46,7 +46,7 @@ const File = ({ file }) => {
           <div className="filename" style={{color : `${Theme.textColor}`}}>{file.filename.substring(0, file.filename.indexOf('@'))}</div>
           <div className="filedate" style={{color : `${Theme.textColor}`}}>{file.dateUploded.substring(0, file.dateUploded.indexOf('T'))}</div>
         </div>
-        <button className="btn btn-outline-dark mybtn" onClick={openFile}>Download</button>
+        <button className={`btn mybtn ${Theme.theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light'}`} onClick={openFile}>Download</button>
       </div>
     </>
   );

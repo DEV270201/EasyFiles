@@ -1,15 +1,14 @@
-import React,{useState,useEffect} from "react";
+import React,{useState,useContext,useRef} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass,faXmark } from '@fortawesome/free-solid-svg-icons'
+import { UserContext } from "../context/UserContext";
 import '../css/Search.css';
 
 const Search = ({searchpdf})=>{
 
   const[show,setShow] = useState(false);
-
-  useEffect(()=>{
-    console.log(show);
-  })
+  const {Theme} = useContext(UserContext);
+  const btnRef = useRef(null);
 
   const searchPDF = (event)=>{
     searchpdf(event.target.value);
@@ -22,16 +21,16 @@ const Search = ({searchpdf})=>{
    return(
     <>
       <div className="search_outer">
-         <input type="text" placeholder="Search PDF..."  className={`search_input ${show ? 'search_animate' : ''}`} onChange={searchPDF}/>
-         <div className="search_btn" onClick={changeVisibility}>
+         <input type="text" placeholder="Search PDF..."  className={`search_input myform form-control ${show ? 'search_animate' : ''}`} onChange={searchPDF}/>
+         <div className="search_btn" onClick={changeVisibility} ref={btnRef} style={{backgroundColor : `${Theme.backgroundColor}`,border: `1px solid ${Theme.primaryColor}`}}>
           {
           !show ?
           <>
-          <FontAwesomeIcon icon={faMagnifyingGlass} title="Search" />
+          <FontAwesomeIcon icon={faMagnifyingGlass} title="Search" color={`${Theme.primaryColor}`}/>
           </>
           :
           <>
-          <FontAwesomeIcon icon={faXmark} title="Hide" />
+          <FontAwesomeIcon icon={faXmark} title="Hide" color={`${Theme.primaryColor}`}/>
           </>
           }
         </div>

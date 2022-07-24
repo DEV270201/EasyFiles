@@ -2,14 +2,23 @@ import React, { useEffect, useState, useContext } from 'react';
 import File from "./File";
 import axios from "axios";
 import Swal from 'sweetalert2';
-import '../css/Files.css';
 import Search from './Search';
 import { UserContext } from '../context/UserContext';
+import {useHistory} from 'react-router-dom';
+import '../css/Files.css';
+
 
 const Files = () => {
     const [files, setFiles] = useState([]);
     const [searchRes,setSearchRes] = useState("");
-    const {Theme} = useContext(UserContext);
+    const {Theme,isLoggedIn} = useContext(UserContext);
+    let history = useHistory();
+
+    useEffect(()=>{
+        if(!isLoggedIn){
+            history.push('/');
+        }
+    },[]);
 
     useEffect(() => {
         console.log("mounted");
@@ -62,7 +71,7 @@ const Files = () => {
                                        </>
                                         :
                                         <>
-                                        <h4 className="text-left font-weight-light my-2" style={{color : `${Theme.textColor}`}}>Explore new PDF files!</h4>
+                                        <h4 className="xs:text-center md:text-left font-weight-light my-4" style={{color : `${Theme.textColor}`}}>Explore new PDF files!</h4>
                                         {
                                         searchRes.map((file, index) => {
                                             return <div key={index}>

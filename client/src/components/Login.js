@@ -59,8 +59,7 @@ const Login = () => {
                         <input type="text" className="form-control myform" id="Username" aria-describedby="emailHelp" name="username" ref={uref} required/>
                         <div className="label" htmlFor="Password" style={{color : `${Theme.textColor}`}}>Password*</div>
                         <input type="password" className="form-control myform" id="Password" name="password" ref={pref} required/>
-                        <button className="btn btn-outline-dark mybtn mt-3" disabled={load ? true : false} onClick={login}>{load ? 'Loading...' : 'Login'}</button>
-                        {/* <button className="btn btn-outline-dark mybtn mt-3" onClick={hello}>Click</button> */}
+                        <button className={`btn mybtn mt-3 ${Theme.theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light'}`} disabled={load ? true : false} onClick={login} >{load ? 'Loading...' : 'Login'}</button>
                     </div>
                 </div>
             </div>
