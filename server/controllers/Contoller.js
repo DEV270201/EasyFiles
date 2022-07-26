@@ -4,7 +4,13 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { ClientError } = require('../handlers/Error');
 const { promisify } = require('util');
-
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({
+  cloud_name : process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
+const fs = require('fs');
 
 exports.Fetcher = async(req)=>{
   try {
@@ -82,3 +88,61 @@ exports.LoginUser = async (req,res)=>{
     throw err;
   }
 }
+
+exports.GetProfile = async(req)=>{
+  try{
+    let resp = await User.findById(req.user.id);
+    return resp;
+  }catch(err){
+    console.log("in the get profile controller : ",err);
+    throw err;
+  }
+}
+
+const deleteProfileImage = async(id)=>{
+  try{
+     await cloudinary.uploader.destroy(id);
+  }catch(err){
+    throw err;
+  }
+}
+
+exports.UpdateProfile = async(req)=>{
+  try{
+     console.log("u: ",req.body.profilePicUrl);
+     console.log("d: ",process.env.DEFAULT);
+    if(!(req.body.profilePicUrl === process.env.DEFAULT)){
+       console.log("aa gaya...");
+       await deleteProfileImage(req.body.publicId);
+    }
+
+    //uploading the image to cloudinary
+    let file_dir = `profile_uploader/${req.fileName}`;
+    let {secure_url,public_id} = await cloudinary.uploader.upload(req.file.path,{
+      "public_id": file_dir,
+    });
+
+    //deleting the file from the local disk
+    fs.unlinkSync(req.file.path);
+
+    //uploading the link into the database
+    await User.findByIdAndUpdate(req.user.id,{profile_pic: secure_url});
+    return {url:secure_url,id:public_id};
+  }catch(err){
+    console.log("in the update profile controller : ",err);
+    throw err;
+  }
+}
+
+exports.DeleteProfile = async(req)=>{
+  try{
+    await deleteProfileImage(req.body.publicId);
+    let resp = await User.findByIdAndUpdate(req.user.id,{profile_pic: process.env.DEFAULT},{profile_pic:1});
+    return resp;
+  }catch(err){
+    console.log('in the delete profile controller : ',err);
+    throw err;
+  }
+}
+
+
