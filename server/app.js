@@ -39,6 +39,11 @@ const handleDuplicateError = (err)=>{
    return new ClientError(`${errStr.substring(2,errStr.indexOf(':')).replace(/"/g,"")} already exists...`);
 }
 
+const handleFileSizeError = (err)=>{
+   return new ClientError(`${err.message}.It should be less than 1MB`)
+}
+
+
 //global error middleware
 app.use((error,_req,res,_)=>{
    console.log("entered the global error middleware...");
@@ -49,6 +54,9 @@ app.use((error,_req,res,_)=>{
    
    if(err.code === 11000){
       err = handleDuplicateError(err);
+   }
+   if(err.code === 'LIMIT_FILE_SIZE'){
+      err = handleFileSizeError(err);
    }
    
    console.log('Error : ', err);
