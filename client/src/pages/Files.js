@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
-import File from "./File";
+import File from "../components/File";
 import axios from "axios";
 import Swal from 'sweetalert2';
-import Search from './Search';
+import Search from '../components/Search';
 import { UserContext } from '../context/UserContext';
 import {useHistory} from 'react-router-dom';
 import '../css/Files.css';
