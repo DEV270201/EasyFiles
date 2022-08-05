@@ -1,0 +1,19 @@
+.profile_pic{
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 100%;
+}
+
+.prof_pic_div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+    background-color: aqua;
+}
+
+.prof_details_div{
+    width: 60%;
+    background-color: aquamarine;
+}

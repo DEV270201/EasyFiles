@@ -1,10 +1,10 @@
 import React from 'react';
-import "../css/ProfilePic.css";
+import "../css/Profile.css";
 
-const ProfilePic = ({image})=>{
+const ProfilePic = ({image,height,width})=>{
    return(
     <>
-      <div className='profile_pic' style={{backgroundImage : `url(${image})`}}>
+      <div className='profile_pic' style={{backgroundImage: `url(${image})`,height:`${height}`,width:`${width}`}}>
       </div>
     </>
    )

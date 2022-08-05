@@ -28,7 +28,8 @@ app.get("/favicon.ico",(req,res)=>{
    return res.sendStatus(204);
 });
 
-app.all("*",(_req,_res,next)=>{
+app.all("*",(req,_res,next)=>{
+   console.log("path : ",req.originalUrl);
    console.log(new NotFoundError("Sorry,this page does not exists").stack);
    return next(new NotFoundError("Sorry,this page does not exists"));
 });

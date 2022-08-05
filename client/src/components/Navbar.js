@@ -26,7 +26,6 @@ const Navbar = () => {
                     title: 'Yayy...',
                     text: response.data.msg
                 });
-                window.localStorage.setItem('isLoggedIn', false);
                 history.push("/");
             }
         } catch (err) {

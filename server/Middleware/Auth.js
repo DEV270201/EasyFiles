@@ -6,8 +6,9 @@ const User = require('../models/User');
 const Auth = async (req,_res,next)=>{
     try{      
         let token = req.cookies.s_Id;
+        console.log('token : ',token);
         if(!token){
-            return next(new AuthenticationError("User not logged in!"));
+            throw new AuthenticationError("User not logged in!");
         }
         const decoder = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
         req.user = await User.findById(decoder.id);

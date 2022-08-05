@@ -91,7 +91,7 @@ exports.LoginUser = async (req,res)=>{
 
 exports.GetProfile = async(req)=>{
   try{
-    let resp = await User.findById(req.user.id);
+    let resp = await User.findById(req.user.id,{password:0});
     return resp;
   }catch(err){
     console.log("in the get profile controller : ",err);

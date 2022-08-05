@@ -16,7 +16,7 @@ const Files = () => {
 
     useEffect(()=>{
         if(!isLoggedIn){
-            history.push('/');
+            return history.push('/');
         }
     },[]);
 

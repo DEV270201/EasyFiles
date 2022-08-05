@@ -28,6 +28,7 @@ const Login = () => {
             username : uref.current.value,
             password : pref.current.value
          });
+         console.log('login : ',response);
          if(response.data.status === 'success'){
             Swal.fire({
                 icon: 'success',

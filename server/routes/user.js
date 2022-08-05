@@ -72,8 +72,9 @@ router.patch('/deleteprofilepic',async(req,res,next)=>{
     }
 });
 
-router.get('/logout',(_req,res)=>{
-    res.clearCookie('s_Id');
+router.get('/logout',Auth,(_req,res)=>{
+  console.log("user logging out..");
+    res.clearCookie("s_Id");
     res.status(200).json({
       status : 'success',
       msg : "user logged out successfully!"

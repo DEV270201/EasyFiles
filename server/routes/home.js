@@ -8,10 +8,10 @@ const Auth = require('../Middleware/Auth');
 //uploading the files to gridfs
 //allowing only single files to upload
 
-router.get('/',async (req,res,next)=>{
+router.get('/',Auth,async (req,res,next)=>{
   try{
     let resp = await Fetcher(req);
-    console.log("res : ",resp);
+    // console.log("res : ",resp);
     res.status(200).json({
       status : "success",
       data : resp
