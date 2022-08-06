@@ -59,16 +59,17 @@
     margin: 0px 5px;
 }
 
-.logout{
-    color: white;
-}
-
-.logout:hover{
-    cursor: pointer;
-}
-
 .menu_logo, .menu_cancel{
     display: none;
+}
+
+.drop_list{
+    font-weight: 500;
+    margin: 0px 5px;
+}
+
+.drop_list:hover{
+    cursor: pointer;
 }
 
 @media(max-width: 1075px ){

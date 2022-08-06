@@ -8,9 +8,18 @@
 
 }
 
+.inner_files{
+    height: 65vh;
+    overflow-y: scroll;
+}
+
 @media(max-width:640px){
     .files_search{
         top : 89%;
         width: 200px;
     }
+}
+
+.inner_files::-webkit-scrollbar{
+    display: none;
 }

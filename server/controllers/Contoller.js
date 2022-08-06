@@ -109,12 +109,12 @@ const deleteProfileImage = async(id)=>{
 
 exports.UpdateProfile = async(req)=>{
   try{
-     console.log("u: ",req.body.profilePicUrl);
-     console.log("d: ",process.env.DEFAULT);
-    if(!(req.body.profilePicUrl === process.env.DEFAULT)){
-       console.log("aa gaya...");
-       await deleteProfileImage(req.body.publicId);
-    }
+    //  console.log("u: ",req.body.profilePicUrl);
+    //  console.log("d: ",process.env.DEFAULT);
+    // if(!(req.body.profilePicUrl === process.env.DEFAULT)){
+    //    console.log("aa gaya...");
+    //    await deleteProfileImage(req.body.publicId);
+    // }
 
     //uploading the image to cloudinary
     let file_dir = `profile_uploader/${req.fileName}`;

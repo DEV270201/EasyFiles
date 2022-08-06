@@ -51,7 +51,7 @@ const Files = () => {
 
     return (
         <>
-            <div className="container p-3 overflow-y-scroll">
+            <div className="container p-3">
                 <div className="outer" style={{ marginBottom: '35px' }}>
                     <div className="mt-2">
                         {
@@ -72,13 +72,15 @@ const Files = () => {
                                         :
                                         <>
                                         <h4 className="xs:text-center md:text-left font-weight-light my-4" style={{color : `${Theme.textColor}`}}>Explore new PDF files!</h4>
+                                       <div className='inner_files'>
                                         {
-                                        searchRes.map((file, index) => {
-                                            return <div key={index}>
-                                                <File file={file} />
-                                            </div>
-                                        }) 
+                                           searchRes.map((file, index) => {
+                                               return <div key={index}>
+                                                   <File file={file} />
+                                               </div>
+                                           }) 
                                         }
+                                       </div>     
                                         </>
                                     }
                                 </>
