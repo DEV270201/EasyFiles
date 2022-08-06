@@ -19,6 +19,7 @@ const App = () => {
         <>
             <Navbar />
             <Switch>
+                <>
                 <div style={{ paddingTop: '75px', backgroundColor: `${Theme.backgroundColor}`, minHeight: '100vh' }}>
                     <Route exact component={withRouter(Home)} path="/" />
                     <Route exact component={withRouter(Upload)} path="/upload" />
@@ -28,6 +29,7 @@ const App = () => {
                     <Route exact component={withRouter(Login)} path="/user/login" />
                 </div>
                 <Redirect to="/" />
+                </>
             </Switch>
             <Modal />
             <Footer />

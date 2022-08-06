@@ -16,6 +16,7 @@ const Files = () => {
 
     useEffect(()=>{
         if(!isLoggedIn){
+            console.log("hiiiiiiiiiiiii : ",isLoggedIn);
             return history.push('/');
         }
     },[]);
@@ -71,7 +72,7 @@ const Files = () => {
                                        </>
                                         :
                                         <>
-                                        <h4 className="xs:text-center md:text-left font-weight-light my-4" style={{color : `${Theme.textColor}`}}>Explore new PDF files!</h4>
+                                        <h4 className="xs:text-center md:text-left font-weight-light my-3" style={{color : `${Theme.textColor}`}}>Explore new PDF files!</h4>
                                        <div className='inner_files'>
                                         {
                                            searchRes.map((file, index) => {

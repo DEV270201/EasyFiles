@@ -64,7 +64,7 @@ const Navbar = () => {
                                 <FontAwesomeIcon icon={faUser} />  Profile
                             </NavLink>
                         </div>
-                        <div onClick={logout} className="drop_list">
+                        <div onClick={logout} className="drop_list text-dark">
                             <FontAwesomeIcon icon={faArrowRightFromBracket} />  Logout
                         </div>
                     </div>
