@@ -74,7 +74,7 @@ const UserContextProvider = ({ children }) => {
     console.log("login : ", isLoggedIn);
     if (isLoggedIn) {
       console.log("fired1");
-      fetchProfile()
+      fetchProfile();
     }
   }, []);
 
@@ -96,9 +96,13 @@ const UserContextProvider = ({ children }) => {
     return;
   }
 
+  const updateProfile = (url)=>{
+    setProfile({...profile,profile_pic : url});
+  }
+
   return (
     <>
-      <UserContext.Provider value={{ isLoggedIn, setLoginStatus, Theme, setDarkThemeStatus, profile }}>
+      <UserContext.Provider value={{ isLoggedIn, setLoginStatus, Theme, setDarkThemeStatus, profile, updateProfile}}>
         {children}
       </UserContext.Provider>
     </>

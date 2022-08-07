@@ -54,21 +54,26 @@ const Navbar = () => {
                             </>
                     }
                 </ul>
-                <div className="dropdown mx-2">
-                    <div className="dropdown-toggle d-flex align-items-center" role="button" data-toggle="dropdown" aria-expanded="false">
-                        <ProfilePic image={profile.profile_pic} height="35px" width="35px" />
-                    </div>
-                    <div className="dropdown-menu">
-                        <div className="drop_list">
-                            <NavLink onClick={() => setMenu(false)} to="/profile" className="text-dark" style={{ textDecoration: 'none' }}>
-                                <FontAwesomeIcon icon={faUser} />  Profile
-                            </NavLink>
+                {
+                    isLoggedIn ?
+                        <div className="dropdown mx-2">
+                            <div className="dropdown-toggle d-flex align-items-center" role="button" data-toggle="dropdown" aria-expanded="false">
+                                <ProfilePic image={profile.profile_pic} height="35px" width="35px" />
+                            </div>
+                            <div className="dropdown-menu">
+                                <div className="drop_list">
+                                    <NavLink onClick={() => setMenu(false)} to="/profile" className="text-dark" style={{ textDecoration: 'none' }}>
+                                        <FontAwesomeIcon icon={faUser} />  Profile
+                                    </NavLink>
+                                </div>
+                                <div onClick={logout} className="drop_list text-dark">
+                                    <FontAwesomeIcon icon={faArrowRightFromBracket} />  Logout
+                                </div>
+                            </div>
                         </div>
-                        <div onClick={logout} className="drop_list text-dark">
-                            <FontAwesomeIcon icon={faArrowRightFromBracket} />  Logout
-                        </div>
-                    </div>
-                </div>
+                        :
+                        null
+                }
             </nav>
         </>
     );

@@ -51,6 +51,7 @@ router.patch('/updateprofilepic',[Auth,ImageUploader.single('profile_pic')],asyn
       let resp = await UpdateProfile(req);
       res.status(200).json({
         status: "success",
+        msg: "profile pic update successfully",
         data: resp
       });
     }catch(err){
@@ -64,6 +65,7 @@ router.patch('/deleteprofilepic',async(req,res,next)=>{
       let resp = await DeleteProfile(req);
       res.status(200).json({
         status: "success",
+        msg : "profile pic deleted successfully",
         data: resp
       });
     }catch(err){

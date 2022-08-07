@@ -14,7 +14,7 @@ const fs = require('fs');
 
 exports.Fetcher = async(req)=>{
   try {
-    let files = await File.find({});
+    let files = await File.find({}).populate({path: 'uploadedBy',select : 'profile_pic username -_id'});
     return files;
   }catch(err){
     console.log("Error in fetcher controller: ",err);
