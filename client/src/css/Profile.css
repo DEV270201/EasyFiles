@@ -5,15 +5,46 @@
     border-radius: 100%;
 }
 
+.pic_div{
+    animation: spin 0.5s ease infinite; 
+    height: 200px;
+    width: 200px;
+    border-top: 2px solid black;
+}
+
+@keyframes spin{
+    0%{
+        transform: rotate(0deg);
+    }
+     25%{
+        transform: rotate(90deg);
+    }
+     50%{
+        transform: rotate(180deg);
+    }
+    75%{
+        transform: rotate(270deg); 
+    }
+     100%{
+        transform: rotate(360deg);
+    }
+}
+
 .prof_pic_div{
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 40%;
-    background-color: aqua;
+    /* background-color: aqua; */
 }
 
 .prof_details_div{
     width: 60%;
-    background-color: aquamarine;
+    border-radius: 10px;
+}
+
+@media(max-width:768px){
+    .prof_details_div{
+        width: 90%;
+    }
 }

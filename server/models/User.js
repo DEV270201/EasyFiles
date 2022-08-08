@@ -23,6 +23,11 @@ const UserSchema = new mongoose.Schema({
     default: process.env.DEFAULT
    },
 
+   p_id : {
+    type: String,
+    default: null
+   },
+
    dateJoined : {
     type : Date,
     default : Date.now()

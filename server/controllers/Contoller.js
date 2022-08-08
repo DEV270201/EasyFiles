@@ -126,7 +126,7 @@ exports.UpdateProfile = async(req)=>{
     fs.unlinkSync(req.file.path);
 
     //uploading the link into the database
-    await User.findByIdAndUpdate(req.user.id,{profile_pic: secure_url});
+    await User.findByIdAndUpdate(req.user.id,{profile_pic: secure_url,p_id: public_id});
     return {url:secure_url,id:public_id};
   }catch(err){
     console.log("in the update profile controller : ",err);
@@ -136,8 +136,12 @@ exports.UpdateProfile = async(req)=>{
 
 exports.DeleteProfile = async(req)=>{
   try{
+    console.log("prof : ",req.body.publicId);
     await deleteProfileImage(req.body.publicId);
-    let resp = await User.findByIdAndUpdate(req.user.id,{profile_pic: process.env.DEFAULT},{profile_pic:1});
+    let resp = await User.findByIdAndUpdate(req.user.id,{profile_pic: process.env.DEFAULT,p_id: null},{
+      new: true,
+      select: "profile_pic"
+    });
     return resp;
   }catch(err){
     console.log('in the delete profile controller : ',err);

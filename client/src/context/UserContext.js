@@ -50,7 +50,8 @@ const UserContextProvider = ({ children }) => {
     username: '',
     profile_pic: '',
     email: '',
-    dateJoined: ''
+    dateJoined: '',
+    p_id: null,
   });
 
 
@@ -96,8 +97,9 @@ const UserContextProvider = ({ children }) => {
     return;
   }
 
-  const updateProfile = (url)=>{
-    setProfile({...profile,profile_pic : url});
+  const updateProfile = (url,id)=>{
+    console.log("id : ",id);
+    setProfile({...profile,profile_pic : url,p_id:id});
   }
 
   return (

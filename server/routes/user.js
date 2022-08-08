@@ -60,7 +60,7 @@ router.patch('/updateprofilepic',[Auth,ImageUploader.single('profile_pic')],asyn
     }
 });
 
-router.patch('/deleteprofilepic',async(req,res,next)=>{
+router.post('/deleteprofilepic',Auth,async(req,res,next)=>{
    try{
       let resp = await DeleteProfile(req);
       res.status(200).json({
