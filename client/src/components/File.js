@@ -1,44 +1,20 @@
-import React, { useContext } from "react";
-import "../css/File.css";
-import axios from 'axios';
-import Swal from 'sweetalert2';
-import { saveAs } from 'file-saver';
+import React, { useContext,useEffect } from "react";
 import { UserContext } from "../context/UserContext";
 import ProfilePic from './ProfilePic';
+import "../css/File.css";
 
-const File = ({ file }) => {
+const File = ({ file,func }) => {
+  
+  const { Theme } = useContext(UserContext);
 
-  const { Theme, profile } = useContext(UserContext);
+  useEffect(()=>{
+    console.log("file :)");
+  });
 
-  const openFile = async () => {
-    try {
-      //recieving the file from the server
-      let resp = await axios.get(`/files/${file.filename}`, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        responseType: 'arraybuffer'
-      });
-      const { data } = resp;
-      //downloading the file and saving it to the device
-      const blob = new Blob([data], { type: 'application/pdf' });
-      saveAs(blob, file.filename.substring(0, file.filename.indexOf('@')));
-      Swal.fire({
-        icon: 'success',
-        title: 'Yayy...',
-        text: 'File downloaded successfully!'
-      });
-      // console.log("resp : ",resp);
-    } catch (err) {
-      console.log("err in file : ", err);
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: err.response.data.error
-      });
-    }
+
+  const fileAction = ()=>{
+     func(file);
   }
-
 
   return (
     <>
@@ -54,7 +30,7 @@ const File = ({ file }) => {
             <div className="filename" style={{ color: `${Theme.textColor}` }}>{file.filename.substring(0, file.filename.indexOf('@'))}</div>
             <div className="filedate" style={{ color: `${Theme.textColor}` }}>{file.dateUploded.substring(0, file.dateUploded.indexOf('T'))}</div>
           </div>
-          <button className={`btn mybtn ${Theme.theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light'}`} onClick={openFile}>Download</button>
+          <button className={`btn mybtn ${Theme.theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light'}`} onClick={fileAction}>Download</button>
         </div>
       </div>
     </>

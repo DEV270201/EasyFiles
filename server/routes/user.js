@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {RegisterJoi} = require("../joi/Joi");
-const {RegisterUser,LoginUser,GetProfile,UpdateProfile,DeleteProfile} = require("../controllers/Contoller");
+const {RegisterUser,LoginUser,GetProfile,UpdateProfile,DeleteProfile,GetStatsFiles} = require("../controllers/Contoller");
 const ImageUploader = require('../utils/ImageUploader');
 const Auth = require('../Middleware/Auth');
 
@@ -42,6 +42,19 @@ router.get('/profile',Auth,async(req,res,next)=>{
 
   }catch(err){
     console.log('get profile : ',err);
+    return next(err);
+  }
+});
+
+router.get("/statsfiles",Auth,async(req,res,next)=>{
+  try{
+    let resp = await GetStatsFiles(req);
+    res.status(200).json({
+      status: "success",
+      data: resp
+    });
+  }catch(err){
+    console.log('get stats : ',err);
     return next(err);
   }
 });

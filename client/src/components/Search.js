@@ -1,4 +1,4 @@
-import React,{useState,useContext,useRef} from "react";
+import React,{useState,useContext,useRef,useEffect} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass,faXmark } from '@fortawesome/free-solid-svg-icons'
 import { UserContext } from "../context/UserContext";
@@ -17,6 +17,10 @@ const Search = ({searchpdf})=>{
   const changeVisibility = ()=>{
     setShow(!show);
   }
+
+  useEffect(()=>{
+    console.log("search :)");
+  });
 
    return(
     <>

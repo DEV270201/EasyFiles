@@ -20,7 +20,7 @@ const App = () => {
             <Navbar />
             <Switch>
                 <>
-                <div style={{ paddingTop: '75px', backgroundColor: `${Theme.backgroundColor}`, minHeight: '100vh' }}>
+                <div style={{ paddingTop: '75px',paddingBottom:'30px', backgroundColor: `${Theme.backgroundColor}`, minHeight: '100vh' }}>
                     <Route exact component={withRouter(Home)} path="/" />
                     <Route exact component={withRouter(Upload)} path="/upload" />
                     <Route exact component={withRouter(Files)} path="/files" />

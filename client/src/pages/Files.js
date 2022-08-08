@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import Search from '../components/Search';
 import { UserContext } from '../context/UserContext';
 import {useHistory} from 'react-router-dom';
+import { saveAs } from 'file-saver';
 import '../css/Files.css';
 
 
@@ -16,7 +17,6 @@ const Files = () => {
 
     useEffect(()=>{
         if(!isLoggedIn){
-            console.log("hiiiiiiiiiiiii : ",isLoggedIn);
             return history.push('/');
         }
     },[]);
@@ -50,6 +50,35 @@ const Files = () => {
         setSearchRes(results);
     }
 
+    const openFile = async (file) => {
+        try {
+          //recieving the file from the server
+          let resp = await axios.get(`/files/${file.filename}`, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            },
+            responseType: 'arraybuffer'
+          });
+          const { data } = resp;
+          //downloading the file and saving it to the device
+          const blob = new Blob([data], { type: 'application/pdf' });
+          saveAs(blob, file.filename.substring(0, file.filename.indexOf('@')));
+          Swal.fire({
+            icon: 'success',
+            title: 'Yayy...',
+            text: 'File downloaded successfully!'
+          });
+          // console.log("resp : ",resp);
+        } catch (err) {
+          console.log("err in file : ", err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.response.data.error
+          });
+        }
+      }
+
     return (
         <>
             <div className="container p-3">
@@ -72,12 +101,12 @@ const Files = () => {
                                        </>
                                         :
                                         <>
-                                        <h4 className="xs:text-center md:text-left font-weight-light my-3" style={{color : `${Theme.textColor}`}}>Explore new PDF files!</h4>
-                                       <div className='inner_files'>
+                                        <h4 className="xs:text-center md:text-left font-weight-light mt-4 md:mt-0" style={{color : `${Theme.textColor}`}}>Explore new PDF files!</h4>
+                                        <div className='inner_files mt-3'>
                                         {
                                            searchRes.map((file, index) => {
                                                return <div key={index}>
-                                                   <File file={file} />
+                                                   <File file={file} func={openFile} />
                                                </div>
                                            }) 
                                         }

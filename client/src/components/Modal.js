@@ -10,6 +10,10 @@ const Modal = () => {
     const checkRef = useRef(null);
 
     useEffect(()=>{
+        console.log("modal :)");
+      });
+
+    useEffect(()=>{
        if(Theme.theme === 'dark'){
           checkRef.current.checked = true;
        }
@@ -32,6 +36,7 @@ const Modal = () => {
                 <FontAwesomeIcon icon={faGear} title="Settings" size="lg" color={`${Theme.primaryColor}`}/>
             </div>
             <div className="modal_menu" ref={modalRef} style={{backgroundColor: '#121212d9',boxShadow : `2px 5px 5px ${Theme.primaryColor}`}}>
+                <div className="text-light mt-2">Theme</div>
                 <div className="toggle">
                     <h5 className="tog" style={{color: 'white'}}>Light</h5>
                     <input type="checkbox" id="switch"  onChange={changeTheme} ref={checkRef}/><label htmlFor="switch">Toggle</label>
@@ -40,6 +45,8 @@ const Modal = () => {
             <div className="modal_closebtn" onClick={toggle}>
                 <FontAwesomeIcon icon={faXmark} title="Close" size="lg" color='white'/>
             </div>
+            <div className="text-light mt-2">Fonts</div>
+
             </div>
         </>
     )

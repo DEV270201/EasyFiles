@@ -21,6 +21,10 @@ const Upload = () => {
         }
     }, []);
 
+    useEffect(()=>{
+        console.log("upload :)");
+      });
+
     const upload = async () => {
         try {
             console.log("file : ", fref.current.files[0]);

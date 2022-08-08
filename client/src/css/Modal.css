@@ -83,7 +83,7 @@ input:checked + label:after {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    margin-top: 25px;
+    margin-top: 15px;
     /* margin-right: 35px; */
     /* background-color: #bada55; */
 }

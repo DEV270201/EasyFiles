@@ -31,7 +31,17 @@ const UserSchema = new mongoose.Schema({
    dateJoined : {
     type : Date,
     default : Date.now()
-   }
+   },
+
+   num_upload: {
+     type: Number,
+     default: 0
+   },
+   
+   num_download: {
+    type: Number,
+    default: 0
+  },
 
 });
 

@@ -4,6 +4,7 @@ const upload = require("../utils/Upload");
 const {ClientError} = require("../handlers/Error");
 const {Uploader,Fetcher} = require("../controllers/Contoller");
 const Auth = require('../Middleware/Auth');
+const User = require('../models/User');
 
 //uploading the files to gridfs
 //allowing only single files to upload
@@ -37,7 +38,7 @@ router.post("/upload",[Auth,upload.single('file')],async (req,res,next)=>{
   }
 });
 
-router.get('/:fname',async (req,res,next)=>{
+router.get('/:fname',Auth,async (req,res,next)=>{
   //requiring the bucket to fetch the files
   const bucket = require("../utils/Bucket");
   try{
@@ -47,6 +48,9 @@ router.get('/:fname',async (req,res,next)=>{
      }
      //piping the file chunks to the response
      bucket.openDownloadStreamByName(req.params.fname).pipe(res);
+
+     //updating the count
+     await User.findByIdAndUpdate(req.user.id,{$inc : {num_download:1}});
   }catch(err){
    console.log("error : ",err);
    return next(err);

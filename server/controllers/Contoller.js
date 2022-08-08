@@ -30,6 +30,8 @@ exports.Uploader = async(req,filename)=>{
       }
       //saving the file in the database
       await File.create(file);
+      //updating the count
+      await User.findByIdAndUpdate(req.user.id,{$inc : {num_upload:1}});
       return;
     }catch(err){
         console.log("Error in uploader controller: ",err);
@@ -98,6 +100,23 @@ exports.GetProfile = async(req)=>{
     throw err;
   }
 }
+
+exports.GetStatsFiles = async(req)=>{
+  try{
+    let {num_upload,num_download} = await User.findById(req.user.id);
+    let files = await File.find({uploadedBy:req.user.id});
+    return{
+      stats: {
+        num_download,num_upload
+      },
+      files
+    }
+  }catch(err){
+    console.log("in the get statsfiles controller : ",err);
+    throw err;
+  }
+}
+
 
 const deleteProfileImage = async(id)=>{
   try{

@@ -18,9 +18,10 @@ const Register = () => {
     const {isLoggedIn,Theme} = useContext(UserContext);
 
     useEffect(()=>{
-       if(isLoggedIn){
-           history.push('/');
-       }
+        
+        if(isLoggedIn){
+            history.push('/');
+        }
     },[]);
     
     const register = async ()=>{

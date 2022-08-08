@@ -16,11 +16,11 @@ const Login = () => {
     const {isLoggedIn,setLoginStatus,Theme} = useContext(UserContext);
 
     useEffect(()=>{
-       if(isLoggedIn){
-        history.push('/');
-       }
+        if(isLoggedIn){
+            history.push('/');
+        }
     },[]);
-
+    
     const login = async ()=>{
        try{
        setLoad(true);
