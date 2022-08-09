@@ -13,7 +13,7 @@ const Login = () => {
     const pref = useRef(null);
     const history = useHistory();
     const [load,setLoad] = useState(false);
-    const {isLoggedIn,setLoginStatus,Theme} = useContext(UserContext);
+    const {isLoggedIn,setLoginStatus,Theme,fontStyle} = useContext(UserContext);
 
     useEffect(()=>{
         if(isLoggedIn){
@@ -54,13 +54,13 @@ const Login = () => {
         <>
             <div className="container p-3">
                 <div className="outer">
-                    <h4 className="text-center font-weight-light mt-1 mb-2"  style={{color : `${Theme.textColor}`}}>Login Yourself...</h4>
+                    <h4 className="text-center font-weight-light mt-1 mb-2"  style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Login Yourself...</h4>
                     <div className="inputs">
-                        <div className="label" htmlFor="Username" style={{color : `${Theme.textColor}`}}>Username*</div>
+                        <div className="label" htmlFor="Username" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Username*</div>
                         <input type="text" className="form-control myform" id="Username" aria-describedby="emailHelp" name="username" ref={uref} required/>
-                        <div className="label" htmlFor="Password" style={{color : `${Theme.textColor}`}}>Password*</div>
+                        <div className="label" htmlFor="Password" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Password*</div>
                         <input type="password" className="form-control myform" id="Password" name="password" ref={pref} required/>
-                        <button className={`btn mybtn mt-3 ${Theme.theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light'}`} disabled={load ? true : false} onClick={login} >{load ? 'Loading...' : 'Login'}</button>
+                        <button className={`btn mybtn mt-3 ${Theme.theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light'}`} disabled={load ? true : false} onClick={login} style={{fontFamily:`${fontStyle}` }} >{load ? 'Loading...' : 'Login'}</button>
                     </div>
                 </div>
             </div>

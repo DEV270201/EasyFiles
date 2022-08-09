@@ -104,7 +104,7 @@ exports.GetProfile = async(req)=>{
 exports.GetStatsFiles = async(req)=>{
   try{
     let {num_upload,num_download} = await User.findById(req.user.id);
-    let files = await File.find({uploadedBy:req.user.id});
+    let files = await File.find({uploadedBy:req.user.id}).populate({path: 'uploadedBy',select : 'profile_pic -_id'});
     return{
       stats: {
         num_download,num_upload

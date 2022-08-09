@@ -13,7 +13,7 @@ const Profile = () => {
 
    let history = useHistory();
    const inputRef = useRef(null);
-   const { isLoggedIn, profile, updateProfile, Theme } = useContext(UserContext);
+   const { isLoggedIn, profile, updateProfile, Theme, fontStyle } = useContext(UserContext);
    const [isLoad, setLoad] = useState(false);
    const [data, setData] = useState([]);
    const [stats,setStats] = useState({
@@ -132,11 +132,11 @@ const Profile = () => {
 
                {/* profile details */}
                <div className="prof_details_div p-4 my-2" style={{ boxShadow: `1px 1px 4px ${Theme.textColor}` }}>
-                  <div className="my-2" style={{ color: `${Theme.textColor}` }}><span className="font-weight-bold"><FontAwesomeIcon icon={faUser} /> Username:</span> {profile.username}</div>
-                  <div className="my-2" style={{ color: `${Theme.textColor}` }}><span className="font-weight-bold"><FontAwesomeIcon icon={faEnvelope} /> MailID:</span> {profile.email}</div>
-                  <div className="my-2" style={{ color: `${Theme.textColor}` }}><span className="font-weight-bold"><FontAwesomeIcon icon={faCalendarDays} /> Joined Date:</span> {profile.dateJoined.substring(0, profile.dateJoined.indexOf('T'))}</div>
-                  <div className="my-2" style={{ color: `${Theme.textColor}` }}><span className="font-weight-bold"><FontAwesomeIcon icon={faUpload} /> File Uploads:</span> {stats.num_uploads}</div>
-                  <div className="my-2" style={{ color: `${Theme.textColor}` }}><span className="font-weight-bold"><FontAwesomeIcon icon={faDownload} /> File Downloads:</span> {stats.num_downloads}</div>
+                  <div className="my-2" style={{ color: `${Theme.textColor}`,fontFamily:`${fontStyle}`  }}><span className="font-weight-bold"><FontAwesomeIcon icon={faUser} /> Username:</span> {profile.username}</div>
+                  <div className="my-2" style={{ color: `${Theme.textColor}`,fontFamily:`${fontStyle}`  }}><span className="font-weight-bold"><FontAwesomeIcon icon={faEnvelope} /> MailID:</span> {profile.email}</div>
+                  <div className="my-2" style={{ color: `${Theme.textColor}`,fontFamily:`${fontStyle}`  }}><span className="font-weight-bold"><FontAwesomeIcon icon={faCalendarDays} /> Joined Date:</span> {profile.dateJoined.substring(0, profile.dateJoined.indexOf('T'))}</div>
+                  <div className="my-2" style={{ color: `${Theme.textColor}`,fontFamily:`${fontStyle}`  }}><span className="font-weight-bold"><FontAwesomeIcon icon={faUpload} /> File Uploads:</span> {stats.num_uploads}</div>
+                  <div className="my-2" style={{ color: `${Theme.textColor}`,fontFamily:`${fontStyle}`  }}><span className="font-weight-bold"><FontAwesomeIcon icon={faDownload} /> File Downloads:</span> {stats.num_downloads}</div>
                </div>
             </div>
 
@@ -144,10 +144,11 @@ const Profile = () => {
             {
                data.length !== 0 ?
                <>
-            <h5 className="xs:text-center md:text-left font-weight-light my-3" style={{ color: `${Theme.textColor}` }}>Your Files - [ {data.length} ]</h5>
+            <h5 className="xs:text-center md:text-left font-weight-light my-3" style={{ color: `${Theme.textColor}`,fontFamily:`${fontStyle}`  }}>Your Files - [ {data.length} ]</h5>
             <div>
                {
                   data.map((file, index) => {
+                     console.log("dp : ",file);
                      return <div key={index}>
                         <File file={file} />
                      </div>
@@ -156,7 +157,7 @@ const Profile = () => {
             </div>
                </>
                :
-            <h5 className="xs:text-center md:text-left font-weight-light my-3" style={{ color: `${Theme.textColor}` }}>You haven't uploaded anything yet :(</h5>
+            <h5 className="xs:text-center md:text-left font-weight-light my-3" style={{ color: `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>You haven't uploaded anything yet :(</h5>
             }
          </div>
          </>

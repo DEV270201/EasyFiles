@@ -43,6 +43,17 @@ const UserContextProvider = ({ children }) => {
     return status ? darkTheme : lightTheme;
   }
 
+  const getfontStyle = ()=>{
+    let fs = window.localStorage.getItem('fs');
+    if (fs == null) {
+      window.localStorage.setItem('fs', "'Comfortaa', cursive");
+      return "'Comfortaa', cursive";
+    }
+    // fs = JSON.parse(fs);
+    console.log("type : ",typeof(fs));
+    return String(fs);
+  }
+
 
   const [isLoggedIn, setLogin] = useState(getLoginStatus);
   const [Theme, setTheme] = useState(getDarkThemeStatus);
@@ -53,7 +64,7 @@ const UserContextProvider = ({ children }) => {
     dateJoined: '',
     p_id: null,
   });
-
+  const [fontStyle,setFontStyle] = useState(getfontStyle);
 
   async function fetchProfile() {
     try {
@@ -102,9 +113,14 @@ const UserContextProvider = ({ children }) => {
     setProfile({...profile,profile_pic : url,p_id:id});
   }
 
+  const setTheFontStyle = (val)=>{
+    window.localStorage.setItem('fs', val);
+    setFontStyle(val);
+  }
+
   return (
     <>
-      <UserContext.Provider value={{ isLoggedIn, setLoginStatus, Theme, setDarkThemeStatus, profile, updateProfile}}>
+      <UserContext.Provider value={{ isLoggedIn, setLoginStatus, Theme, setDarkThemeStatus, profile, updateProfile, fontStyle,setTheFontStyle}}>
         {children}
       </UserContext.Provider>
     </>

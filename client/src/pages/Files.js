@@ -12,7 +12,7 @@ import '../css/Files.css';
 const Files = () => {
     const [files, setFiles] = useState([]);
     const [searchRes,setSearchRes] = useState("");
-    const {Theme,isLoggedIn} = useContext(UserContext);
+    const {Theme,isLoggedIn,fontStyle} = useContext(UserContext);
     let history = useHistory();
 
     useEffect(()=>{
@@ -87,7 +87,7 @@ const Files = () => {
                         {
                             files.length === 0 ?
                                 <>
-                                    <h4 className="text-center font-weight-light mt-2" style={{color : `${Theme.textColor}`}}>No PDF files yet :(</h4>
+                                    <h4 className="text-center font-weight-light mt-2" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>No PDF files yet :(</h4>
                                 </>
                                 :
                                 <>
@@ -97,11 +97,11 @@ const Files = () => {
                                      {
                                          searchRes.length===0 ? 
                                          <> 
-                                    <h4 className="text-center font-weight-light my-5" style={{color : `${Theme.textColor}`}}>No such file found :(</h4>
+                                    <h4 className="text-center font-weight-light my-5" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>No such file found :(</h4>
                                        </>
                                         :
                                         <>
-                                        <h4 className="xs:text-center md:text-left font-weight-light mt-4 md:mt-0" style={{color : `${Theme.textColor}`}}>Explore new PDF files!</h4>
+                                        <h4 className="xs:text-center md:text-left font-weight-light mt-4 md:mt-0" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Explore new PDF files!</h4>
                                         <div className='inner_files mt-3'>
                                         {
                                            searchRes.map((file, index) => {

@@ -13,7 +13,7 @@ const Upload = () => {
     const fnref = useRef(null);
     const history = useHistory();
     const [load, setLoad] = useState(false);
-    const { isLoggedIn,Theme } = useContext(UserContext);
+    const { isLoggedIn,Theme,fontStyle } = useContext(UserContext);
 
     useEffect(() => {
         if (!isLoggedIn) {
@@ -64,18 +64,18 @@ const Upload = () => {
         <>
             <div className="container p-3">
                 <div className="outer">
-                    <h4 className="text-center font-weight-light mt-1 mb-2" style={{color : `${Theme.textColor}`}}>Upload your PDF here...</h4>
+                    <h4 className="text-center font-weight-light mt-1 mb-2" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Upload your PDF here...</h4>
                     <div className="inputs">
-                        <div className="label" htmlFor="file" style={{color : `${Theme.textColor}`}}>File*</div>
+                        <div className="label" htmlFor="file" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>File*</div>
                         <input type="file" className="form-control myform" id="file" aria-describedby="emailHelp" name="file" ref={fref} required />
-                        <div className="label" htmlFor="Filename" style={{color : `${Theme.textColor}`}}>File Name*</div>
+                        <div className="label" htmlFor="Filename" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>File Name*</div>
                         <input type="text" className="form-control myform" id="Filename" name="filename" ref={fnref} required />
-                        <button className={`btn mybtn mt-3 ${Theme.theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light'}`} disabled={load ? true : false} onClick={upload}>{load ? 'Loading...' : 'Upload'}</button>
+                        <button className={`btn mybtn mt-3 ${Theme.theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light'}`} disabled={load ? true : false} onClick={upload} style={{fontFamily:`${fontStyle}` }} >{load ? 'Loading...' : 'Upload'}</button>
                         {/* <button className="btn btn-outline-dark mybtn mt-3" onClick={hello}>Click</button> */}
                     </div>
                     <div className="mt-3">
-                        <div style={{color : `${Theme.textColor}`}}>NOTE : </div>
-                        <div style={{color : `${Theme.textColor}`}}>1] Name of the file should be free from the special characters.</div>
+                        <div style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>NOTE : </div>
+                        <div style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>1] Name of the file should be free from the special characters.</div>
                     </div>
                 </div>
             </div>

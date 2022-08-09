@@ -15,7 +15,7 @@ const Register = () => {
     const pref = useRef(null);
     const cpref = useRef(null);
     const [load,setLoad] = useState(false);
-    const {isLoggedIn,Theme} = useContext(UserContext);
+    const {isLoggedIn,Theme,fontStyle} = useContext(UserContext);
 
     useEffect(()=>{
         
@@ -64,23 +64,23 @@ const Register = () => {
         <>
             <div className="container p-3">
                 <div className="outer" style={{marginBottom : '35px'}}>
-                    <h4 className="text-center font-weight-light mt-1 mb-2"  style={{color : `${Theme.textColor}`}}>Register Yourself...</h4>
+                    <h4 className="text-center font-weight-light mt-1 mb-2"  style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Register Yourself...</h4>
                     <div className="inputs">
-                        <div className="label" htmlFor="Email" style={{color : `${Theme.textColor}`}}>Email address*</div>
+                        <div className="label" htmlFor="Email" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Email address*</div>
                         <input type="email" className="form-control myform" id="Email" aria-describedby="emailHelp" name="email" ref={eref} required/>
-                        <div className="label" htmlFor="Username"  style={{color : `${Theme.textColor}`}}>Username*</div>
+                        <div className="label" htmlFor="Username"  style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Username*</div>
                         <input type="text" className="form-control myform" id="Username" aria-describedby="emailHelp" name="username" ref={uref} required/>
-                        <div className="label" htmlFor="Password"  style={{color : `${Theme.textColor}`}}>Password*</div>
+                        <div className="label" htmlFor="Password"  style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Password*</div>
                         <input type="password" className="form-control myform" id="Password" name="password" ref={pref} required/>
-                        <div className="label" htmlFor="ConfirmPassword"  style={{color : `${Theme.textColor}`}}>Confirm Password*</div>
+                        <div className="label" htmlFor="ConfirmPassword"  style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Confirm Password*</div>
                         <input type="password" className="form-control myform" id="ConfirmPassword" name="confirmpassword" ref={cpref} required/>
                         <button className={`btn mybtn mt-3 ${Theme.theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light'}`} disabled={load ? true : false} onClick={register}>{load ? 'Loading...' : 'Register'}</button>
                     </div>
                     <div className="mt-3">
-                    <div  style={{color : `${Theme.textColor}`}}>NOTE : </div>
-                    <div  style={{color : `${Theme.textColor}`}}>1] Password should be minimum 8 characters and maximum 15 characters long.</div>
-                    <div  style={{color : `${Theme.textColor}`}}>2] Password should contain atleast one special character like '@' '#' or '$' only.</div>
-                    <div  style={{color : `${Theme.textColor}`}}>3] Password should end with a digit only between 0-9.</div>
+                    <div  style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>NOTE : </div>
+                    <div  style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>1] Password should be minimum 8 characters and maximum 15 characters long.</div>
+                    <div  style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>2] Password should contain atleast one special character like '@' '#' or '$' only.</div>
+                    <div  style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>3] Password should end with a digit only between 0-9.</div>
                     </div>
                 </div>
             </div>
