@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import {useHistory} from 'react-router-dom';
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
+import Button from "../components/Button";
 
 //Here I am going to use uncontrolled components because I don't feel the of need controlled components.
 //You can change based on your needs and requirements.
@@ -60,7 +61,12 @@ const Login = () => {
                         <input type="text" className="form-control myform" id="Username" aria-describedby="emailHelp" name="username" ref={uref} required/>
                         <div className="label" htmlFor="Password" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Password*</div>
                         <input type="password" className="form-control myform" id="Password" name="password" ref={pref} required/>
-                        <button className={`btn mybtn mt-3 ${Theme.theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light'}`} disabled={load ? true : false} onClick={login} style={{fontFamily:`${fontStyle}` }} >{load ? 'Loading...' : 'Login'}</button>
+                        {
+                            load ?
+                            <Button text={"Loading..."} disbaled={true} fontStyle={fontStyle} theme={Theme.theme} className={"mt-3"} />
+                            :
+                            <Button text={"Login"} callback_func={login} disbaled={false} fontStyle={fontStyle} theme={Theme.theme} className={"mt-3"} />
+                        }
                     </div>
                 </div>
             </div>
