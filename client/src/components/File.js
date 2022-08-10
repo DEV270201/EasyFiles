@@ -1,6 +1,7 @@
 import React, { useContext,useEffect } from "react";
 import { UserContext } from "../context/UserContext";
 import ProfilePic from './ProfilePic';
+import Button from "./Button";
 import "../css/File.css";
 
 const File = ({ file,func }) => {
@@ -30,7 +31,7 @@ const File = ({ file,func }) => {
             <div className="filename" style={{ color: `${Theme.textColor}`,fontFamily:`${fontStyle}`  }}>{file.filename.substring(0, file.filename.indexOf('@'))}</div>
             <div className="filedate" style={{ color: `${Theme.textColor}`,fontFamily:`${fontStyle}`  }}>{file.dateUploded.substring(0, file.dateUploded.indexOf('T'))}</div>
           </div>
-          <button className={`btn mybtn ${Theme.theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light'}`} onClick={fileAction} style={{fontFamily:`${fontStyle}` }} >Download</button>
+          <Button text={"Download"} callback_func={fileAction} disbaled={false} fontStyle={fontStyle} theme={Theme.theme} />
         </div>
       </div>
     </>
