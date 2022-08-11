@@ -22,7 +22,7 @@ const Files = () => {
     },[]);
 
     useEffect(() => {
-        console.log("mounted");
+        console.log("mounted.....................................");
         async function getFiles(){
             try{
                let files = await axios.get('/files');

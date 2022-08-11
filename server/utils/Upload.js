@@ -4,7 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const { ClientError } = require('../handlers/Error');
 
-let pattern = /^[a-zA-Z0-9]+$/;
+let pattern = /^[a-zA-Z0-9]+[a-zA-Z0-9\s]*[a-zA-Z0-9]$/;
 
 const storage = new GridFsStorage({
     url : process.env.DATABASE,

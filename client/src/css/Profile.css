@@ -7,8 +7,8 @@
 
 .pic_div{
     animation: spin 0.5s ease infinite; 
-    height: 200px;
-    width: 200px;
+    height: 150px;
+    width: 150px;
     border-top: 2px solid black;
 }
 

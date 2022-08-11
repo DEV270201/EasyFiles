@@ -16,9 +16,9 @@ const Profile = () => {
    const { isLoggedIn, profile, updateProfile, Theme, fontStyle } = useContext(UserContext);
    const [isLoad, setLoad] = useState(false);
    const [data, setData] = useState([]);
-   const [stats,setStats] = useState({
-      num_uploads:'N.A',
-      num_downloads:'N.A'
+   const [stats, setStats] = useState({
+      num_uploads: 'N.A',
+      num_downloads: 'N.A'
    });
 
    useEffect(() => {
@@ -35,8 +35,9 @@ const Profile = () => {
             let statsfiles = await axios.get('/user/statsfiles');
             console.log("data : ", statsfiles);
             setData(statsfiles.data.data.files);
-            setStats({num_uploads: statsfiles.data.data.stats.num_upload,
-                      num_downloads: statsfiles.data.data.stats.num_download
+            setStats({
+               num_uploads: statsfiles.data.data.stats.num_upload,
+               num_downloads: statsfiles.data.data.stats.num_download
             });
          } catch (err) {
             console.log("err in files : ", err);
@@ -132,36 +133,45 @@ const Profile = () => {
 
                {/* profile details */}
                <div className="prof_details_div p-4 my-2" style={{ boxShadow: `1px 1px 4px ${Theme.textColor}` }}>
-                  <div className="my-2" style={{ color: `${Theme.textColor}`,fontFamily:`${fontStyle}`  }}><span className="font-weight-bold"><FontAwesomeIcon icon={faUser} /> Username:</span> {profile.username}</div>
-                  <div className="my-2" style={{ color: `${Theme.textColor}`,fontFamily:`${fontStyle}`  }}><span className="font-weight-bold"><FontAwesomeIcon icon={faEnvelope} /> MailID:</span> {profile.email}</div>
-                  <div className="my-2" style={{ color: `${Theme.textColor}`,fontFamily:`${fontStyle}`  }}><span className="font-weight-bold"><FontAwesomeIcon icon={faCalendarDays} /> Joined Date:</span> {profile.dateJoined.substring(0, profile.dateJoined.indexOf('T'))}</div>
-                  <div className="my-2" style={{ color: `${Theme.textColor}`,fontFamily:`${fontStyle}`  }}><span className="font-weight-bold"><FontAwesomeIcon icon={faUpload} /> File Uploads:</span> {stats.num_uploads}</div>
-                  <div className="my-2" style={{ color: `${Theme.textColor}`,fontFamily:`${fontStyle}`  }}><span className="font-weight-bold"><FontAwesomeIcon icon={faDownload} /> File Downloads:</span> {stats.num_downloads}</div>
+                  <div className="my-2" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}><span className="font-weight-bold"><FontAwesomeIcon icon={faUser} /> Username:</span> {profile.username}</div>
+                  <div className="my-2" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}><span className="font-weight-bold"><FontAwesomeIcon icon={faEnvelope} /> MailID:</span> {profile.email}</div>
+                  <div className="my-2" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}><span className="font-weight-bold"><FontAwesomeIcon icon={faCalendarDays} /> Joined Date:</span> {profile.dateJoined.substring(0, profile.dateJoined.indexOf('T'))}</div>
+                  <div className="my-2" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>
+                  <span className="font-weight-bold mr-1">
+                     <FontAwesomeIcon icon={faUpload} /> File Uploads <span className="font-weight-lighter">(till date)</span>  :
+                  </span>
+                     {stats.num_uploads}
+                  </div>
+                  <div className="my-2" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>
+                     <span className="font-weight-bold mr-1"><FontAwesomeIcon icon={faDownload} /> File Downloads <span className="font-weight-lighter">(till date)</span>  : 
+                  </span> 
+                     {stats.num_downloads}
+                     </div>
                </div>
             </div>
 
             {/* files uploaded by the user */}
             {
                data.length !== 0 ?
-               <>
-            <h5 className="xs:text-center md:text-left font-weight-light my-3" style={{ color: `${Theme.textColor}`,fontFamily:`${fontStyle}`  }}>Your Files - [ {data.length} ]</h5>
-            <div>
-               {
-                  data.map((file, index) => {
-                     console.log("dp : ",file);
-                     return <div key={index}>
-                        <File file={file} />
+                  <>
+                     <h5 className="xs:text-center md:text-left font-weight-light my-3" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>Your Files - [ {data.length} ]</h5>
+                     <div>
+                        {
+                           data.map((file, index) => {
+                              console.log("dp : ", file);
+                              return <div key={index}>
+                                 <File file={file} />
+                              </div>
+                           })
+                        }
                      </div>
-                  })
-               }
-            </div>
-               </>
-               :
-            <h5 className="xs:text-center md:text-left font-weight-light my-3" style={{ color: `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>You haven't uploaded anything yet :(</h5>
+                  </>
+                  :
+                  <h5 className="xs:text-center md:text-left font-weight-light my-3" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>You haven't uploaded anything yet :(</h5>
             }
          </div>
-         </>
-         );
+      </>
+   );
 }
 
-         export default Profile;
+export default Profile;

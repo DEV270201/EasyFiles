@@ -53,14 +53,14 @@ const Modal = () => {
                 </div>
                 <div className="text-light my-2">Fonts</div>
                 <div className="d-flex flex-column align-items-start">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="fontSelector" id="fs1" value="'Comfortaa', cursive" onChange={changeStyle} checked={fontStyle.includes('Comfortaa') ? true : false} />
+                    <div className="form-check">
+                        <input className="form-check-input" type="radio" name="fontSelector" id="fs1" value="'Comfortaa', cursive" onChange={changeStyle} checked={fontStyle.includes('Comfortaa') ? true : false} />
                         <div style={{ color: 'white', fontFamily:"'Comfortaa', cursive" }}>
                            Comfortaa
                         </div>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="fontSelector" id="fs2" value="'Itim', cursive" onChange={changeStyle} checked={fontStyle.includes('Itim') ? true : false} />
+                    <div className="form-check">
+                        <input className="form-check-input" type="radio" name="fontSelector" id="fs2" value="'Itim', cursive" onChange={changeStyle} checked={fontStyle.includes('Itim') ? true : false} />
                         <div style={{ color: 'white',fontFamily:"'Itim', cursive" }}>
                             Itim
                         </div>

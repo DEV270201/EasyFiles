@@ -20,6 +20,11 @@ const FileSchema = new mongoose.Schema({
    dateUploded : {
     type : Date,
     default : Date.now()
+   },
+
+   grid_file_id : {
+    type: mongoose.Schema.Types.ObjectId,
+    default: ""
    }
 
 });

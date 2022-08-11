@@ -26,7 +26,8 @@ exports.Uploader = async(req,filename)=>{
     try{
       let file = {
         filename,
-        uploadedBy : req.user.id
+        uploadedBy : req.user.id,
+        grid_file_id: req.file.id
       }
       //saving the file in the database
       await File.create(file);
@@ -167,5 +168,7 @@ exports.DeleteProfile = async(req)=>{
     throw err;
   }
 }
+
+// exports
 
 

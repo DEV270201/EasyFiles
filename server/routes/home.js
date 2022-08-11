@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const upload = require("../utils/Upload");
 const {ClientError} = require("../handlers/Error");
-const {Uploader,Fetcher} = require("../controllers/Contoller");
+const {Uploader,Fetcher,DeleteFile} = require("../controllers/Contoller");
 const Auth = require('../Middleware/Auth');
 const User = require('../models/User');
+const bucket = require('../utils/Bucket');
 
 //uploading the files to gridfs
 //allowing only single files to upload
@@ -26,7 +27,6 @@ router.get('/',Auth,async (req,res,next)=>{
 
 router.post("/upload",[Auth,upload.single('file')],async (req,res,next)=>{
   try{
-    console.log("helloo : ",req.filename);
     await Uploader(req,req.filename);
      return res.status(201).json({
        status : "success",
@@ -54,6 +54,19 @@ router.get('/:fname',Auth,async (req,res,next)=>{
   }catch(err){
    console.log("error : ",err);
    return next(err);
+  }
+});
+
+router.delete("/:id",async(req,res,next)=>{
+  try{
+    await DeleteFile(req,bucket);
+     return res.status(200).json({
+       status : "success",
+       msg : "file deleted successfully.."
+     });
+  }catch(err){
+     console.log("errrrrrrrrrrrrr : ",err);
+     return next(err);
   }
 });
 
