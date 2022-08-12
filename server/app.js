@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended : false}));
 //API 
 app.use("/user",require("./routes/user"));
-app.use("/files",require("./routes/home"));
+app.use("/files",require("./routes/files"));
 //request for serving the favicon
 app.get("/favicon.ico",(req,res)=>{
    return res.sendStatus(204);

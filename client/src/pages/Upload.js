@@ -43,7 +43,6 @@ const Upload = () => {
                     title: 'Yayy...',
                     text: response.data.msg
                 });
-
                 fnref.current.value = "";
                 fref.current.value = null;
                 setLoad(false);
@@ -56,6 +55,11 @@ const Upload = () => {
                 title: 'Oops...',
                 text: err.response.data.error
             });
+              //if the auth cookie expire then log the user out 
+              if(err.response.data.error.toLowerCase().includes('please login')){
+                window.localStorage.setItem('isLoggedIn',false);
+                history.push("/user/login");
+            }
             return;
         }
     }

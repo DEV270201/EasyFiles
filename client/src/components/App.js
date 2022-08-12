@@ -5,7 +5,7 @@ import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Home from '../pages/Home';
 import Footer from './Footer';
-import Upload from './Upload';
+import Upload from '../pages/Upload';
 import Files from '../pages/Files';
 import Modal from './Modal';
 import Profile from '../pages/Profile';

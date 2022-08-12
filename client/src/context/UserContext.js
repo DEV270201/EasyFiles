@@ -1,6 +1,7 @@
 import React, { useState, createContext, useEffect } from "react";
 import axios from "axios";
 import Swal from 'sweetalert2';
+import {saveAs} from "file-saver";
 
 export const UserContext = createContext();
 
@@ -40,6 +41,11 @@ const UserContextProvider = ({ children }) => {
       return lightTheme;
     }
     status = JSON.parse(status);
+    //if any user deliberately adds any random value in the localstorage
+    if(typeof(status) != "boolean"){
+        status = false;
+        window.localStorage.setItem('isDark', false);
+    }
     return status ? darkTheme : lightTheme;
   }
 
@@ -68,16 +74,13 @@ const UserContextProvider = ({ children }) => {
 
   async function fetchProfile() {
     try {
+      console.log("made request..");
       let resp = await axios.get('/user/profile');
       console.log("resp : ", resp);
       setProfile(resp.data.data);
     } catch (err) {
-      console.log("fetching profile err : ", err);
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Something went wrong.Please try again later'
-      });
+      console.log("fetching profile err : ", err.response.data.error);
+      window.localStorage.setItem("isLoggedIn",false);
       return;
     }
   }
@@ -118,9 +121,40 @@ const UserContextProvider = ({ children }) => {
     setFontStyle(val);
   }
 
+
+  //function for downloading the file
+  const downloadFile = async (file) => {
+    try {
+      //recieving the file from the server
+      let resp = await axios.get(`/files/${file.filename}`, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        responseType: 'arraybuffer'
+      });
+      const { data } = resp;
+      //downloading the file and saving it to the device
+      const blob = new Blob([data], { type: 'application/pdf' });
+      saveAs(blob, file.filename.substring(0, file.filename.indexOf('@')));
+      Swal.fire({
+        icon: 'success',
+        title: 'Yayy...',
+        text: 'File downloaded successfully!'
+      });
+      // console.log("resp : ",resp);
+    } catch (err) {
+      console.log("err in file : ", err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: err.response.data.error
+      });
+    }
+  }
+
   return (
     <>
-      <UserContext.Provider value={{ isLoggedIn, setLoginStatus, Theme, setDarkThemeStatus, profile, updateProfile, fontStyle,setTheFontStyle}}>
+      <UserContext.Provider value={{ isLoggedIn, setLoginStatus, Theme, setDarkThemeStatus, profile, updateProfile, fontStyle,setTheFontStyle,downloadFile}}>
         {children}
       </UserContext.Provider>
     </>

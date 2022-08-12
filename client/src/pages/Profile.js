@@ -13,7 +13,7 @@ const Profile = () => {
 
    let history = useHistory();
    const inputRef = useRef(null);
-   const { isLoggedIn, profile, updateProfile, Theme, fontStyle } = useContext(UserContext);
+   const { isLoggedIn, profile, updateProfile, Theme, fontStyle, downloadFile } = useContext(UserContext);
    const [isLoad, setLoad] = useState(false);
    const [data, setData] = useState([]);
    const [stats, setStats] = useState({
@@ -46,10 +46,39 @@ const Profile = () => {
                title: 'Oops...',
                text: err.response.data.error
             });
+              //if the auth cookie expire then log the user out 
+              if(err.response.data.error.toLowerCase().includes('please login')){
+               window.localStorage.setItem('isLoggedIn',false);
+               history.push("/user/login");
+           }
          }
       }
       getFiles();
    }, []);
+
+   const delFile = async (file)=>{
+      try{
+       console.log("grid id : ",file.grid_file_id);
+       let resp = await axios.delete(`/files/delete/${file.grid_file_id}`);
+       Swal.fire({
+         icon: 'success',
+         title: 'Yayy...',
+         text: resp.data.msg
+       });
+       setData((files)=>{
+          return files.filter((data)=>{
+               return data.id !== file.id;
+          })
+       });
+      }catch(err){
+         console.log("err : ",err);
+         Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.response.data.error
+          });
+      }
+   }
 
    const updateProfilePic = async (e) => {
       try {
@@ -160,7 +189,7 @@ const Profile = () => {
                            data.map((file, index) => {
                               console.log("dp : ", file);
                               return <div key={index}>
-                                 <File file={file} />
+                                 <File file={file} func={delFile} />
                               </div>
                            })
                         }

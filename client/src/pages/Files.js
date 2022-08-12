@@ -5,14 +5,14 @@ import Swal from 'sweetalert2';
 import Search from '../components/Search';
 import { UserContext } from '../context/UserContext';
 import {useHistory} from 'react-router-dom';
-import { saveAs } from 'file-saver';
+// import { saveAs } from 'file-saver';
 import '../css/Files.css';
 
 
 const Files = () => {
     const [files, setFiles] = useState([]);
     const [searchRes,setSearchRes] = useState("");
-    const {Theme,isLoggedIn,fontStyle} = useContext(UserContext);
+    const {Theme,isLoggedIn,fontStyle,downloadFile} = useContext(UserContext);
     let history = useHistory();
 
     useEffect(()=>{
@@ -35,6 +35,11 @@ const Files = () => {
                     title: 'Oops...',
                     text: err.response.data.error
                 });
+                //if the auth cookie expire then log the user out 
+                if(err.response.data.error.toLowerCase().includes('please login')){
+                    window.localStorage.setItem('isLoggedIn',false);
+                    history.push("/user/login");
+                }
             }
         }
         getFiles();
@@ -51,32 +56,7 @@ const Files = () => {
     }
 
     const openFile = async (file) => {
-        try {
-          //recieving the file from the server
-          let resp = await axios.get(`/files/${file.filename}`, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            },
-            responseType: 'arraybuffer'
-          });
-          const { data } = resp;
-          //downloading the file and saving it to the device
-          const blob = new Blob([data], { type: 'application/pdf' });
-          saveAs(blob, file.filename.substring(0, file.filename.indexOf('@')));
-          Swal.fire({
-            icon: 'success',
-            title: 'Yayy...',
-            text: 'File downloaded successfully!'
-          });
-          // console.log("resp : ",resp);
-        } catch (err) {
-          console.log("err in file : ", err);
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: err.response.data.error
-          });
-        }
+         downloadFile(file);
       }
 
     return (

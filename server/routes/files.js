@@ -57,8 +57,9 @@ router.get('/:fname',Auth,async (req,res,next)=>{
   }
 });
 
-router.delete("/:id",async(req,res,next)=>{
+router.delete("/delete/:id",async(req,res,next)=>{
   try{
+    bucket.remove(req.params.id);
     await DeleteFile(req,bucket);
      return res.status(200).json({
        status : "success",
