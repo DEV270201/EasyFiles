@@ -27,7 +27,9 @@ exports.Uploader = async(req,filename)=>{
       let file = {
         filename,
         uploadedBy : req.user.id,
-        grid_file_id: req.file.id
+        grid_file_id: req.file.id,
+        filesize: req.file.size,
+        filetype: req.extension
       }
       //saving the file in the database
       await File.create(file);

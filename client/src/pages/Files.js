@@ -81,7 +81,8 @@ const Files = () => {
                                        </>
                                         :
                                         <>
-                                        <h4 className="xs:text-center md:text-left font-weight-light mt-4 md:mt-0" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Explore new PDF files!</h4>
+                                        <h4 className="xs:text-center md:text-left font-weight-light mt-4 md:mt-0" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Explore new files!</h4>
+                                        <h6 className="xs:text-center md:text-left font-weight-light" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Red : PDF && Blue : DOCX</h6>
                                         <div className='inner_files mt-3'>
                                         {
                                            searchRes.map((file, index) => {

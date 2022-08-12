@@ -38,7 +38,7 @@ const Navbar = () => {
         <>
             <nav className="nav_bar">
                 <div className="menu_logo" onClick={() => setMenu(!menu)}><FontAwesomeIcon icon={faBars} color="white" size="lg" /></div>
-                <h5 className="nav_logo"><NavLink to="/" exact><FontAwesomeIcon size="lg" className="pdf" icon={faFilePdf} />yourMinePDF</NavLink></h5>
+                <h5 className="nav_logo"><NavLink to="/" exact><FontAwesomeIcon size="lg" className="pdf" icon={faFilePdf} />EasyFiles</NavLink></h5>
                 <ul className={menu ? "list activeList" : "list"}>
                     <li><NavLink onClick={() => setMenu(false)} className="nav_link" exact to="/" >Home</NavLink></li>
                     {

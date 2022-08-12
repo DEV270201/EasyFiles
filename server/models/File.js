@@ -25,8 +25,11 @@ const FileSchema = new mongoose.Schema({
    grid_file_id : {
     type: mongoose.Schema.Types.ObjectId,
     default: ""
-   }
+   },
 
+   filesize: {
+    type: Number,
+   }
 });
 
 const File = mongoose.model('File',FileSchema);

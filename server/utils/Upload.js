@@ -11,7 +11,7 @@ const storage = new GridFsStorage({
     file : (req,u_file)=>{
         return new Promise((resolve,reject)=>{
             //rejecting the promise if the user uploads the file other than pdf
-            if(path.extname(u_file.originalname) !== '.pdf'){
+            if(!(path.extname(u_file.originalname) === '.pdf' || path.extname(u_file.originalname) === '.docx')){
                 console.log("extension : ",path.extname(u_file.originalname));
                 reject(new ClientError("not a valid type of file.."));
                 return;
@@ -26,6 +26,7 @@ const storage = new GridFsStorage({
 
             //attaching the property to the request object
             req.filename = file_name;
+            req.extension = path.extname(u_file.originalname).slice(1,);
             console.log("name of the file ha bhai: ",file_name);
 
             const fileInfo = {
