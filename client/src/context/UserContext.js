@@ -134,8 +134,8 @@ const UserContextProvider = ({ children }) => {
       });
       const { data } = resp;
       //downloading the file and saving it to the device
-      const blob = new Blob([data], { type: 'application/pdf' });
-      saveAs(blob, file.filename.substring(0, file.filename.indexOf('@')));
+      const blob = new Blob([data]);
+      saveAs(blob,file.filename.substring(0, file.filename.indexOf('@'))+"."+file.filetype);
       Swal.fire({
         icon: 'success',
         title: 'Yayy...',
