@@ -6,7 +6,7 @@ import {saveAs} from "file-saver";
 export const UserContext = createContext();
 
 const UserContextProvider = ({ children }) => {
-
+  
   const darkTheme = {
     textColor: '#FBF7F0',
     backgroundColor: '#121212',
@@ -81,6 +81,7 @@ const UserContextProvider = ({ children }) => {
     } catch (err) {
       console.log("fetching profile err : ", err.response.data.error);
       window.localStorage.setItem("isLoggedIn",false);
+      window.location.reload();
       return;
     }
   }

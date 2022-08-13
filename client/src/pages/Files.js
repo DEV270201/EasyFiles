@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
 import Search from '../components/Search';
 import { UserContext } from '../context/UserContext';
 import {useHistory} from 'react-router-dom';
-// import { saveAs } from 'file-saver';
 import '../css/Files.css';
 
 
@@ -22,7 +21,6 @@ const Files = () => {
     },[]);
 
     useEffect(() => {
-        console.log("mounted.....................................");
         async function getFiles(){
             try{
                let files = await axios.get('/files');
@@ -39,6 +37,7 @@ const Files = () => {
                 if(err.response.data.error.toLowerCase().includes('please login')){
                     window.localStorage.setItem('isLoggedIn',false);
                     history.push("/user/login");
+                    return;
                 }
             }
         }
@@ -82,7 +81,6 @@ const Files = () => {
                                         :
                                         <>
                                         <h4 className="xs:text-center md:text-left font-weight-light mt-4 md:mt-0" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Explore new files!</h4>
-                                        <h6 className="xs:text-center md:text-left font-weight-light" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Red : PDF && Blue : DOCX</h6>
                                         <div className='inner_files mt-3'>
                                         {
                                            searchRes.map((file, index) => {

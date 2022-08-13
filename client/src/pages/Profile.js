@@ -33,7 +33,6 @@ const Profile = () => {
       async function getFiles() {
          try {
             let statsfiles = await axios.get('/user/statsfiles');
-            console.log("data : ", statsfiles);
             setData(statsfiles.data.data.files);
             setStats({
                num_uploads: statsfiles.data.data.stats.num_upload,
@@ -58,7 +57,6 @@ const Profile = () => {
 
    const delFile = async (file)=>{
       try{
-       console.log("grid id : ",file.grid_file_id);
        let resp = await axios.delete(`/files/delete/${file.grid_file_id}`);
        Swal.fire({
          icon: 'success',
@@ -82,7 +80,6 @@ const Profile = () => {
 
    const updateProfilePic = async (e) => {
       try {
-         console.log(e.target.files[0]);
          setLoad(true);
          const resp = await axios.patch("/user/updateprofilepic", {
             profile_pic: e.target.files[0]
@@ -93,7 +90,6 @@ const Profile = () => {
                }
             }
          );
-         console.log("resp : ", resp);
          updateProfile(resp.data.data.url, resp.data.data.id);
          setLoad(false);
          Swal.fire({
@@ -115,12 +111,10 @@ const Profile = () => {
 
    const deleteProfilePic = async (e) => {
       try {
-         console.log("p_id : ", profile.p_id);
          setLoad(true);
          const resp = await axios.post("/user/deleteprofilepic", {
             publicId: profile.p_id
          });
-         console.log(resp);
          updateProfile(resp.data.data.profile_pic, null);
          setLoad(false);
          Swal.fire({
@@ -151,7 +145,9 @@ const Profile = () => {
                      isLoad ?
                         <div className="pic_div rounded-circle" style={{ borderTop: `2px solid ${Theme.textColor}` }}></div>
                         :
-                        <ProfilePic image={profile.profile_pic} height="150px" width="150px" />
+                        <div className="p-1 rounded-circle" style={{boxShadow: `1px 1px 4px ${Theme.textColor}`}}>
+                           <ProfilePic image={profile.profile_pic} height="150px" width="150px" />
+                        </div>
                   }
                   <div className="d-flex justify-content-between mt-3" style={{ width: '200px' }}>
                      <button className="btn btn-outline-danger" style={{ width: '75px' }} onClick={deleteProfilePic} disabled={default_profile_pic === profile.profile_pic ? true : false} ><FontAwesomeIcon icon={faXmark} /></button>
@@ -187,7 +183,6 @@ const Profile = () => {
                      <div>
                         {
                            data.map((file, index) => {
-                              console.log("dp : ", file);
                               return <div key={index}>
                                  <File file={file} func={delFile} />
                               </div>
