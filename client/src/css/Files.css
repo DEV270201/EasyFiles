@@ -18,6 +18,9 @@
         top : 89%;
         width: 200px;
     }
+    .inner_files{
+        height: 60vh;
+    }
 }
 
 .inner_files::-webkit-scrollbar{

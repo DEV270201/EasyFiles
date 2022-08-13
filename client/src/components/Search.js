@@ -18,9 +18,9 @@ const Search = ({searchpdf})=>{
     setShow(!show);
   }
 
-  useEffect(()=>{
-    console.log("search :)");
-  });
+  // useEffect(()=>{
+  //   console.log("search :)");
+  // });
 
    return(
     <>

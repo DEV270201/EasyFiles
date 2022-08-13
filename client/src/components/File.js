@@ -8,15 +8,6 @@ const File = ({ file, func }) => {
 
   const { Theme, fontStyle,profile } = useContext(UserContext);
 
-  useEffect(() => {
-    console.log("file pic ek")
-  }, []);
-
-  useEffect(() => {
-    console.log("file pic baar baar")
-  });
-
-
   const fileAction = () => {
     func(file);
   }

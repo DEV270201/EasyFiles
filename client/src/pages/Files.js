@@ -5,20 +5,23 @@ import Swal from 'sweetalert2';
 import Search from '../components/Search';
 import { UserContext } from '../context/UserContext';
 import {useHistory} from 'react-router-dom';
+import Dropdown from '../components/Dropdown';
 import '../css/Files.css';
-
 
 const Files = () => {
     const [files, setFiles] = useState([]);
     const [searchRes,setSearchRes] = useState("");
     const {Theme,isLoggedIn,fontStyle,downloadFile} = useContext(UserContext);
     let history = useHistory();
+    const [code,setCode] = useState('Oldest');
+
 
     useEffect(()=>{
         if(!isLoggedIn){
             return history.push('/');
         }
     },[]);
+
 
     useEffect(() => {
         async function getFiles(){
@@ -58,6 +61,10 @@ const Files = () => {
          downloadFile(file);
       }
 
+    const changeVal = (val)=>{
+       setCode(val);
+    }
+
     return (
         <>
             <div className="container p-3">
@@ -80,10 +87,22 @@ const Files = () => {
                                        </>
                                         :
                                         <>
-                                        <h4 className="xs:text-center md:text-left font-weight-light mt-4 md:mt-0" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Explore new files!</h4>
+                                        <h4 className="xs:text-center md:text-left font-weight-light mt-4 md:mt-0" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Explore new files! - [{searchRes.length}]</h4>
+                                        <Dropdown func={changeVal} name={code} />
                                         <div className='inner_files mt-3'>
                                         {
-                                           searchRes.map((file, index) => {
+                                           [...searchRes].sort((a,b)=>{
+                                            if(code === 'Oldest'){
+                                              return a.dateUploded > b.dateUploded ? 1 : -1
+                                            }else if(code === 'Newest'){
+                                              return a.dateUploded > b.dateUploded ? -1 : 1
+                                            }else if(code === 'A-Z'){
+                                              return a.filename > b.filename ? 1 : -1
+                                            }else{
+                                              return a.filename > b.filename ? -1 : 1
+                                            }
+                                           }
+                                           ).map((file, index) => {
                                                return <div key={index}>
                                                    <File file={file} func={openFile} />
                                                </div>

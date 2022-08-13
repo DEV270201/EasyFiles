@@ -33,7 +33,6 @@ const Navbar = () => {
         }
     }
 
-    console.log("navbar");
     return (
         <>
             <nav className="nav_bar">

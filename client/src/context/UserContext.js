@@ -23,7 +23,7 @@ const UserContextProvider = ({ children }) => {
     theme: 'light'
   }
 
-  console.log("user context");
+  // console.log("user context");
 
   const getLoginStatus = () => {
     let status = window.localStorage.getItem('isLoggedIn');
