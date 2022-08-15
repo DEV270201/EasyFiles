@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext,useCallback } from 'react';
 import File from "../components/File";
 import axios from "axios";
 import Swal from 'sweetalert2';
@@ -61,9 +61,9 @@ const Files = () => {
          downloadFile(file);
       }
 
-    const changeVal = (val)=>{
-       setCode(val);
-    }
+    const changeVal = useCallback((val)=>{
+        setCode(val);
+    },[code]);
 
     return (
         <>

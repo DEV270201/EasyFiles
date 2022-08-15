@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useRef, useContext, useCallback } from "react";
 import axios from "axios";
 import ProfilePic from "../components/ProfilePic";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,6 +8,8 @@ import Swal from 'sweetalert2';
 import { useHistory } from 'react-router-dom';
 import File from "../components/File";
 import default_profile_pic from "../default";
+import Dropdown from "../components/Dropdown";
+
 
 const Profile = () => {
 
@@ -20,6 +22,8 @@ const Profile = () => {
       num_uploads: 'N.A',
       num_downloads: 'N.A'
    });
+   const [code,setCode] = useState('Oldest');
+
 
    useEffect(() => {
       if (!isLoggedIn) {
@@ -54,6 +58,10 @@ const Profile = () => {
       }
       getFiles();
    }, []);
+
+   const changeVal = useCallback((val)=>{
+      setCode(val);
+  },[code]);
 
    const delFile = async (file)=>{
       try{
@@ -139,7 +147,7 @@ const Profile = () => {
          <div className="container">
             <div className="d-flex flex-md-row flex-column mt-2 align-items-center" style={{ width: '100%' }}>
                {/* profile picture */}
-               <div className="prof_pic_div p-2">
+               <div className="prof_pic_div p-2 mx-2">
                   {/* animator */}
                   {
                      isLoad ?
@@ -180,9 +188,21 @@ const Profile = () => {
                data.length !== 0 ?
                   <>
                      <h5 className="xs:text-center md:text-left font-weight-light my-3" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>Your Files - [ {data.length} ]</h5>
+                     <Dropdown func={changeVal} name={code} />
                      <div>
                         {
-                           data.map((file, index) => {
+                           [...data].sort((a,b)=>{
+                              if(code === 'Oldest'){
+                                return a.dateUploded > b.dateUploded ? 1 : -1
+                              }else if(code === 'Newest'){
+                                return a.dateUploded > b.dateUploded ? -1 : 1
+                              }else if(code === 'A-Z'){
+                                return a.filename > b.filename ? 1 : -1
+                              }else{
+                                return a.filename > b.filename ? -1 : 1
+                              }
+                             }
+                             ).map((file, index) => {
                               return <div key={index}>
                                  <File file={file} func={delFile} />
                               </div>

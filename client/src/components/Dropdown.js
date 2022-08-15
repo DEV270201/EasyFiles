@@ -1,4 +1,4 @@
-import React,{useContext} from "react";
+import React,{useContext,useEffect} from "react";
 import { UserContext } from "../context/UserContext";
 import "../css/Navbar.css";
 
@@ -8,6 +8,10 @@ const Dropdown = ({func,name}) => {
     const hello = (e)=>{
           func(e.target.innerText);
     }
+
+    useEffect(()=>{
+      console.log("dropdownnnn");
+    });
 
     return (
         <>
@@ -26,4 +30,4 @@ const Dropdown = ({func,name}) => {
     );
 }
 
-export default Dropdown;
+export default React.memo(Dropdown);

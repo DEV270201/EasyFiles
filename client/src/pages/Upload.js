@@ -68,7 +68,7 @@ const Upload = () => {
         <>
             <div className="container p-3">
                 <div className="outer">
-                    <h4 className="text-center font-weight-light mt-1 mb-2" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Upload your PDF here...</h4>
+                    <h4 className="text-center font-weight-light mt-1 mb-2" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Upload your file here...</h4>
                     <div className="inputs">
                         <div className="label" htmlFor="file" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>File*</div>
                         <input type="file" className="form-control myform" id="file" aria-describedby="emailHelp" name="file" ref={fref} required />
