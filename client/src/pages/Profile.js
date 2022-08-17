@@ -66,16 +66,17 @@ const Profile = () => {
    const delFile = async (file)=>{
       try{
        let resp = await axios.delete(`/files/delete/${file.grid_file_id}`);
-       Swal.fire({
-         icon: 'success',
-         title: 'Yayy...',
-         text: resp.data.msg
-       });
        setData((files)=>{
           return files.filter((data)=>{
-               return data.id !== file.id;
-          })
-       });
+             return data.grid_file_id !== file.grid_file_id;
+            })
+         });
+         Swal.fire({
+           icon: 'success',
+           title: 'Yayy...',
+           text: resp.data.msg
+         });
+         return;
       }catch(err){
          console.log("err : ",err);
          Swal.fire({
@@ -204,7 +205,7 @@ const Profile = () => {
                              }
                              ).map((file, index) => {
                               return <div key={index}>
-                                 <File file={file} func={delFile} />
+                                 <File file={file} func={delFile} text={"Delete"}/>
                               </div>
                            })
                         }

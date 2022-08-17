@@ -104,7 +104,7 @@ const Files = () => {
                                            }
                                            ).map((file, index) => {
                                                return <div key={index}>
-                                                   <File file={file} func={openFile} />
+                                                   <File file={file} func={openFile} text={"Download"} />
                                                </div>
                                            }) 
                                         }

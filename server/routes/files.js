@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const upload = require("../utils/Upload");
+const mongoose = require('mongoose');
 const {ClientError} = require("../handlers/Error");
 const {Uploader,Fetcher,DeleteFile} = require("../controllers/Contoller");
 const Auth = require('../Middleware/Auth');
 const User = require('../models/User');
-const bucket = require('../utils/Bucket');
 
 //uploading the files to gridfs
 //allowing only single files to upload
@@ -40,7 +40,7 @@ router.post("/upload",[Auth,upload.single('file')],async (req,res,next)=>{
 
 router.get('/:fname',Auth,async (req,res,next)=>{
   //requiring the bucket to fetch the files
-  const bucket = require("../utils/Bucket");
+  const {bucket} = require("../utils/Bucket");
   try{
      const file = await bucket.find({filename : req.params.fname}).toArray();
      if(!file){
@@ -51,6 +51,7 @@ router.get('/:fname',Auth,async (req,res,next)=>{
 
      //updating the count
      await User.findByIdAndUpdate(req.user.id,{$inc : {num_download:1}});
+
   }catch(err){
    console.log("error : ",err);
    return next(err);
@@ -58,9 +59,11 @@ router.get('/:fname',Auth,async (req,res,next)=>{
 });
 
 router.delete("/delete/:id",async(req,res,next)=>{
+  const id = mongoose.Types.ObjectId(req.params.id);
+  const {bucket} = require("../utils/Bucket");
   try{
-    bucket.remove(req.params.id);
-    await DeleteFile(req,bucket);
+   await bucket.delete(id);
+    await DeleteFile(req);
      return res.status(200).json({
        status : "success",
        msg : "file deleted successfully.."

@@ -174,10 +174,8 @@ exports.DeleteProfile = async(req)=>{
 exports.DeleteFile = async(req)=>{
   try{
     //delete the file chunks
-    // bucket.Delete(req.params.id);
     await File.deleteOne({grid_file_id:req.params.id});
     return;
-
   }catch(err){
     console.log('in the delete file controller : ',err);
     throw err;

@@ -4,7 +4,7 @@ import ProfilePic from './ProfilePic';
 import Button from "./Button";
 import "../css/File.css";
 
-const File = ({ file, func }) => {
+const File = ({ file, func,text }) => {
 
   const { Theme, fontStyle,profile } = useContext(UserContext);
 
@@ -44,7 +44,7 @@ const File = ({ file, func }) => {
               </div>
               <div className="filedate" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>{file.filetype}</div>
             </div>
-            <Button text={"Download"} callback_func={fileAction} disbaled={false} fontStyle={fontStyle} theme={Theme.theme} />
+            <Button text={text} callback_func={fileAction} disbaled={false} fontStyle={fontStyle} theme={Theme.theme} />
           </div>
         </div>
       </div>
