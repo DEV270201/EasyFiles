@@ -28,7 +28,7 @@ const File = ({ file, func,text }) => {
             }
             </div>
         </div>
-        <div className="file" style={{ backgroundColor: `${Theme.surfaceColor}` }}>
+        <div className="file" style={{ backgroundColor: `${Theme.surfaceColor}`}}>
           <div style={{ width: '1%', backgroundColor: `${file.filetype === 'pdf' ? 'red' : 'dodgerBlue'}` }}></div>
           <div className="d-flex justify-content-between align-items-center" style={{ width: '99%' }} >
             <div className="d-flex flex-column justify-center mx-2">

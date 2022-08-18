@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import "../css/Profile.css";
 
 const ProfilePic = ({image,height,width})=>{

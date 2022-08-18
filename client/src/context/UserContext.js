@@ -8,18 +8,18 @@ export const UserContext = createContext();
 const UserContextProvider = ({ children }) => {
   
   const darkTheme = {
-    textColor: '#FBF7F0',
-    backgroundColor: '#121212',
+    textColor: '#E6E6F2',
+    backgroundColor: '#14141A',
     primaryColor: '#BB86FC',
     surfaceColor: '#2C2C2A',
     theme: 'dark'
   }
 
   const lightTheme = {
-    textColor: '#555555',
-    backgroundColor: '#F8F9F5',
-    primaryColor: '#8ABAD3FF',
-    surfaceColor: '#f8f8ff',
+    textColor: '#14141A',
+    backgroundColor: '#E6E6F2',
+    primaryColor: '#483248',
+    surfaceColor: '#BFB9FA',
     theme: 'light'
   }
 

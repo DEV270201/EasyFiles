@@ -1,8 +1,12 @@
+:root{
+    --txtclr : #E6E6F2;
+}
+
 .nav_bar{
     height: 75px;
     width: 100%;
     display: flex;
-    background-color: #121212;
+    background-color: #14141A;
     justify-content: space-between;
     align-items: center;
     padding: 0 30px;
@@ -11,7 +15,7 @@
 }
 
 .nav_logo a{
-    color: white;
+    color: var(--txtclr);
     font-weight: 400;
     font-style: italic;
     text-decoration: none;
@@ -21,7 +25,7 @@
 .pdf{
     padding-right: 10px;
     animation: animate 1s linear infinite alternate;
-    color:white;
+    color: var(--txtclr); 
 }
 
 @keyframes animate{
@@ -46,12 +50,12 @@
     text-decoration: none;
     font-weight: 500;
     padding: 7px;
-    color: white;
+    color: var(--txtclr);
 }
 
 .list a.active{
-    border-top: 1px solid white;
-    border-bottom: 1px solid white;
+    border-top: 1px solid var(--txtclr);
+    border-bottom: 1px solid var(--txtclr);
 }
 
 .nav_link{
