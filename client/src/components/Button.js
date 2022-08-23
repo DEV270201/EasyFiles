@@ -8,7 +8,7 @@ const Button = ({text,callback_func,disbaled,fontStyle,theme,className=""})=>{
 
     return(
       <>
-          <button className={`btn mybtn ${theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light'} ${className} `} onClick={callFunc} style={{fontFamily:`${fontStyle}` }} disabled={disbaled}>{text}</button>
+          <button className={`btn mybtn mr-1 my-1 ${theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light'} ${className} `} onClick={callFunc} style={{fontFamily:`${fontStyle}` }} disabled={disbaled}>{text}</button>
       </>
     );
 }

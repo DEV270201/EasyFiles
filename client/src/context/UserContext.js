@@ -19,7 +19,7 @@ const UserContextProvider = ({ children }) => {
     textColor: '#14141A',
     backgroundColor: '#E6E6F2',
     primaryColor: '#483248',
-    surfaceColor: '#BFB9FA',
+    surfaceColor: '#dbd7d2',
     theme: 'light'
   }
 

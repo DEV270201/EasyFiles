@@ -15,7 +15,7 @@ const Profile = () => {
 
    let history = useHistory();
    const inputRef = useRef(null);
-   const { isLoggedIn, profile, updateProfile, Theme, fontStyle, downloadFile } = useContext(UserContext);
+   const { isLoggedIn, profile, updateProfile, Theme, fontStyle,downloadFile } = useContext(UserContext);
    const [isLoad, setLoad] = useState(false);
    const [data, setData] = useState([]);
    const [stats, setStats] = useState({
@@ -152,7 +152,7 @@ const Profile = () => {
                   {/* animator */}
                   {
                      isLoad ?
-                        <div className="pic_div rounded-circle" style={{ borderTop: `2px solid ${Theme.textColor}` }}></div>
+                        <div className="spin_div rounded-circle" style={{ borderTop: `2px solid ${Theme.textColor}` }}></div>
                         :
                         <div className="p-1 rounded-circle" style={{boxShadow: `1px 1px 4px ${Theme.textColor}`}}>
                            <ProfilePic image={profile.profile_pic} height="150px" width="150px" />
@@ -205,7 +205,7 @@ const Profile = () => {
                              }
                              ).map((file, index) => {
                               return <div key={index}>
-                                 <File file={file} func={delFile} text={"Delete"}/>
+                                 <File file={file} func={downloadFile} func2={delFile} text={"Download"} text2={"Delete"}/>
                               </div>
                            })
                         }

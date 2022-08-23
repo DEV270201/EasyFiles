@@ -12,3 +12,13 @@
 .filedate{
     font-size: 10px;
 }
+
+.outer_file_btn_div{
+    display: flex;
+}
+
+@media(max-width:1024px){
+    .outer_file_btn_div{
+        flex-direction: column;
+    }
+}

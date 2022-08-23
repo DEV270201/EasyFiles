@@ -4,12 +4,16 @@ import ProfilePic from './ProfilePic';
 import Button from "./Button";
 import "../css/File.css";
 
-const File = ({ file, func,text }) => {
+const File = ({ file,func,text,text2="",func2="" }) => {
 
   const { Theme, fontStyle,profile } = useContext(UserContext);
 
   const fileAction = () => {
     func(file);
+  }
+
+  const fileAction2 = () => {
+    func2(file);
   }
 
   return (
@@ -44,7 +48,15 @@ const File = ({ file, func,text }) => {
               </div>
               <div className="filedate" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>{file.filetype}</div>
             </div>
-            <Button text={text} callback_func={fileAction} disbaled={false} fontStyle={fontStyle} theme={Theme.theme} />
+            <div className="outer_file_btn_div">
+              <Button text={text} callback_func={fileAction} disbaled={false} fontStyle={fontStyle} theme={Theme.theme} />
+            {
+              text2.trim() !== "" ?
+              <Button text={text2} callback_func={fileAction2} disbaled={false} fontStyle={fontStyle} theme={Theme.theme} />
+              :
+              null
+            }
+            </div>
           </div>
         </div>
       </div>
