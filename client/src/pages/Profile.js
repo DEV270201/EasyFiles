@@ -23,19 +23,20 @@ const Profile = () => {
       num_downloads: 'N.A'
    });
    const [code,setCode] = useState('Oldest');
-
+   console.log("profile page gai yeh");
 
    useEffect(() => {
       if (!isLoggedIn) {
          history.push('/');
          return;
       }
-   }, []);
+   }, [isLoggedIn,history]);
 
    //getting the stats data and files of the user
    useEffect(() => {
       async function getFiles() {
          try {
+            console.log("getting files...");
             let statsfiles = await axios.get('/user/statsfiles');
             setData(statsfiles.data.data.files);
             setStats({
@@ -57,11 +58,11 @@ const Profile = () => {
          }
       }
       getFiles();
-   }, []);
+   }, [history]);
 
    const changeVal = useCallback((val)=>{
       setCode(val);
-  },[code]);
+  },[]);
 
    const delFile = async (file)=>{
       try{

@@ -92,7 +92,7 @@ const UserContextProvider = ({ children }) => {
       console.log("fired1");
       fetchProfile();
     }
-  }, []);
+  }, [isLoggedIn]);
 
   const setLoginStatus = (val) => {
     window.localStorage.setItem('isLoggedIn', val);

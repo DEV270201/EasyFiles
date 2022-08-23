@@ -22,3 +22,8 @@
         flex-direction: column;
     }
 }
+
+/* scrollbar */
+::-webkit-scrollbar{
+    display: none;
+}

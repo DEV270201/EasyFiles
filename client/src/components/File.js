@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import ProfilePic from './ProfilePic';
 import Button from "./Button";
@@ -35,8 +35,8 @@ const File = ({ file,func,text,text2="",func2="" }) => {
         <div className="file" style={{ backgroundColor: `${Theme.surfaceColor}`}}>
           <div style={{ width: '1%', backgroundColor: `${file.filetype === 'pdf' ? 'red' : 'dodgerBlue'}` }}></div>
           <div className="d-flex justify-content-between align-items-center" style={{ width: '99%' }} >
-            <div className="d-flex flex-column justify-center mx-2">
-              <div className="filename" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>{file.filename.substring(0, file.filename.indexOf('@'))}</div>
+            <div className="d-flex flex-column justify-center mx-2" style={{width:'30%'}}>
+              <div className="filename" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}`,width: '100%', overflowX:'scroll' }}>{file.filename.substring(0, file.filename.indexOf('@'))}</div>
               <div className="filedate" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>{file.dateUploded.substring(0, file.dateUploded.indexOf('T'))}</div>
               <div className="filedate" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>
                 {
