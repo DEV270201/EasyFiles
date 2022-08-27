@@ -20,7 +20,7 @@ const Files = () => {
         if(!isLoggedIn){
             return history.push('/');
         }
-    },[]);
+    },[isLoggedIn,history]);
 
 
     useEffect(() => {
@@ -45,7 +45,7 @@ const Files = () => {
             }
         }
         getFiles();
-    }, []);
+    }, [history]);
 
     useEffect(()=>{
        setSearchRes(files);
@@ -63,7 +63,7 @@ const Files = () => {
 
     const changeVal = useCallback((val)=>{
         setCode(val);
-    },[code]);
+    },[]);
 
     return (
         <>

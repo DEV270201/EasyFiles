@@ -4,7 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const { ClientError } = require('../handlers/Error');
 
-let pattern = /^[a-zA-Z0-9]+[a-zA-Z0-9\s]*[a-zA-Z0-9]$/;
+let pattern = /^[a-zA-Z0-9]+[a-zA-Z0-9\s]*$/;
 
 const storage = new GridFsStorage({
     url : process.env.DATABASE,
@@ -22,7 +22,7 @@ const storage = new GridFsStorage({
                 return;
             }
 
-            const file_name = req.body.filename + '@' + Date.now();
+            const file_name = req.body.filename.trim() + '-' + req.user.username + '@' + Date.now();
 
             //attaching the property to the request object
             req.filename = file_name;

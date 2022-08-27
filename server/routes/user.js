@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {RegisterJoi} = require("../joi/Joi");
-const {RegisterUser,LoginUser,GetProfile,UpdateProfile,DeleteProfile,GetStatsFiles} = require("../controllers/Contoller");
+const {RegisterUser,LoginUser,GetProfile,UpdateProfile,DeleteProfile,GetStatsFiles} = require("../controllers/Controller");
 const ImageUploader = require('../utils/ImageUploader');
 const Auth = require('../Middleware/Auth');
 

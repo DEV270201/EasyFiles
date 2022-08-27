@@ -25,7 +25,7 @@ exports.Fetcher = async(req)=>{
 exports.Uploader = async(req,filename)=>{
     try{
       let file = {
-        filename,
+        filename:filename,
         uploadedBy : req.user.id,
         grid_file_id: req.file.id,
         filesize: req.file.size,

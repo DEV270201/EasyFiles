@@ -133,7 +133,8 @@ const UserContextProvider = ({ children }) => {
         },
         responseType: 'arraybuffer'
       });
-      const { data } = resp;
+      console.log("file resp : ",resp);
+      const { data,headers } = resp;
       //downloading the file and saving it to the device
       const blob = new Blob([data]);
       saveAs(blob,file.filename.substring(0, file.filename.indexOf('@'))+"."+file.filetype);
@@ -142,6 +143,7 @@ const UserContextProvider = ({ children }) => {
         title: 'Yayy...',
         text: 'File downloaded successfully!'
       });
+      return headers.download;
       // console.log("resp : ",resp);
     } catch (err) {
       console.log("err in file : ", err);

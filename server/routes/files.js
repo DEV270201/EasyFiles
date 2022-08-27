@@ -3,7 +3,7 @@ const router = express.Router();
 const upload = require("../utils/Upload");
 const mongoose = require('mongoose');
 const {ClientError} = require("../handlers/Error");
-const {Uploader,Fetcher,DeleteFile} = require("../controllers/Contoller");
+const {Uploader,Fetcher,DeleteFile} = require("../controllers/Controller");
 const Auth = require('../Middleware/Auth');
 const User = require('../models/User');
 
@@ -46,11 +46,19 @@ router.get('/:fname',Auth,async (req,res,next)=>{
      if(!file){
        return next(new ClientError('no such file exists...'));
      }
-     //piping the file chunks to the response
-     bucket.openDownloadStreamByName(req.params.fname).pipe(res);
 
      //updating the count
-     await User.findByIdAndUpdate(req.user.id,{$inc : {num_download:1}});
+     let download_num = await User.findByIdAndUpdate(req.user.id,{$inc : {num_download:1}},{
+      fields : {num_download:1},
+      new : true
+     }
+     );
+
+     //appending to the header
+     res.append('download',download_num.num_download);
+
+     //piping the file chunks to the response
+     bucket.openDownloadStreamByName(req.params.fname).pipe(res);
 
   }catch(err){
    console.log("error : ",err);
@@ -64,7 +72,7 @@ router.delete("/delete/:id",async(req,res,next)=>{
   try{
    await bucket.delete(id);
     await DeleteFile(req);
-     return res.status(200).json({
+    return res.status(200).json({
        status : "success",
        msg : "file deleted successfully.."
      });

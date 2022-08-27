@@ -7,7 +7,6 @@ import Home from '../pages/Home';
 import Footer from './Footer';
 import Upload from '../pages/Upload';
 import Files from '../pages/Files';
-import Modal from './Modal';
 import Profile from '../pages/Profile';
 import { UserContext } from '../context/UserContext';
 
@@ -35,7 +34,6 @@ const App = () => {
                 <Redirect to="/" />
                 </>
             </Switch>
-            <Modal />
             <Footer />
         </>
     );

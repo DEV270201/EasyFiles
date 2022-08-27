@@ -144,6 +144,11 @@ const Profile = () => {
       }
    }
 
+   const download_file = async (file)=>{
+      let download_num = await downloadFile(file);
+      setStats({...stats,num_downloads:download_num});
+   }
+
    return (
       <>
          <div className="container">
@@ -206,14 +211,14 @@ const Profile = () => {
                              }
                              ).map((file, index) => {
                               return <div key={index}>
-                                 <File file={file} func={downloadFile} func2={delFile} text={"Download"} text2={"Delete"}/>
+                                 <File file={file} func={download_file} func2={delFile} text={"Download"} text2={"Delete"}/>
                               </div>
                            })
                         }
                      </div>
                   </>
                   :
-                  <h5 className="xs:text-center md:text-left font-weight-light my-3" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>You haven't uploaded anything yet :(</h5>
+                  <h5 className="text-center font-weight-light my-3" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>You haven't uploaded anything yet :(</h5>
             }
          </div>
       </>
