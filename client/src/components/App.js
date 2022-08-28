@@ -8,6 +8,7 @@ import Footer from './Footer';
 import Upload from '../pages/Upload';
 import Files from '../pages/Files';
 import Profile from '../pages/Profile';
+import OthersProfile from '../pages/OthersProfile';
 import { UserContext } from '../context/UserContext';
 
 
@@ -30,6 +31,7 @@ const App = () => {
                     <Route exact component={withRouter(Profile)} path="/profile" />
                     <Route exact component={withRouter(Register)} path="/user/register" />
                     <Route exact component={withRouter(Login)} path="/user/login" />
+                    <Route exact component={withRouter(OthersProfile)} path="/profile/:user" />
                 </div>
                 <Redirect to="/" />
                 </>

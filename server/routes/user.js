@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {RegisterJoi} = require("../joi/Joi");
-const {RegisterUser,LoginUser,GetProfile,UpdateProfile,DeleteProfile,GetStatsFiles} = require("../controllers/Controller");
+const {RegisterUser,LoginUser,GetProfile,UpdateProfile,DeleteProfile,GetStatsFiles,GetOtherUserProfile} = require("../controllers/Controller");
 const ImageUploader = require('../utils/ImageUploader');
 const Auth = require('../Middleware/Auth');
 
@@ -95,5 +95,19 @@ router.get('/logout',Auth,(_req,res)=>{
       msg : "user logged out successfully!"
     })
 });
+
+router.get('/profile/:user',Auth,async(req,res,next)=>{
+  try{
+    let resp = await GetOtherUserProfile(req);
+    res.status(200).json({
+      status: "success",
+      msg : "profile fetched successfully",
+      data : resp
+    });
+  }catch(err){
+    console.log('others profile : ',err);
+    return next(err);
+  }
+})
 
 module.exports = router;

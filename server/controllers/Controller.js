@@ -64,7 +64,16 @@ exports.LoginUser = async (req,res)=>{
     let user_name = String(req.body.username);
     let pass_word = String(req.body.password);
 
-    let user = await User.findOne({username : user_name});
+    let user = await User.findOne({
+      $or : [
+        {
+          "username" : user_name
+        },
+        {
+          "email" : user_name
+        }
+      ]
+     });
 
     if(!user){
       throw new ClientError("Invalid credentials!");
@@ -178,6 +187,26 @@ exports.DeleteFile = async(req)=>{
     return;
   }catch(err){
     console.log('in the delete file controller : ',err);
+    throw err;
+  }
+}
+
+exports.GetOtherUserProfile = async(req)=>{
+  try{
+   //getting the data of the required user
+   let user = String(req.params.user);
+   let metadata = await User.findOne({username : user},{
+    password:0,
+    email:0
+   });
+   //getting the files of the required user
+   let files = await File.find({uploadedBy:metadata.id});
+   return {
+    userdata : metadata,
+    filedata : files
+   }
+  }catch(err){
+    console.log('in the others profile controller : ',err);
     throw err;
   }
 }

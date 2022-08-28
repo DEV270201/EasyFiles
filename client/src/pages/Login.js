@@ -57,7 +57,7 @@ const Login = () => {
                 <div className="outer">
                     <h4 className="text-center font-weight-light mt-1 mb-2"  style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Login Yourself...</h4>
                     <div className="inputs">
-                        <div className="label" htmlFor="Username" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Username*</div>
+                        <div className="label" htmlFor="Username" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Username/Email*</div>
                         <input type="text" className="form-control myform" id="Username" aria-describedby="emailHelp" name="username" ref={uref} required/>
                         <div className="label" htmlFor="Password" style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>Password*</div>
                         <input type="password" className="form-control myform" id="Password" name="password" ref={pref} required/>

@@ -3,8 +3,9 @@ import { UserContext } from "../context/UserContext";
 import ProfilePic from './ProfilePic';
 import Button from "./Button";
 import "../css/File.css";
+import { NavLink } from "react-router-dom";
 
-const File = ({ file,func,text,text2="",func2="" }) => {
+const File = ({ file,func,text,text2="",func2="",showPostedBy=true }) => {
 
   const { Theme, fontStyle,profile } = useContext(UserContext);
 
@@ -19,6 +20,8 @@ const File = ({ file,func,text,text2="",func2="" }) => {
   return (
     <>
       <div className="d-flex flex-column my-3">
+        {
+          showPostedBy ? 
         <div className="d-flex align-items-center my-1">
             <div className="mr-1" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` ,fontSize:'12px'}} >By:</div>
             <div className="rounded-circle p-1 mx-1" style={{ border: `1px solid ${Theme.textColor} ` }}>
@@ -28,10 +31,17 @@ const File = ({ file,func,text,text2="",func2="" }) => {
             {
             file.uploadedBy.username === profile.username ? 'You'
             :
-            file.uploadedBy.username
+            <NavLink to={`/profile/${file.uploadedBy.username}`} style={{ color: `${Theme.textColor}`, textDecoration:'underline'}}>
+              {
+              file.uploadedBy.username
+              }
+            </NavLink>
             }
             </div>
         </div>
+        :
+        null
+        }
         <div className="file" style={{ backgroundColor: `${Theme.surfaceColor}`}}>
           <div style={{ width: '1%', backgroundColor: `${file.filetype === 'pdf' ? 'red' : 'dodgerBlue'}` }}></div>
           <div className="d-flex justify-content-between align-items-center" style={{ width: '99%' }} >
