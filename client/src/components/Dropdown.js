@@ -11,7 +11,7 @@ const Dropdown = ({func,name}) => {
 
     useEffect(()=>{
       console.log("dropdownnnn");
-    });
+    },[]);
 
     return (
         <>

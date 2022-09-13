@@ -1,7 +1,7 @@
 import React,{useRef,useState,useEffect,useContext} from "react";
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import {useHistory} from 'react-router-dom';
+import {NavLink, useHistory} from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import Button from "../components/Button";
 
@@ -23,7 +23,7 @@ const Register = () => {
         if(isLoggedIn){
             history.push('/');
         }
-    },[]);
+    },[isLoggedIn,history]);
     
     const register = async ()=>{
        try{
@@ -77,9 +77,9 @@ const Register = () => {
                         <input type="password" className="form-control myform" id="ConfirmPassword" name="confirmpassword" ref={cpref} required/>
                         {
                             load ?
-                            <Button text={"Loading..."} disbaled={true} fontStyle={fontStyle} theme={Theme.theme} className={"mt-3"} />
+                            <Button text={"Loading..."} disabled={true} fontStyle={fontStyle} theme={Theme.theme} className={"mt-3"} />
                             :
-                            <Button text={"Register"} callback_func={register} disbaled={false} fontStyle={fontStyle} theme={Theme.theme} className={"mt-3"} />
+                            <Button text={"Register"} callback_func={register} disabled={false} fontStyle={fontStyle} theme={Theme.theme} className={"mt-3"} />
                         }
                     </div>
                     <div className="mt-3">
@@ -88,6 +88,9 @@ const Register = () => {
                     <div  style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>2] Password should contain atleast one special character like '@' '#' or '$' only.</div>
                     <div  style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>3] Password should end with a digit only between 0-9.</div>
                     </div>
+                    <p className="my-1 font-weight-bold"  style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>
+                    Already have an account? <NavLink to={"/user/login"}>Login</NavLink>
+                    </p>
                 </div>
             </div>
         </>

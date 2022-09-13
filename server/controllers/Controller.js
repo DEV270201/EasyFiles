@@ -14,7 +14,7 @@ const fs = require('fs');
 
 exports.Fetcher = async(req)=>{
   try {
-    let files = await File.find({}).populate({path: 'uploadedBy',select : 'profile_pic username -_id'});
+    let files = await File.find({isPrivate:false}).populate({path: 'uploadedBy',select : 'profile_pic username -_id'});
     return files;
   }catch(err){
     console.log("Error in fetcher controller: ",err);
@@ -29,7 +29,8 @@ exports.Uploader = async(req,filename)=>{
         uploadedBy : req.user.id,
         grid_file_id: req.file.id,
         filesize: req.file.size,
-        filetype: req.extension
+        filetype: req.extension,
+        isPrivate: req.isPrivate
       }
       //saving the file in the database
       await File.create(file);
@@ -200,7 +201,7 @@ exports.GetOtherUserProfile = async(req)=>{
     email:0
    });
    //getting the files of the required user
-   let files = await File.find({uploadedBy:metadata.id});
+   let files = await File.find({uploadedBy:metadata.id,isPrivate:false});
    return {
     userdata : metadata,
     filedata : files
@@ -211,4 +212,13 @@ exports.GetOtherUserProfile = async(req)=>{
   }
 }
 
+exports.updateStatus = async(req)=>{
+  try{
+    await File.findOneAndUpdate({filename:req.body.filename},{isPrivate:req.body.isPrivate})
+    return;
+  }catch(err){
+    console.log('in the update status controller : ',err);
+    throw err;
+  }
+}
 

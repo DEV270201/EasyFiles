@@ -27,6 +27,8 @@ const storage = new GridFsStorage({
             //attaching the property to the request object
             req.filename = file_name;
             req.extension = path.extname(u_file.originalname).slice(1,);
+            console.log("isprivate : ",req.body.isPrivate);
+            req.isPrivate = req.body.isPrivate;
             console.log("name of the file ha bhai: ",file_name);
 
             const fileInfo = {

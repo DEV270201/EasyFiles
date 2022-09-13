@@ -3,13 +3,14 @@ const router = express.Router();
 const upload = require("../utils/Upload");
 const mongoose = require('mongoose');
 const {ClientError} = require("../handlers/Error");
-const {Uploader,Fetcher,DeleteFile} = require("../controllers/Controller");
+const {Uploader,Fetcher,DeleteFile,updateStatus} = require("../controllers/Controller");
 const Auth = require('../Middleware/Auth');
 const User = require('../models/User');
 
 //uploading the files to gridfs
 //allowing only single files to upload
 
+//getting all the public files uploaded by the users
 router.get('/',Auth,async (req,res,next)=>{
   try{
     let resp = await Fetcher(req);
@@ -25,6 +26,7 @@ router.get('/',Auth,async (req,res,next)=>{
   }
 });
 
+//uploading file to the server
 router.post("/upload",[Auth,upload.single('file')],async (req,res,next)=>{
   try{
     await Uploader(req,req.filename);
@@ -38,6 +40,7 @@ router.post("/upload",[Auth,upload.single('file')],async (req,res,next)=>{
   }
 });
 
+//downloading a particular file from the server
 router.get('/:fname',Auth,async (req,res,next)=>{
   //requiring the bucket to fetch the files
   const {bucket} = require("../utils/Bucket");
@@ -66,6 +69,7 @@ router.get('/:fname',Auth,async (req,res,next)=>{
   }
 });
 
+//deleting a particular file
 router.delete("/delete/:id",async(req,res,next)=>{
   const id = mongoose.Types.ObjectId(req.params.id);
   const {bucket} = require("../utils/Bucket");
@@ -80,6 +84,20 @@ router.delete("/delete/:id",async(req,res,next)=>{
      console.log("errrrrrrrrrrrrr : ",err);
      return next(err);
   }
+});
+
+//updating the status of the file
+router.patch('/updateStatus',async(req,res,next)=>{
+ try{
+  await updateStatus(req);
+  res.status(200).json({
+   status:"success",
+   msg: "File status updated successfully"
+  });
+ }catch(err){
+  console.log("error : ",err);
+  return next(err);
+ }
 });
 
 module.exports = router;

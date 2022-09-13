@@ -18,6 +18,14 @@
     border-radius: 10px;
 }
 
+.show_modal{
+    display: block;
+    background-color: rgba(0,0,0,0.5);
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
 @media(max-width:768px){
     .prof_details_div{
         width: 90%;

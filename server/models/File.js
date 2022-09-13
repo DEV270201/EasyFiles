@@ -29,6 +29,11 @@ const FileSchema = new mongoose.Schema({
 
    filesize: {
     type: Number,
+   },
+
+   isPrivate : {
+    type: Boolean,
+    default: true
    }
 });
 

@@ -1,6 +1,6 @@
 import React,{useRef,useState,useContext,useEffect} from "react";
 import Swal from 'sweetalert2';
-import {useHistory} from 'react-router-dom';
+import {useHistory,NavLink} from 'react-router-dom';
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
 import Button from "../components/Button";
@@ -20,7 +20,7 @@ const Login = () => {
         if(isLoggedIn){
             history.push('/');
         }
-    },[]);
+    },[isLoggedIn,history]);
     
     const login = async ()=>{
        try{
@@ -63,11 +63,14 @@ const Login = () => {
                         <input type="password" className="form-control myform" id="Password" name="password" ref={pref} required/>
                         {
                             load ?
-                            <Button text={"Loading..."} disbaled={true} fontStyle={fontStyle} theme={Theme.theme} className={"mt-3"} />
+                            <Button text={"Loading..."} disabled={true} fontStyle={fontStyle} theme={Theme.theme} className={"mt-3"} />
                             :
-                            <Button text={"Login"} callback_func={login} disbaled={false} fontStyle={fontStyle} theme={Theme.theme} className={"mt-3"} />
+                            <Button text={"Login"} callback_func={login} disabled={false} fontStyle={fontStyle} theme={Theme.theme} className={"mt-3"} />
                         }
                     </div>
+                    <p className="my-1 font-weight-bold"  style={{color : `${Theme.textColor}`,fontFamily:`${fontStyle}` }}>
+                    Don't have an account? <NavLink to={"/user/register"}>Register</NavLink>
+                    </p>
                 </div>
             </div>
         </>
