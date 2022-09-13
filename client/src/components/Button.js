@@ -1,6 +1,13 @@
 import React from "react";
 
-const Button = ({text,callback_func=null,disabled,fontStyle,theme="",className=""})=>{
+// text/icon: you can either put text or icon
+// disbaled: to disable the button
+// className: to add custom style
+// theme: to make the button follow the theme if you want
+// fontStyle: the fontstyle following the app font style
+// callback_func: function called when the button is clicked
+
+const Button = ({text="",callback_func=null,disabled,fontStyle,theme="",className="",icon=""})=>{
 
     const callFunc = ()=>{
         callback_func();
@@ -8,7 +15,7 @@ const Button = ({text,callback_func=null,disabled,fontStyle,theme="",className="
 
     return(
       <>
-          <button className={`btn mybtn mr-1 my-1 ${theme && (theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light')} ${className} `} onClick={callFunc} style={{fontFamily:`${fontStyle}` }} disabled={disabled}>{text}</button>
+          <button className={`btn mybtn mr-1 my-1 ${theme && (theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light')} ${className} `} onClick={callFunc} style={{fontFamily:`${fontStyle}` }} disabled={disabled}>{(text && text) || (icon)}</button>
       </>
     );
 }

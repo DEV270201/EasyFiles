@@ -23,8 +23,7 @@ const UserContextProvider = ({ children }) => {
     theme: 'light'
   }
 
-  // console.log("user context");
-
+  //fetching the login status of the user
   const getLoginStatus = () => {
     let status = window.localStorage.getItem('isLoggedIn');
     if (status == null) {
@@ -34,6 +33,7 @@ const UserContextProvider = ({ children }) => {
     return JSON.parse(status);
   }
 
+  //fetching the theme of the user
   const getDarkThemeStatus = () => {
     let status = window.localStorage.getItem('isDark');
     if (status == null) {
@@ -49,6 +49,7 @@ const UserContextProvider = ({ children }) => {
     return status ? darkTheme : lightTheme;
   }
 
+  //fetching the fontstyle for the application of the user
   const getfontStyle = ()=>{
     let fs = window.localStorage.getItem('fs');
     if (fs == null) {
@@ -72,6 +73,7 @@ const UserContextProvider = ({ children }) => {
   });
   const [fontStyle,setFontStyle] = useState(getfontStyle);
 
+  //fetching the profile of the user once logged in
   async function fetchProfile() {
     try {
       console.log("made request..");
@@ -94,6 +96,7 @@ const UserContextProvider = ({ children }) => {
     }
   }, [isLoggedIn]);
 
+  //setting the login status
   const setLoginStatus = (val) => {
     window.localStorage.setItem('isLoggedIn', val);
     if (val) {
@@ -105,6 +108,7 @@ const UserContextProvider = ({ children }) => {
     return;
   }
 
+  //setting the theme
   const setDarkThemeStatus = (val) => {
     window.localStorage.setItem('isDark', val);
     console.log("hellllooo");
@@ -112,16 +116,17 @@ const UserContextProvider = ({ children }) => {
     return;
   }
 
-  const updateProfile = (url,id)=>{
-    console.log("id : ",id);
-    setProfile({...profile,profile_pic : url,p_id:id});
-  }
-
+  //setting the font style for the user
   const setTheFontStyle = (val)=>{
     window.localStorage.setItem('fs', val);
     setFontStyle(val);
   }
 
+  //updating the profile picture
+  const updateProfile = (url,id)=>{
+    console.log("id : ",id);
+    setProfile({...profile,profile_pic : url,p_id:id});
+  }
 
   //function for downloading the file
   const downloadFile = async (file) => {

@@ -10,10 +10,11 @@
 }
 
 .mybtn{
-    width : 100px;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 8px;
+    margin: 0px 2px;
 }
 
 .myform:focus{

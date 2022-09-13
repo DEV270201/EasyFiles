@@ -12,6 +12,7 @@ cloudinary.config({
 });
 const fs = require('fs');
 
+//fetching all the public files
 exports.Fetcher = async(req)=>{
   try {
     let files = await File.find({isPrivate:false}).populate({path: 'uploadedBy',select : 'profile_pic username -_id'});
@@ -22,6 +23,7 @@ exports.Fetcher = async(req)=>{
   }
 }
 
+//uploading new files to the server
 exports.Uploader = async(req,filename)=>{
     try{
       let file = {
@@ -43,6 +45,7 @@ exports.Uploader = async(req,filename)=>{
     }
 }
 
+//registering the user
 exports.RegisterUser = async(user)=>{
   try{
     //hashing the password
@@ -56,6 +59,7 @@ exports.RegisterUser = async(user)=>{
   }
 }
 
+//logging in the user
 exports.LoginUser = async (req,res)=>{
   try{
     const signJWT = async (user_id) => {
@@ -104,6 +108,7 @@ exports.LoginUser = async (req,res)=>{
   }
 }
 
+//getting the profile of the user
 exports.GetProfile = async(req)=>{
   try{
     let resp = await User.findById(req.user.id,{password:0});
@@ -114,6 +119,7 @@ exports.GetProfile = async(req)=>{
   }
 }
 
+//getting the statistics
 exports.GetStatsFiles = async(req)=>{
   try{
     let {num_upload,num_download} = await User.findById(req.user.id);
@@ -130,7 +136,7 @@ exports.GetStatsFiles = async(req)=>{
   }
 }
 
-
+//deleting the profile image
 const deleteProfileImage = async(id)=>{
   try{
      await cloudinary.uploader.destroy(id);
@@ -139,6 +145,7 @@ const deleteProfileImage = async(id)=>{
   }
 }
 
+//updating the profile picture
 exports.UpdateProfile = async(req)=>{
   try{
     //  console.log("u: ",req.body.profilePicUrl);
@@ -181,6 +188,7 @@ exports.DeleteProfile = async(req)=>{
   }
 }
 
+//deleting the file
 exports.DeleteFile = async(req)=>{
   try{
     //delete the file chunks
@@ -192,6 +200,7 @@ exports.DeleteFile = async(req)=>{
   }
 }
 
+//fetching other users profile
 exports.GetOtherUserProfile = async(req)=>{
   try{
    //getting the data of the required user
@@ -212,6 +221,7 @@ exports.GetOtherUserProfile = async(req)=>{
   }
 }
 
+//updating the status of the file
 exports.updateStatus = async(req)=>{
   try{
     await File.findOneAndUpdate({filename:req.body.filename},{isPrivate:req.body.isPrivate})

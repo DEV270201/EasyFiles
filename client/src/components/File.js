@@ -3,6 +3,8 @@ import { UserContext } from "../context/UserContext";
 import ProfilePic from './ProfilePic';
 import Button from "./Button";
 import { NavLink } from "react-router-dom";
+import { faTrashCan ,faDownload} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../css/File.css";
 
 const File = ({ file, func, text, text2 = "", func2 = "", text3 = "", func3 = "", showPostedBy = true }) => {
@@ -61,19 +63,23 @@ const File = ({ file, func, text, text2 = "", func2 = "", text3 = "", func3 = ""
                 }
               </div>
               <div className="filedate" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>{file.filetype}</div>
+              <div className="filedate" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}><b>{file.isPrivate ? 'Private' : null}</b></div>
             </div>
             <div className="d-flex flex-column align-items-center">
-              <div className="outer_file_btn_div">
-                <Button text={text} callback_func={fileAction} disabled={false} fontStyle={fontStyle} theme={Theme.theme} />
+              <div className="d-flex">
+                {/* donwloading the file */}
+                <Button icon={<FontAwesomeIcon icon={faDownload} title="Download" />} callback_func={fileAction} disabled={false} fontStyle={fontStyle} theme={Theme.theme} />
                 {
                   text2.trim() !== "" ?
-                    <Button text={text2} callback_func={fileAction2} disabled={false} fontStyle={fontStyle} theme={Theme.theme} />
+                  // deleting the file
+                    <Button icon={<FontAwesomeIcon icon={faTrashCan} title="Delete" />} className="btn-outline-danger"  callback_func={fileAction2} disabled={false} fontStyle={fontStyle} />
                     :
                     null
                 }
               </div>
               {
                 text3.trim() !== "" ?
+                // status of the file
                 <Button text={text3} callback_func={fileAction3} disabled={false} fontStyle={fontStyle} theme={Theme.theme} />
                   :
                   null
