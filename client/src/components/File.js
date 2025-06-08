@@ -23,6 +23,44 @@ const File = ({ file, func, text, text2 = "", func2 = "", text3 = "", func3 = ""
     func3(file);
   }
 
+  //function for downloading the file
+    const downloadFile = async (file) => {
+      try {
+        //recieving the file from the server
+        let resp = await axios.post(`/files/${file.filename}`, {
+          filename: file.filename,
+          bucket: file.bucket,
+          key: file.key
+        },
+        {
+          responseType: 'arraybuffer',
+          onDownloadProgress: (progress)=> {
+            console.log("progress : ", progress.loaded);
+          }
+        }
+      );
+        console.log("file resp : ",resp);
+        const { data } = resp;
+        // //downloading the file and saving it to the device
+        const blob = new Blob([data]);
+        console.log("file : ",file);
+        saveAs(blob,file.filename+"."+file.filetype);
+        Swal.fire({
+          icon: 'success',
+          title: 'Yayy...',
+          text: 'File downloaded successfully!'
+        });
+        return resp;
+      } catch (err) {
+        console.log("err in file : ", err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: err.response.data.error
+        });
+      }
+    }
+
   return (
     <>
       <div className="d-flex flex-column my-3">
@@ -52,14 +90,14 @@ const File = ({ file, func, text, text2 = "", func2 = "", text3 = "", func3 = ""
           <div style={{ width: '1%', backgroundColor: `${file.filetype === 'pdf' ? 'red' : 'dodgerBlue'}` }}></div>
           <div className="d-flex justify-content-between align-items-center" style={{ width: '99%' }} >
             <div className="d-flex flex-column justify-center mx-2" style={{ width: '30%' }}>
-              <div className="filename" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}`, width: '100%', overflowX: 'scroll' }}>{file.filename.substring(0, file.filename.indexOf('@'))}</div>
+              <div className="filename" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}`, width: '100%', overflowX: 'scroll' }}>{file.filename}</div>
               <div className="filedate" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>{file.dateUploded.substring(0, file.dateUploded.indexOf('T'))}</div>
               <div className="filedate" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>
                 {
-                  (file.filesize / 1000000) < 1 ?
+                  (file.filesize / 1e6) < 1 ?
                     "Less than a MB"
                     :
-                    `${(file.filesize / 1000000).toFixed(2)} MB`
+                    `${(file.filesize / 1e6).toFixed(2)} MB`
                 }
               </div>
               <div className="filedate" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>{file.filetype}</div>

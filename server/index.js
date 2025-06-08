@@ -3,16 +3,13 @@ const { config } = require('dotenv');
 require('./utils/Bucket');
 
 //loading the .env contents in the process.env variable
-config({ path: "./config.env" });
+config({ path: "./config.env", override:true });
 const app = require("./app");
 
 //connecting to the database
 const connect_database = () => {
     mongoose.connect(
-        process.env.DATABASE, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    }
+        process.env.DATABASE
     );
 }
 

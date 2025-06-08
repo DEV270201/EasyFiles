@@ -17,9 +17,8 @@ const file_filter = (req, file, cb)=>{
     let extensions = /jpeg|jpg|png/;
 
     const extname =  extensions.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = extensions.test(file.mimetype);
    
-    if(mimetype && extname){
+    if(extname){
         return cb(null,true);
     } else {
         cb(new ClientError('Please upload images only!'));

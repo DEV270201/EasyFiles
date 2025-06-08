@@ -41,7 +41,7 @@ const handleDuplicateError = (err)=>{
 }
 
 const handleFileSizeError = (err)=>{
-   return new ClientError(`${err.message}.It should be less than 1MB`)
+   return new ClientError(`${err.message}.It should be less than 2MB`)
 }
 
 

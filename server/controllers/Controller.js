@@ -4,13 +4,23 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { ClientError } = require('../handlers/Error');
 const { promisify } = require('util');
+const { S3, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { Upload } = require("@aws-sdk/lib-storage");
 const cloudinary = require('cloudinary').v2;
+const fs = require('fs');
+
 cloudinary.config({
   cloud_name : process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET,
 });
-const fs = require('fs');
+
+//setting up AWS configuration
+const s3 = new S3({
+  region: process.env.AWS_REGION
+  // logger: console
+});
+
 
 //fetching all the public files
 exports.Fetcher = async(req)=>{
@@ -24,21 +34,50 @@ exports.Fetcher = async(req)=>{
 }
 
 //uploading new files to the server
-exports.Uploader = async(req,filename)=>{
+exports.Uploader = async(req)=>{
     try{
+      let {size, filename, path} = req.file;
+      let folderName = "files";
+      let readStream = fs.createReadStream(path);
+      const parallelUploads = new Upload({
+        client: s3,
+        params: {
+          Bucket: process.env.AWS_S3_BUCKET_NAME,
+          Key: `${folderName}/${filename}`,
+          Body: readStream
+        },
+        partSize: 1024 * 1024 * 5, //size of each chunk for multipart uploading
+        leavePartsOnError: false,
+
+      });
+
+      parallelUploads.on("httpUploadProgress",(progress)=>{
+        console.log("total : ",progress.total);
+        console.log("loaded : ",progress.loaded);
+      });
+
+      const result = await parallelUploads.done();
+      console.log("result : ",result);
+
+      //saving the uploaded file related details in the database
       let file = {
-        filename:filename,
-        uploadedBy : req.user.id,
-        grid_file_id: req.file.id,
-        filesize: req.file.size,
-        filetype: req.extension,
-        isPrivate: req.isPrivate
+        filename:req.originalname, //file related details
+        uploadedBy : req.user.id, //file related details
+        filesize: size, // file related details
+        filetype: req.extension.slice(1), //file related details
+        bucket: result.Bucket, //s3 related details
+        key: result.Key, //s3 related details
+        location: result.Location //s3 related details
       }
-      //saving the file in the database
+
       await File.create(file);
       //updating the count
       await User.findByIdAndUpdate(req.user.id,{$inc : {num_upload:1}});
+      //delete the file from the local disk
+      fs.unlink(path);
+
       return;
+
     }catch(err){
         console.log("Error in uploader controller: ",err);
         throw err;
@@ -232,3 +271,64 @@ exports.updateStatus = async(req)=>{
   }
 }
 
+exports.downloadFileFromS3 = async (req,res,next) => {
+    try{
+    let {key, bucket, filename} = req.body;
+    //  const file = await bucket.find({filename : r}).toArray();
+    //  if(!file){
+    //    return next(new ClientError('no such file exists...'));
+    //  }
+
+    let params = {
+       Bucket: bucket,
+       Key: key
+    }
+
+    const command = new GetObjectCommand(params);
+    const s3Response = await s3.send(command);
+    const s3Stream = s3Response.Body;
+    res.setHeader('Content-Type', s3Response.ContentType || 'application/octet-stream');
+    res.setHeader('Transfer-Encoding', 'chunked');
+    // res.setHeader('Content-Disposition', 'inline');
+    // res.setHeader('Content-Disposition', 'attachment; filename="example.pdf"');
+    s3Stream.on('data',(chunk)=> {
+      console.log("Chunk Stream size : ", chunk.length);
+    })
+    
+    try {
+      for await (const chunk of s3Stream) {
+        console.log("CHUNK: ",chunk.length);
+        const canContinue = res.write(chunk);
+        if (!canContinue) {
+          console.log("chunk length sent: ",chunk.length);
+          // throw new Error("sorry");
+          await new Promise(resolve => res.once('drain', resolve));
+        }
+      }
+    }catch(err){
+      console.log("Error while on-going streaming : ", err);
+      res.destroy();
+      return;
+    }
+
+    res.end();
+    //  //updating the count
+    //  let download_num = await User.findByIdAndUpdate(req.user.id,{$inc : {num_download:1}},{
+    //   fields : {num_download:1},
+    //   new : true
+    //  }
+    //  );
+
+    //  //appending to the header
+    //  res.append('download',download_num.num_download);
+
+    //  //piping the file chunks to the response
+    // //  bucket.createReadStream()
+    //  bucket.openDownloadStreamByName(req.params.fname).pipe(res);
+
+  }catch(err){
+   console.log("Error while downloading file : ",err);
+   return next(err);
+  }
+
+}

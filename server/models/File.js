@@ -22,10 +22,10 @@ const FileSchema = new mongoose.Schema({
     default : Date.now()
    },
 
-   grid_file_id : {
-    type: mongoose.Schema.Types.ObjectId,
-    default: ""
-   },
+//    grid_file_id : {
+//     type: mongoose.Schema.Types.ObjectId,
+//     default: ""
+//    },
 
    filesize: {
     type: Number,
@@ -34,6 +34,21 @@ const FileSchema = new mongoose.Schema({
    isPrivate : {
     type: Boolean,
     default: true
+   },
+
+   bucket: {
+      type: String,
+      required: true
+   },
+
+   key: {
+      type: String,
+      required: true
+   },
+
+   location: {
+      type: String,
+      required: true
    }
 });
 

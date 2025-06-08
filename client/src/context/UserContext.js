@@ -128,41 +128,9 @@ const UserContextProvider = ({ children }) => {
     setProfile({...profile,profile_pic : url,p_id:id});
   }
 
-  //function for downloading the file
-  const downloadFile = async (file) => {
-    try {
-      //recieving the file from the server
-      let resp = await axios.get(`/files/${file.filename}`, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        responseType: 'arraybuffer'
-      });
-      console.log("file resp : ",resp);
-      const { data,headers } = resp;
-      //downloading the file and saving it to the device
-      const blob = new Blob([data]);
-      saveAs(blob,file.filename.substring(0, file.filename.indexOf('@'))+"."+file.filetype);
-      Swal.fire({
-        icon: 'success',
-        title: 'Yayy...',
-        text: 'File downloaded successfully!'
-      });
-      return headers.download;
-      // console.log("resp : ",resp);
-    } catch (err) {
-      console.log("err in file : ", err);
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: err.response.data.error
-      });
-    }
-  }
-
   return (
     <>
-      <UserContext.Provider value={{ isLoggedIn, setLoginStatus, Theme, setDarkThemeStatus, profile, updateProfile, fontStyle,setTheFontStyle,downloadFile}}>
+      <UserContext.Provider value={{ isLoggedIn, setLoginStatus, Theme, setDarkThemeStatus, profile, updateProfile, fontStyle,setTheFontStyle}}>
         {children}
       </UserContext.Provider>
     </>

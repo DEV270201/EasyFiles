@@ -7,9 +7,9 @@ mongoose.connection.on("connected", () => {
    try {
       console.log("connected to the database successfully...");
       let database = mongoose.connections[0].db;
-      bucket = new GridFSBucket(database, {
-         bucketName: "uploads"
-      });
+      // bucket = new GridFSBucket(database, {
+      //    bucketName: "uploads"
+      // });
       // console.log("bucket : ",bucket);
       console.log("bucket created...");
       module.exports = {bucket};
