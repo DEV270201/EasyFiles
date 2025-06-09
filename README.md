@@ -1,4 +1,10 @@
 # EasyFiles
+
+Revamping this project and planning to integrate AWS Services....
+
+For Now, 
+Utilizing AWS S3 with NodeJS streams for easy uploading and downloading!
+
 Built a centralized file management application through which you can upload pdf/docx files to the server, download them whenever needed and save on your device as well as delete them from the server.
 
 If you want to run the code on your device, just clone the repository and run npm install in both client and server folder if you are using npm else similar command for yarn.
