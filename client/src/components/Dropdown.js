@@ -1,6 +1,5 @@
 import React,{useContext,useEffect} from "react";
 import { UserContext } from "../context/UserContext";
-import "../css/Navbar.css";
 
 const Dropdown = ({func,name}) => {
     const {Theme} = useContext(UserContext);
@@ -17,7 +16,7 @@ const Dropdown = ({func,name}) => {
         <>
             <div className="dropdown">
                 <button className={`dropdown-toggle btn ${Theme.theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light'}`} id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
-                    Sort
+                    {name}
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                  <li className="drop_list" onClick={hello} style={{backgroundColor:`${name === 'Oldest' ? "#c5c6d0" : "#fff"}`}} >Oldest</li>

@@ -1,27 +1,39 @@
-import React, { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import ProfilePic from './ProfilePic';
 import Button from "./Button";
 import { NavLink } from "react-router-dom";
 import { faTrashCan ,faDownload} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "../css/File.css";
+import axios from "axios";
+import Swal from 'sweetalert2';
+import {saveAs} from "file-saver";
+import FileChangeStatusModal from "./FileStatusChangeModal";
 
-const File = ({ file, func, text, text2 = "", func2 = "", text3 = "", func3 = "", showPostedBy = true }) => {
+const File = ({ file, showPostedBy = true, updateCurrentFileStatus = null }) => {
 
-  const { Theme, fontStyle, profile } = useContext(UserContext);
+  const { Theme, fontStyle, profile, incrementDownloads } = useContext(UserContext);
+  const [showModal,setShowModal] = useState(false);
 
-  const fileAction = () => {
-    func(file);
-  }
-
-  const fileAction2 = () => {
-    func2(file);
-  }
-
-  const fileAction3 = () => {
-    func3(file);
-  }
+  // To delete the file
+  const delFile = async (file) => {
+    try {
+      let resp = await axios.delete(`/files/delete/${file.grid_file_id}`);
+      Swal.fire({
+        icon: "success",
+        title: "Yayy...",
+        text: resp.data.msg,
+      });
+      return;
+    } catch (err) {
+      console.log("err : ", err);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: err.response.data.error,
+      });
+    }
+  };
 
   //function for downloading the file
     const downloadFile = async (file) => {
@@ -50,6 +62,8 @@ const File = ({ file, func, text, text2 = "", func2 = "", text3 = "", func3 = ""
           title: 'Yayy...',
           text: 'File downloaded successfully!'
         });
+        //update the metrics
+        incrementDownloads();
         return resp;
       } catch (err) {
         console.log("err in file : ", err);
@@ -61,8 +75,21 @@ const File = ({ file, func, text, text2 = "", func2 = "", text3 = "", func3 = ""
       }
     }
 
+    const openStatusModal = () => {
+      setShowModal(true);
+    }
+
+    const closeStatusModal = () => {
+      setShowModal(false);
+    }
+
+    const updateFileStatus = () => {
+        updateCurrentFileStatus(file);
+    }
+
   return (
     <>
+      {showModal && <FileChangeStatusModal file={file} cancelCallback={closeStatusModal} updateCallback={updateFileStatus}/> }
       <div className="d-flex flex-column my-3">
         {
           showPostedBy ?
@@ -106,19 +133,19 @@ const File = ({ file, func, text, text2 = "", func2 = "", text3 = "", func3 = ""
             <div className="d-flex flex-column align-items-center">
               <div className="d-flex">
                 {/* donwloading the file */}
-                <Button icon={<FontAwesomeIcon icon={faDownload} title="Download" />} callback_func={fileAction} disabled={false} fontStyle={fontStyle} theme={Theme.theme} />
+                <Button icon={<FontAwesomeIcon icon={faDownload} title="Download" />} callback_func={()=> downloadFile(file)} disabled={false} fontStyle={fontStyle} theme={Theme.theme} />
                 {
-                  text2.trim() !== "" ?
+                  !showPostedBy ?
                   // deleting the file
-                    <Button icon={<FontAwesomeIcon icon={faTrashCan} title="Delete" />} className="btn-outline-danger"  callback_func={fileAction2} disabled={false} fontStyle={fontStyle} />
+                    <Button icon={<FontAwesomeIcon icon={faTrashCan} title="Delete" />} className="btn-outline-danger"  callback_func={()=> delFile(file)} disabled={false} fontStyle={fontStyle} />
                     :
                     null
                 }
               </div>
               {
-                text3.trim() !== "" ?
+                !showPostedBy ?
                 // status of the file
-                <Button text={text3} callback_func={fileAction3} disabled={false} fontStyle={fontStyle} theme={Theme.theme} />
+                <Button text={"Status"} callback_func={openStatusModal} disabled={false} fontStyle={fontStyle} theme={Theme.theme} />
                   :
                   null
               }

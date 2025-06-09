@@ -25,7 +25,7 @@ const s3 = new S3({
 //fetching all the public files
 exports.Fetcher = async(req)=>{
   try {
-    let files = await File.find({isPrivate:false}).populate({path: 'uploadedBy',select : 'profile_pic username -_id'});
+    let files = await File.find({isPrivate:false}).populate({path: 'uploadedBy',select : 'profile_pic username _id'});
     return files;
   }catch(err){
     console.log("Error in fetcher controller: ",err);

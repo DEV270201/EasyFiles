@@ -56,7 +56,7 @@ const Navbar = () => {
                 {
                     isLoggedIn ?
                         <div className="dropdown mx-2">
-                            <div className="dropdown-toggle d-flex align-items-center p-1" role="button" data-toggle="dropdown" aria-expanded="false" style={{boxShadow: `1px 1px 4px #555555`}} >
+                            <div className="d-flex align-items-center p-1" role="button" data-toggle="dropdown" aria-expanded="false" style={{boxShadow: `1px 1px 4px #555555`}} >
                                 <ProfilePic image={profile.profile_pic} height="35px" width="35px" />
                             </div>
                             <div className="dropdown-menu">

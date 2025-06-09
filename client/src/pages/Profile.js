@@ -16,13 +16,13 @@ import { useHistory } from "react-router-dom";
 import File from "../components/File";
 import default_profile_pic from "../default";
 import Dropdown from "../components/Dropdown";
-import Button from "./../components/Button";
+import FileIterator from "../components/FileIterator";
 import "../css/Profile.css";
 
 const Profile = () => {
   let history = useHistory();
   const inputRef = useRef(null);
-  const { isLoggedIn, profile, updateProfile, Theme, fontStyle, downloadFile } =
+  const { isLoggedIn, profile, updateProfile, Theme, fontStyle } =
     useContext(UserContext);
   // for profile load
   const [isLoad, setLoad] = useState(false);
@@ -56,10 +56,10 @@ const Profile = () => {
         setFileLoad(true);
         let statsfiles = await axios.get("/user/statsfiles");
         setData(statsfiles.data.data.files);
-        setStats({
-          num_uploads: statsfiles.data.data.stats.num_upload,
-          num_downloads: statsfiles.data.data.stats.num_download,
-        });
+        // setStats({
+        //   num_uploads: statsfiles.data.data.stats.num_upload,
+        //   num_downloads: statsfiles.data.data.stats.num_download,
+        // });
         setFileLoad(false);
       } catch (err) {
         console.log("err in files : ", err);
@@ -82,31 +82,6 @@ const Profile = () => {
   const changeVal = useCallback((val) => {
     setCode(val);
   }, []);
-
-  // To delete the file
-  const delFile = async (file) => {
-    try {
-      let resp = await axios.delete(`/files/delete/${file.grid_file_id}`);
-      setData((files) => {
-        return files.filter((data) => {
-          return data.grid_file_id !== file.grid_file_id;
-        });
-      });
-      Swal.fire({
-        icon: "success",
-        title: "Yayy...",
-        text: resp.data.msg,
-      });
-      return;
-    } catch (err) {
-      console.log("err : ", err);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: err.response.data.error,
-      });
-    }
-  };
 
   // To update the profile pic
   const updateProfilePic = async (e) => {
@@ -168,141 +143,9 @@ const Profile = () => {
     }
   };
 
-  // To download the file
-  const download_file = async (file) => {
-    let download_num = await downloadFile(file);
-    setStats({ ...stats, num_downloads: download_num });
-  };
-
-  // To show the modal
-  const visibility = (file) => {
-    console.log("file : ", file);
-    modalRef.current.classList.add("show");
-    modalRef.current.classList.add("show_modal");
-    setFile(file);
-  };
-
-  // To hide away the modal
-  const fadeAway = () => {
-    modalRef.current.classList.remove("show");
-    modalRef.current.classList.remove("show_modal");
-    setFile(null);
-  };
-
-  // To change the status of the file
-  const updateStatus = async () => {
-    try {
-      console.log("updating..");
-      setUpdateLoad(true);
-      const resp = await axios.patch("/files/updateStatus", {
-        filename: file.filename,
-        isPrivate: file.isPrivate ? false : true,
-      });
-      //updating the file array
-      setData((data) => {
-        return data.map((file_obj) => {
-          if (file.id === file_obj.id) {
-            file_obj.isPrivate = !file_obj.isPrivate;
-          }
-          return file_obj;
-        });
-      });
-      // hiding the modal once the update is done
-      modalRef.current.classList.remove("show");
-      modalRef.current.classList.remove("show_modal");
-      setUpdateLoad(false);
-      Swal.fire({
-        icon: "success",
-        title: "Yayy...",
-        text: resp.data.msg,
-      });
-    } catch (err) {
-      setUpdateLoad(false);
-      console.log("Error in updatestatus : ", err);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Something went wrong.Please try in sometime!",
-      });
-      return;
-    }
-  };
-
   return (
     <>
       <div className="container">
-        {/* modal container */}
-        <div
-          className="modal fade"
-          id="exampleModal"
-          tabIndex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-          ref={modalRef}
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">
-                  Update Status
-                </h5>
-                <button
-                  type="button"
-                  className="close"
-                  onClick={fadeAway}
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <div style={{ fontFamily: `${fontStyle}` }}>
-                  <b>
-                    {file && (file.filename.length > 25
-                      ? file.filename.substring(0, 25) + "..."
-                      : file.filename)}
-                  </b>{" "}
-                  is currently{" "}
-                  <b>{file && (file.isPrivate ? "Private" : "Public")}.</b>
-                </div>
-                <div style={{ fontFamily: `${fontStyle}` }}>
-                  {" "}
-                  Do you want to change the status to{" "}
-                  <b>{file && (file.isPrivate ? "Public" : "Private")}</b> ?
-                </div>
-                <div className="mt-1" style={{ fontFamily: `${fontStyle}` }}>
-                  <b>NOTE:</b>
-                </div>
-                <div style={{ fontFamily: `${fontStyle}`, color: "red" }}>
-                  <b>Public - accessible to everyone</b>
-                </div>
-                <div style={{ fontFamily: `${fontStyle}`, color: "red" }}>
-                  <b>Private - accessible only to you</b>
-                </div>
-              </div>
-              <div className="modal-footer">
-                {updateLoad ? (
-                  <Button
-                    disabled={true}
-                    text={"Updating"}
-                    fontStyle={fontStyle}
-                    className={"btn-outline-primary"}
-                  />
-                ) : (
-                  <Button
-                    disabled={false}
-                    text={"Update"}
-                    callback_func={updateStatus}
-                    fontStyle={fontStyle}
-                    className={"btn-outline-primary"}
-                  />
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* profile page  */}
         <div
           className="d-flex flex-md-row flex-column mt-2 align-items-center"
@@ -415,7 +258,7 @@ const Profile = () => {
                 <FontAwesomeIcon icon={faUpload} /> File Uploads{" "}
                 <span className="font-weight-lighter">(till date)</span> :
               </span>
-              {stats.num_uploads}
+              {profile.num_upload}
             </div>
             <div
               className="my-2"
@@ -428,68 +271,22 @@ const Profile = () => {
                 <FontAwesomeIcon icon={faDownload} /> File Downloads{" "}
                 <span className="font-weight-lighter">(till date)</span> :
               </span>
-              {stats.num_downloads}
+              {profile.num_download}
             </div>
           </div>
         </div>
 
         {/* files uploaded by the user */}
-        {fileLoad ? (
+        {fileLoad && (
           <h5
             className="xs:text-center md:text-left font-weight-light my-3"
             style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}
           >
             Loading..it may take a while..
           </h5>
-        ) : data.length !== 0 ? (
-          <>
-            <h5
-              className="xs:text-center md:text-left font-weight-light my-3"
-              style={{
-                color: `${Theme.textColor}`,
-                fontFamily: `${fontStyle}`,
-              }}
-            >
-              Your Files - [ {data.length} ]
-            </h5>
-            <Dropdown func={changeVal} name={code} />
-            <div>
-              {[...data]
-                .sort((a, b) => {
-                  if (code === "Oldest") {
-                    return a.dateUploded > b.dateUploded ? 1 : -1;
-                  } else if (code === "Newest") {
-                    return a.dateUploded > b.dateUploded ? -1 : 1;
-                  } else if (code === "A-Z") {
-                    return a.filename > b.filename ? 1 : -1;
-                  } else {
-                    return a.filename > b.filename ? -1 : 1;
-                  }
-                })
-                .map((file, index) => {
-                  return (
-                    <div key={index}>
-                      <File
-                        file={file}
-                        func={download_file}
-                        func2={delFile}
-                        text={"Download"}
-                        text2={"Delete"}
-                        text3={"Status"}
-                        func3={visibility}
-                      />
-                    </div>
-                  );
-                })}
-            </div>
-          </>
-        ) : (
-          <h5
-            className="text-center font-weight-light my-3"
-            style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}
-          >
-            You haven't uploaded anything yet :(
-          </h5>
+        )}
+        {data.length !== 0 && (
+          <FileIterator filesArray={data} showPostedBy={false} />
         )}
       </div>
     </>

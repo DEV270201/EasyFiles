@@ -1,11 +1,22 @@
-.files_search{
-    position:fixed;
-    width:300px;
-    top:100px;
-    right:30px;
-    height:30px;
-    overflow: hidden;
+/* file related css  */
+.file{
+    width: 100%;
+    display: flex;
+    padding: 10px;
+    border-radius: 5px;
+}
 
+.filename{
+    font-size: 16px;
+}
+
+.filedate{
+    font-size: 10px;
+}
+
+/* scrollbar */
+::-webkit-scrollbar{
+    display: none;
 }
 
 .inner_files{
@@ -13,16 +24,102 @@
     overflow-y: scroll;
 }
 
-@media(max-width:640px){
-    .files_search{
-        top : 89%;
-        width: 200px;
-    }
-    .inner_files{
-        height: 60vh;
-    }
-}
-
 .inner_files::-webkit-scrollbar{
     display: none;
+}
+
+/* title + search box div  */
+.title_search_file {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search_box {
+    width: 300px;
+}
+
+@media(max-width: 575px){
+    .title_search_file {
+        flex-direction: column;
+    }
+    
+    .title {
+        align-self: flex-start;
+    }
+
+    .search_box {
+        align-self: flex-end;
+        width: 250px;
+        max-width: 100%;
+    }
+
+}
+
+
+
+/* search box related css */
+.search_outer{
+    display: flex;
+    max-width: 300px;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    height: 35px;
+}
+
+@media(max-width:575px){
+   .search_outer {
+     margin: 10px 0px;
+   }
+}
+
+.search_input{
+    width: 80%;
+    position: absolute;
+    top: 0%;
+    left: 100%;
+    height: 100%;
+    padding: 5px;
+    transition: 1s ease-in-out;
+    box-shadow: none;
+    outline: none;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.search_animate{
+    left: 0%;
+}
+
+.search_btn{
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0%;
+    right: 0%;
+    height: 100%;
+    background-color: white;
+    border-radius: 3px 3px 3px 3px;
+}
+
+.search_btn:hover{
+    color: white;
+    cursor: pointer;
+}
+
+/* sorting drop dwon button  */
+.drop_list{
+    font-weight: 500;
+    margin: 0px 5px;
+    padding: 3px;
+}
+
+.drop_list:hover{
+    cursor: pointer;
+}
+
+.dropdown-toggle {
+    width: 100px;
 }

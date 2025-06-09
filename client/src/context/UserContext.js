@@ -1,7 +1,5 @@
-import React, { useState, createContext, useEffect } from "react";
+import { useState, createContext, useEffect } from "react";
 import axios from "axios";
-import Swal from 'sweetalert2';
-import {saveAs} from "file-saver";
 
 export const UserContext = createContext();
 
@@ -70,6 +68,8 @@ const UserContextProvider = ({ children }) => {
     email: '',
     dateJoined: '',
     p_id: null,
+    num_upload: 0,
+    num_download: 0
   });
   const [fontStyle,setFontStyle] = useState(getfontStyle);
 
@@ -88,12 +88,14 @@ const UserContextProvider = ({ children }) => {
     }
   }
 
+  useEffect(()=>{
+    console.log("profile : ",profile);
+  },[profile]);
+
   useEffect(() => {
-    console.log("login : ", isLoggedIn);
-    if (isLoggedIn) {
-      console.log("fired1");
+    // console.log("login : ", isLoggedIn);
+    if (isLoggedIn) 
       fetchProfile();
-    }
   }, [isLoggedIn]);
 
   //setting the login status
@@ -128,9 +130,19 @@ const UserContextProvider = ({ children }) => {
     setProfile({...profile,profile_pic : url,p_id:id});
   }
 
+  const incrementDownloads = () => {
+    setProfile({...profile, num_download: profile.num_download+1});
+    return;
+  }
+
+  const incrementUploads = () => {
+    setProfile({...profile, num_upload: profile.num_upload+1});
+    return;
+  }
+
   return (
     <>
-      <UserContext.Provider value={{ isLoggedIn, setLoginStatus, Theme, setDarkThemeStatus, profile, updateProfile, fontStyle,setTheFontStyle}}>
+      <UserContext.Provider value={{ isLoggedIn, setLoginStatus, Theme, setDarkThemeStatus, profile, updateProfile, fontStyle,setTheFontStyle, incrementDownloads, incrementUploads}}>
         {children}
       </UserContext.Provider>
     </>

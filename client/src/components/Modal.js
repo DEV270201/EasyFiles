@@ -10,10 +10,6 @@ const Modal = () => {
     const checkRef = useRef(null);
 
     useEffect(() => {
-        console.log("modal :)");
-    });
-
-    useEffect(() => {
         if (Theme.theme === 'dark') {
             checkRef.current.checked = true;
         }
@@ -31,8 +27,6 @@ const Modal = () => {
     }
 
     const changeStyle = (e)=>{
-        console.log("heyyy11");
-        console.log("e : ",e.target.value);
         setTheFontStyle(e.target.value);
     }
 

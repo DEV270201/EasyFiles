@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext, useEffect } from "react";
+import { useRef, useState, useContext, useEffect } from "react";
 import Swal from 'sweetalert2';
 import { useHistory } from 'react-router-dom';
 import axios from "axios";
@@ -15,7 +15,7 @@ const Upload = () => {
     const [status,setStatus] = useState('Private');
     const history = useHistory();
     const [load, setLoad] = useState(false);
-    const { isLoggedIn, Theme, fontStyle } = useContext(UserContext);
+    const { isLoggedIn, Theme, fontStyle, incrementUploads } = useContext(UserContext);
 
     useEffect(() => {
         if (!isLoggedIn) {
@@ -46,6 +46,7 @@ const Upload = () => {
                 }
             });
             if (response.data.status === 'success') {
+                incrementUploads(); //incrementing per user upload metric
                 Swal.fire({
                     icon: 'success',
                     title: 'Yayy...',

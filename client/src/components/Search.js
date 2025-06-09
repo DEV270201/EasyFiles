@@ -1,8 +1,7 @@
-import React,{useState,useContext,useRef,useEffect} from "react";
+import {useState,useContext,useRef} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass,faXmark } from '@fortawesome/free-solid-svg-icons'
 import { UserContext } from "../context/UserContext";
-import '../css/Search.css';
 
 const Search = ({searchpdf})=>{
 
@@ -18,14 +17,10 @@ const Search = ({searchpdf})=>{
     setShow(!show);
   }
 
-  useEffect(()=>{
-    console.log("search :)");
-  },[]);
-
    return(
     <>
       <div className="search_outer">
-         <input type="text" placeholder="Search PDF..."  className={`search_input myform form-control ${show ? 'search_animate' : ''}`} onChange={searchPDF}/>
+         <input type="text" placeholder="Search PDF..."  className={`search_input myform ${show ? 'search_animate' : ''}`} onChange={searchPDF}/>
          <div className="search_btn" onClick={changeVisibility} ref={btnRef} style={{backgroundColor : `${Theme.backgroundColor}`,border: `1px solid ${Theme.primaryColor}`}}>
           {
           !show ?
