@@ -20,7 +20,8 @@
 }
 
 .inner_files{
-    height: 65vh;
+    height: auto;
+    max-height: 60vh;
     overflow-y: scroll;
 }
 
@@ -88,6 +89,7 @@
 }
 
 .search_animate{
+    display: block;
     left: 0%;
 }
 

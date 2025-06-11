@@ -4,8 +4,9 @@ import axios from "axios";
 import { UserContext } from "../context/UserContext";
 import Button from "./Button";
 import Swal from "sweetalert2";
+import "../css/PopupModal.css";
 
-const FileChangeStatusModal = (file, updateCallback, cancelCallback) => {
+const FileChangeStatusModal = ({ file, updateCallback, cancelCallback }) => {
   const [updateLoad, setUpdateLoad] = useState(false);
   const { fontStyle } = useContext(UserContext);
 
@@ -17,6 +18,7 @@ const FileChangeStatusModal = (file, updateCallback, cancelCallback) => {
         filename: file.filename,
         isPrivate: file.isPrivate ? false : true,
       });
+      console.log("resp : ", resp);
       setUpdateLoad(false);
       updateCallback();
     } catch (err) {
@@ -36,24 +38,21 @@ const FileChangeStatusModal = (file, updateCallback, cancelCallback) => {
     <>
       {/* modal container */}
       <div
-        className="modal fade"
-        id="exampleModal"
+        className="modalOuter"
         tabIndex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-        //   ref={modalRef}
+        aria-labelledby="fileStatusChangeModal"
+        // aria-hidden=
       >
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">
+              <h5 className="modal-title" id="fileStatusChangeTitle">
                 Update Status
               </h5>
               <button
                 type="button"
                 className="close"
                 onClick={cancelCallback}
-                data-dismiss="modal"
                 aria-label="Close"
               >
                 <span aria-hidden="true">&times;</span>

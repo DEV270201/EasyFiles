@@ -8,10 +8,6 @@ const Dropdown = ({func,name}) => {
           func(e.target.innerText);
     }
 
-    useEffect(()=>{
-      console.log("dropdownnnn");
-    },[]);
-
     return (
         <>
             <div className="dropdown">

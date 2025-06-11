@@ -18,12 +18,8 @@ const File = ({ file, showPostedBy = true, updateCurrentFileStatus = null }) => 
   // To delete the file
   const delFile = async (file) => {
     try {
-      let resp = await axios.delete(`/files/delete/${file.grid_file_id}`);
-      Swal.fire({
-        icon: "success",
-        title: "Yayy...",
-        text: resp.data.msg,
-      });
+      let resp = await axios.delete(`/files/delete/${file._id}`);
+      updateCurrentFileStatus(file,true); //updating the data from the parent component
       return;
     } catch (err) {
       console.log("err : ", err);
@@ -39,7 +35,7 @@ const File = ({ file, showPostedBy = true, updateCurrentFileStatus = null }) => 
     const downloadFile = async (file) => {
       try {
         //recieving the file from the server
-        let resp = await axios.post(`/files/${file.filename}`, {
+        let resp = await axios.post(`/files/download/${file._id}`, {
           filename: file.filename,
           bucket: file.bucket,
           key: file.key
@@ -76,6 +72,7 @@ const File = ({ file, showPostedBy = true, updateCurrentFileStatus = null }) => 
     }
 
     const openStatusModal = () => {
+      console.log("called")
       setShowModal(true);
     }
 
@@ -85,6 +82,7 @@ const File = ({ file, showPostedBy = true, updateCurrentFileStatus = null }) => 
 
     const updateFileStatus = () => {
         updateCurrentFileStatus(file);
+        closeStatusModal();
     }
 
   return (
@@ -116,7 +114,7 @@ const File = ({ file, showPostedBy = true, updateCurrentFileStatus = null }) => 
         <div className="file" style={{ backgroundColor: `${Theme.surfaceColor}` }}>
           <div style={{ width: '1%', backgroundColor: `${file.filetype === 'pdf' ? 'red' : 'dodgerBlue'}` }}></div>
           <div className="d-flex justify-content-between align-items-center" style={{ width: '99%' }} >
-            <div className="d-flex flex-column justify-center mx-2" style={{ width: '30%' }}>
+            <div className="d-flex flex-column justify-center flex-1 mx-2">
               <div className="filename" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}`, width: '100%', overflowX: 'scroll' }}>{file.filename}</div>
               <div className="filedate" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>{file.dateUploded.substring(0, file.dateUploded.indexOf('T'))}</div>
               <div className="filedate" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>
@@ -145,7 +143,7 @@ const File = ({ file, showPostedBy = true, updateCurrentFileStatus = null }) => 
               {
                 !showPostedBy ?
                 // status of the file
-                <Button text={"Status"} callback_func={openStatusModal} disabled={false} fontStyle={fontStyle} theme={Theme.theme} />
+                <Button text={"Status"} callback_func={openStatusModal} disabled={false} fontStyle={fontStyle} theme={Theme.theme}/>
                   :
                   null
               }

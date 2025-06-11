@@ -7,7 +7,7 @@ import Dropdown from "../components/Dropdown";
 import "../css/Files.css";
 
 const FileIterator = ({ filesArray, showPostedBy }) => {
-  const [files, setFiles] = useState(structuredClone(filesArray));
+  // const [files, setFiles] = useState(structuredClone(filesArray));
   const [searchRes, setSearchRes] = useState(structuredClone(filesArray));
   const { Theme, fontStyle } = useContext(UserContext);
   const [code, setCode] = useState("Oldest");
@@ -17,8 +17,8 @@ const FileIterator = ({ filesArray, showPostedBy }) => {
   const searchpdf = (val) => {
     console.log(val);
     let results = !val
-      ? files
-      : files.filter((file) => {
+      ? filesArray
+      : filesArray.filter((file) => {
           return file.filename.toLowerCase().includes(val.toLocaleLowerCase());
         });
     setSearchRes(results);
@@ -29,20 +29,30 @@ const FileIterator = ({ filesArray, showPostedBy }) => {
   }, []);
 
   //updating the status of the files
-  const updateFileStatus = (file) => {
-      setFiles((data) => {
+  const updateFileStatus = (file, isDeleteOperation=false) => {
+
+    !isDeleteOperation ? (
+      setSearchRes((data) => {
         return data.map((file_obj) => {
-          if (file.id === file_obj.id) {
+          if (file._id === file_obj._id) {
             file_obj.isPrivate = !file_obj.isPrivate;
           }
           return file_obj;
         });
-      });
+      })
+    ) : (
+        setSearchRes((data) => {
+         return data.filter((file_obj) => {
+          if (file._id !== file_obj._id) 
+            return true;
+        });
+      })
+    );
 
     Swal.fire({
         icon: "success",
         title: "Yayy...",
-        text: "Status updated successfully!",
+        text: isDeleteOperation ? "File deleted successfully! " : "Status updated successfully!",
       });
     
     return;
@@ -52,20 +62,20 @@ const FileIterator = ({ filesArray, showPostedBy }) => {
     <>
       <div className="container p-3">
         <div>
-          {files !== null ? (
+          {searchRes !== null ? (
             <>
               <div className="mt-2">
-                {files.length === 0 ? (
+                {searchRes.length === 0 ? (
                   <>
-                    <h4
+                    <h5
                       className="text-center font-weight-light mt-2"
                       style={{
                         color: `${Theme.textColor}`,
                         fontFamily: `${fontStyle}`,
                       }}
                     >
-                      No PDF files yet :(
-                    </h4>
+                      No files yet :(
+                    </h5>
                   </>
                 ) : (
                   <>

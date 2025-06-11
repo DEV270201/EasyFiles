@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const upload = require("../utils/Upload");
-const mongoose = require('mongoose');
-const {Uploader,Fetcher,DeleteFile,updateStatus, downloadFileFromS3} = require("../controllers/Controller");
+const {Uploader,Fetcher,deleteFileFromS3,updateStatus, downloadFileFromS3} = require("../controllers/Controller");
 const Auth = require('../Middleware/Auth');
 
 //allowing only single files to upload
@@ -26,7 +25,6 @@ router.get('/',Auth,async (req,res,next)=>{
 //uploading file to the server
 router.post("/upload",[Auth,upload.single('file')],async (req,res,next)=>{
   try{
-    console.log("file : ",req.file);
     await Uploader(req);
      return res.status(201).json({
        status : "success",
@@ -39,27 +37,13 @@ router.post("/upload",[Auth,upload.single('file')],async (req,res,next)=>{
 });
 
 //downloading a particular file from the server
-router.post('/:fname', downloadFileFromS3);
+router.post('/download/:fileID', downloadFileFromS3);
 
 //deleting a particular file
-router.delete("/delete/:id",async(req,res,next)=>{
-  const id = mongoose.Types.ObjectId(req.params.id);
-  const {bucket} = require("../utils/Bucket");
-  try{
-   await bucket.delete(id);
-    await DeleteFile(req);
-    return res.status(200).json({
-       status : "success",
-       msg : "file deleted successfully.."
-     });
-  }catch(err){
-     console.log("errrrrrrrrrrrrr : ",err);
-     return next(err);
-  }
-});
+router.delete('/delete/:fileID', deleteFileFromS3);
 
 //updating the status of the file
-router.patch('/updateStatus',async(req,res,next)=>{
+router.patch('/updateStatus/:fileID',async(req,res,next)=>{
  try{
   await updateStatus(req);
   res.status(200).json({

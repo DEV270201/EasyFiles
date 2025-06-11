@@ -28,18 +28,12 @@ const Profile = () => {
   const [isLoad, setLoad] = useState(false);
   // for file load
   const [fileLoad, setFileLoad] = useState(false);
-  // for update
-  const [updateLoad, setUpdateLoad] = useState(false);
 
   const [data, setData] = useState([]);
   const [stats, setStats] = useState({
     num_uploads: "N.A",
     num_downloads: "N.A",
   });
-  const [code, setCode] = useState("Oldest");
-  const modalRef = useRef(null);
-  const [file, setFile] = useState(null);
-  console.log("profile page gai yeh");
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -48,11 +42,11 @@ const Profile = () => {
     }
   }, [isLoggedIn, history]);
 
+
   //getting the stats data and files of the user
   useEffect(() => {
     async function getFiles() {
       try {
-        console.log("getting files...");
         setFileLoad(true);
         let statsfiles = await axios.get("/user/statsfiles");
         setData(statsfiles.data.data.files);
@@ -78,10 +72,6 @@ const Profile = () => {
     }
     getFiles();
   }, [history]);
-
-  const changeVal = useCallback((val) => {
-    setCode(val);
-  }, []);
 
   // To update the profile pic
   const updateProfilePic = async (e) => {
@@ -277,17 +267,16 @@ const Profile = () => {
         </div>
 
         {/* files uploaded by the user */}
-        {fileLoad && (
+        {fileLoad ?
           <h5
             className="xs:text-center md:text-left font-weight-light my-3"
             style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}
           >
             Loading..it may take a while..
           </h5>
-        )}
-        {data.length !== 0 && (
+          :
           <FileIterator filesArray={data} showPostedBy={false} />
-        )}
+        }
       </div>
     </>
   );

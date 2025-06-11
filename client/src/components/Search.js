@@ -20,8 +20,8 @@ const Search = ({searchpdf})=>{
    return(
     <>
       <div className="search_outer">
-         <input type="text" placeholder="Search PDF..."  className={`search_input myform ${show ? 'search_animate' : ''}`} onChange={searchPDF}/>
-         <div className="search_btn" onClick={changeVisibility} ref={btnRef} style={{backgroundColor : `${Theme.backgroundColor}`,border: `1px solid ${Theme.primaryColor}`}}>
+         <input type="text" disabled={!show} placeholder="Search PDF..."  className={`search_input myform ${show ? 'search_animate' : ''}`} onChange={searchPDF}/>
+         <button className="search_btn" onClick={changeVisibility} ref={btnRef} style={{backgroundColor : `${Theme.backgroundColor}`,border: `1px solid ${Theme.primaryColor}`}}>
           {
           !show ?
           <>
@@ -32,7 +32,7 @@ const Search = ({searchpdf})=>{
           <FontAwesomeIcon icon={faXmark} title="Hide" color={`${Theme.primaryColor}`}/>
           </>
           }
-        </div>
+        </button>
       </div>
     </>
    )
