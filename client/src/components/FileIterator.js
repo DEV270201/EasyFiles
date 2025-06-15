@@ -5,6 +5,7 @@ import Search from "../components/Search";
 import { UserContext } from "../context/UserContext";
 import Dropdown from "../components/Dropdown";
 import "../css/Files.css";
+import { useEffect } from "react";
 
 const FileIterator = ({ filesArray, showPostedBy, exposeSensitiveFunctions=false }) => {
   // const [files, setFiles] = useState(structuredClone(filesArray));
@@ -27,6 +28,10 @@ const FileIterator = ({ filesArray, showPostedBy, exposeSensitiveFunctions=false
   const changeVal = useCallback((val) => {
     setCode(val);
   }, []);
+
+  useEffect(()=>{
+    console.log("file iterator reloaded...");
+  })
 
   //updating the status of the files
   const updateFileStatus = (file, isDeleteOperation=false) => {

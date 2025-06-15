@@ -51,7 +51,7 @@ const PreviewReviewer = ({ source, theme }) => {
         }}
       >
         {status.loading && (
-          <Loader height="20px" width="20px" color={theme.textColor} />
+          <Loader height="60px" width="60px" color={theme.textColor} />
         )}
         {status.error && (
           <h6>Sorry, something went wrong :( !!</h6>

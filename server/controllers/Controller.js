@@ -75,6 +75,7 @@ exports.Uploader = async (req) => {
       bucket: result.Bucket, //s3 related details
       key: result.Key, //s3 related details
       location: result.Location, //s3 related details
+      isPrivate: req.body.isPrivate
     };
 
     await File.create(file);

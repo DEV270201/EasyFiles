@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import { saveAs } from "file-saver";
 import FileChangeStatusModal from "./FileStatusChangeModal";
 import PreviewReviewer from "./PreviewReviewer";
+import Loader from "./Loader";
 
 const File = ({
   file,
@@ -21,6 +22,7 @@ const File = ({
     useContext(UserContext);
   const [showModal, setShowModal] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [load, setLoad] = useState(false);
 
   // To delete the file
   const delFile = async (file) => {
@@ -42,26 +44,25 @@ const File = ({
   const downloadFile = async (file) => {
     try {
       //recieving the file from the server
+      setLoad(true);
       let resp = await axios.get(`/files/download/${file._id}`, {
         responseType: "arraybuffer",
-        onDownloadProgress: (progress) => {
-          console.log("progress : ", progress.loaded);
-        },
+        // onDownloadProgress: (progress) => {
+        //   console.log("progress : ", progress.loaded);
+        // },
       });
-      console.log("file resp : ", resp);
       const { data } = resp;
       // //downloading the file and saving it to the device
       const blob = new Blob([data]);
-      console.log("file : ", file);
       saveAs(blob, file.filename + "." + file.filetype);
-      Swal.fire({
-        icon: "success",
-        title: "Yayy...",
-        text: "File downloaded successfully!",
-      });
+      // Swal.fire({
+      //   icon: "success",
+      //   title: "Yayy...",
+      //   text: "File downloaded successfully!",
+      // });
       //update the metrics
-      incrementDownloads();
-      return resp;
+      // incrementDownloads();
+      return;
     } catch (err) {
       console.log("err in file : ", err);
       Swal.fire({
@@ -69,6 +70,8 @@ const File = ({
         title: "Oops...",
         text: err.response.data.error,
       });
+    }finally{
+      setLoad(false);
     }
   };
 
@@ -208,8 +211,12 @@ const File = ({
                 </div>
               </div>
               <div className="d-flex flex-column align-items-center">
-                <div className="d-flex">
+                <div className="d-flex align-items-center">
                   {/* donwloading the file */}
+                  { 
+                  
+                    load ? <div className="mr-2"><Loader height="20px" width="20px" color={Theme.textColor} /></div>
+                    :
                   <Button
                     icon={
                       <FontAwesomeIcon icon={faDownload} title="Download" />
@@ -219,6 +226,7 @@ const File = ({
                     fontStyle={fontStyle}
                     theme={Theme.theme}
                   />
+                  }
                   {exposeSensitiveFunctions ? (
                     <Button
                       icon={
@@ -243,7 +251,7 @@ const File = ({
                        <Button
                       text="Preview"
                       callback_func={() => setShowPreview(!showPreview)}
-                      disabled={false}
+                      disabled={file.filetype === "docx"}
                       fontStyle={fontStyle}
                       theme={Theme.theme}
                     />
