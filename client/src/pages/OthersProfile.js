@@ -6,8 +6,7 @@ import { faUpload, faUser, faCalendarDays, faDownload } from '@fortawesome/free-
 import { UserContext } from "../context/UserContext";
 import Swal from 'sweetalert2';
 import { useHistory,useParams } from 'react-router-dom';
-import File from "../components/File";
-import Dropdown from "../components/Dropdown";
+import FileIterator from "../components/FileIterator";
 
 
 const OthersProfile = () => {
@@ -105,36 +104,8 @@ const OthersProfile = () => {
                            </div>
 
                            {/* files uploaded by the user */}
-                           {
-                              data.filedata.length !== 0 ?
-                                 <>
-                                    <h5 className="xs:text-center md:text-left font-weight-light my-3" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>Their Files - [ {data.filedata.length} ]</h5>
-                                    <Dropdown func={changeVal} name={code} />
-                                    <div>
-                                       {
-                                          [...data.filedata].sort((a, b) => {
-                                             if (code === 'Oldest') {
-                                                return a.dateUploded > b.dateUploded ? 1 : -1
-                                             } else if (code === 'Newest') {
-                                                return a.dateUploded > b.dateUploded ? -1 : 1
-                                             } else if (code === 'A-Z') {
-                                                return a.filename > b.filename ? 1 : -1
-                                             } else {
-                                                return a.filename > b.filename ? -1 : 1
-                                             }
-                                          }
-                                          ).map((file, index) => {
-                                             return <div key={index}>
-                                                <File file={file} func={download_file} text={"Download"} showPostedBy={false} />
-                                             </div>
-                                          })
-                                       }
-                                    </div>
-                                 </>
-                                 :
-                                 <h5 className="text-center font-weight-light my-3" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>They haven't uploaded anything yet :(</h5>
-                           }
-
+                              <FileIterator filesArray={data.filedata} showPostedBy={false} />
+                           
                         </>
                         :
                         <div className="d-flex justify-content-center align-items-center">

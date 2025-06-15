@@ -13,10 +13,9 @@ import {
 import { UserContext } from "../context/UserContext";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
-import File from "../components/File";
 import default_profile_pic from "../default";
-import Dropdown from "../components/Dropdown";
 import FileIterator from "../components/FileIterator";
+import Loader from "../components/Loader";
 import "../css/Profile.css";
 
 const Profile = () => {
@@ -145,10 +144,7 @@ const Profile = () => {
           <div className="prof_pic_div p-2 mx-2">
             {/* animator */}
             {isLoad ? (
-              <div
-                className="spin_div rounded-circle"
-                style={{ borderTop: `2px solid ${Theme.textColor}` }}
-              ></div>
+              <Loader height="150px" width="150px" color={Theme.textColor} />
             ) : (
               <div
                 className="p-1 rounded-circle"
@@ -275,7 +271,7 @@ const Profile = () => {
             Loading..it may take a while..
           </h5>
           :
-          <FileIterator filesArray={data} showPostedBy={false} />
+          <FileIterator filesArray={data} showPostedBy={false} exposeSensitiveFunctions={true}/>
         }
       </div>
     </>

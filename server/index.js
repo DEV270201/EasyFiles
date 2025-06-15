@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const { config } = require('dotenv');
-require('./utils/Bucket');
 
 //loading the .env contents in the process.env variable
 config({ path: "./config.env", override:true });
@@ -14,6 +13,10 @@ const connect_database = () => {
 }
 
 connect_database();
+
+mongoose.connection.on("connected", () => {
+      console.log("connected to the database successfully...");
+});
 
 mongoose.connection.on('error',(err)=>{
   console.log("cannot connect to the database :(");

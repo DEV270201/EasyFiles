@@ -37,7 +37,7 @@ router.post("/upload",[Auth,upload.single('file')],async (req,res,next)=>{
 });
 
 //downloading a particular file from the server
-router.post('/download/:fileID', downloadFileFromS3);
+router.get('/download/:fileID', downloadFileFromS3);
 
 //deleting a particular file
 router.delete('/delete/:fileID', deleteFileFromS3);

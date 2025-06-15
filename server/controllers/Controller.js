@@ -32,7 +32,7 @@ exports.Fetcher = async (req) => {
     let files = await File.find({ isPrivate: false }).populate({
       path: "uploadedBy",
       select: "profile_pic username _id",
-    });
+    }).select('-key -bucket');
     return files;
   } catch (err) {
     console.log("Error in fetcher controller: ", err);
@@ -52,6 +52,7 @@ exports.Uploader = async (req) => {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: `${folderName}/${filename}`,
         Body: readStream,
+        ContentType: req.extension.slice(1) === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
       },
       partSize: 1024 * 1024 * 5, //size of each chunk for multipart uploading
       leavePartsOnError: false,
@@ -216,7 +217,10 @@ exports.UpdateProfile = async (req) => {
     );
 
     //deleting the file from the local disk
-    fs.unlinkSync(req.file.path);
+    fs.unlink(req.file.path, (err)=>{
+      console.log("Unable to delete profile pic from server disk storage : ", req.file.path);
+      console.error(err);
+    });
 
     //uploading the link into the database
     await User.findByIdAndUpdate(req.user.id, {
@@ -331,9 +335,15 @@ exports.GetOtherUserProfile = async (req) => {
 //updating the status of the file
 exports.updateStatus = async (req) => {
   try {
-    await File.findByIdAndUpdate(req.params.fileID, {
-      isPrivate: req.body.isPrivate,
-    });
+    await File.findByIdAndUpdate(req.params.fileID, [
+      {
+        $set: {
+          isPrivate: {
+            $not: "$isPrivate"
+          }
+        }
+      }
+    ]);
     return;
   } catch (err) {
     console.log("in the update status controller : ", err);
@@ -343,7 +353,12 @@ exports.updateStatus = async (req) => {
 
 exports.downloadFileFromS3 = async (req, res, next) => {
   try {
-    let { key, bucket, filename } = req.body;
+
+    //get file metadata from MongoDB before any processing
+    let {fileID} = req.params;
+    let file = await File.findById(fileID, 'bucket key filename');
+    console.log("file : ",file);
+    let { key, bucket, filename } = file;
 
     let params = {
       Bucket: bucket,

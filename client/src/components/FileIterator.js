@@ -6,7 +6,7 @@ import { UserContext } from "../context/UserContext";
 import Dropdown from "../components/Dropdown";
 import "../css/Files.css";
 
-const FileIterator = ({ filesArray, showPostedBy }) => {
+const FileIterator = ({ filesArray, showPostedBy, exposeSensitiveFunctions=false }) => {
   // const [files, setFiles] = useState(structuredClone(filesArray));
   const [searchRes, setSearchRes] = useState(structuredClone(filesArray));
   const { Theme, fontStyle } = useContext(UserContext);
@@ -133,6 +133,7 @@ const FileIterator = ({ filesArray, showPostedBy }) => {
                                     file={file}
                                     showPostedBy={showPostedBy}
                                     updateCurrentFileStatus={updateFileStatus}
+                                    exposeSensitiveFunctions={exposeSensitiveFunctions}
                                   />
                                 </div>
                               );
