@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useCallback } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import ProfilePic from "../components/ProfilePic";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,10 +12,10 @@ import FileIterator from "../components/FileIterator";
 const OthersProfile = () => {
 
    let history = useHistory();
-   const { isLoggedIn, Theme, fontStyle, downloadFile } = useContext(UserContext);
+   const { isLoggedIn, Theme, fontStyle } = useContext(UserContext);
    const [isLoad, setLoad] = useState(true);
    const [data, setData] = useState({});
-   const [code, setCode] = useState('Oldest');
+
    
    //getting the username
    const user = useParams();
@@ -33,7 +33,7 @@ const OthersProfile = () => {
          try {
             console.log("getting data...");
             setLoad(true);
-            let user_data = await axios.get(`/user/profile/${user.user}`);
+            let user_data = await axios.get(`/api/user/profile/${user.user}`);
             setData(user_data.data.data);
             setLoad(false);
          } catch (err) {
@@ -54,14 +54,6 @@ const OthersProfile = () => {
       }
       getUserData();
    }, [history,user]);
-
-   const changeVal = useCallback((val) => {
-      setCode(val);
-   }, []);
-
-   const download_file = async (file) => {
-      await downloadFile(file);
-   }
 
    return (
       <>

@@ -25,7 +25,7 @@ const Login = () => {
     const login = async ()=>{
        try{
        setLoad(true);
-         let response = await axios.post('/user/login',{
+         let response = await axios.post('/api/user/login',{
             username : uref.current.value,
             password : pref.current.value
          });

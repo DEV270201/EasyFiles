@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import Swal from 'sweetalert2';
@@ -10,7 +10,7 @@ import '../css/Navbar.css';
 import ProfilePic from './ProfilePic';
 
 const Navbar = () => {
-    const { isLoggedIn, setLoginStatus, profile,Theme } = useContext(UserContext);
+    const { isLoggedIn, setLoginStatus, profile } = useContext(UserContext);
     const history = useHistory();
     // const location = useLocation();
     const [menu, setMenu] = useState(false);
@@ -18,7 +18,9 @@ const Navbar = () => {
     const logout = async () => {
         try {
             setMenu(false);
-            let response = await axios.get("/user/logout");
+            let response = await axios.get("/api/user/logout",{
+                withCredentials: true
+            });
             setLoginStatus(false);
             if (response.data.status === 'success') {
                 Swal.fire({

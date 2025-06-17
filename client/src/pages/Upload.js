@@ -23,10 +23,6 @@ const Upload = () => {
         }
     }, [isLoggedIn, history]);
 
-    useEffect(() => {
-        console.log("upload :)");
-    });
-
     const changeStatus = (e)=>{
         setStatus(e.target.value);
     }
@@ -36,7 +32,7 @@ const Upload = () => {
             console.log("file : ", fref.current.files[0]);
             setLoad(true);
 
-            let response = await axios.post('/files/upload', {
+            let response = await axios.post('/api/files/upload', {
                 filename: fnref.current.value,
                 isPrivate: status.includes('Private') ? true : false,
                 file: fref.current.files[0],

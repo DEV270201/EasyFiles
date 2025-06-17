@@ -23,7 +23,7 @@ const Files = () => {
     useEffect(() => {
         async function getFiles() {
             try {
-                let files = await axios.get('/files');
+                let files = await axios.get('/api/files');
                 setLoad(false);
                 console.log("files : ", files.data.data);
                 setFiles(files.data.data);

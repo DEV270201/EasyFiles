@@ -147,10 +147,12 @@ exports.LoginUser = async (req, res) => {
     res.cookie("s_Id", token, {
       httpOnly: true,
       expires: new Date(Date.now() + 8 * 3600000),
-      samesite: true,
+      sameSite: "Lax",
+      secure: false
     });
 
     return;
+
   } catch (err) {
     console.log("Error in login controller : ", err);
     throw err;

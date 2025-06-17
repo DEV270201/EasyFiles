@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useEffect } from "react";
+import { useRef, useContext, useEffect } from "react";
 import { UserContext } from "../context/UserContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear, faXmark } from "@fortawesome/free-solid-svg-icons";

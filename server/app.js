@@ -8,21 +8,26 @@ const cookieParser = require('cookie-parser');
 //middlewares
 app.use(helmet());
 app.use(cors({
-   origin: ['http://localhost:3000'],
+   origin: 'http://127.0.0.1:3000',
    credentials: true,
 }));
 app.use(cookieParser());
 app.use((_req,_res,next)=>{
-    if(process.env.ENV == 'development'){
-        console.log("in the development mode....");
-    }
+    console.log("cookies : ",_req.cookies);
+    console.log("Current Environment : ", process.env.NODE_ENV);
     next();
 });
 app.use(express.json());
 app.use(express.urlencoded({extended : false}));
 //API 
-app.use("/user",require("./routes/user"));
-app.use("/files",require("./routes/files"));
+app.use("/api/user",require("./routes/user"));
+app.use("/api/files",require("./routes/files"));
+app.use("/api/health",(_,res)=>{
+   return res.status(200).json({
+      message: "Server working well..."
+   })
+})
+
 //request for serving the favicon
 app.get("/favicon.ico",(req,res)=>{
    return res.sendStatus(204);

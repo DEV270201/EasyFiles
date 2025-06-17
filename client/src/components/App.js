@@ -1,4 +1,4 @@
-import React,{useContext,useEffect} from 'react';
+import {useContext,useEffect} from 'react';
 import Navbar from './Navbar';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import Login from '../pages/Login';
@@ -13,10 +13,6 @@ import { UserContext } from '../context/UserContext';
 
 
 const App = () => {
-
-    useEffect(()=>{
-         console.log("App is mounted :)");
-    },[]);
 
     const {Theme} = useContext(UserContext);
     return (

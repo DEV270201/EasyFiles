@@ -5,14 +5,11 @@ import Search from "../components/Search";
 import { UserContext } from "../context/UserContext";
 import Dropdown from "../components/Dropdown";
 import "../css/Files.css";
-import { useEffect } from "react";
 
 const FileIterator = ({ filesArray, showPostedBy, exposeSensitiveFunctions=false }) => {
-  // const [files, setFiles] = useState(structuredClone(filesArray));
   const [searchRes, setSearchRes] = useState(structuredClone(filesArray));
   const { Theme, fontStyle } = useContext(UserContext);
   const [code, setCode] = useState("Oldest");
-  // const [isLoad, setLoad] = useState(true);
  
   //function for searching files
   const searchpdf = (val) => {
@@ -28,10 +25,6 @@ const FileIterator = ({ filesArray, showPostedBy, exposeSensitiveFunctions=false
   const changeVal = useCallback((val) => {
     setCode(val);
   }, []);
-
-  useEffect(()=>{
-    console.log("file iterator reloaded...");
-  })
 
   //updating the status of the files
   const updateFileStatus = (file, isDeleteOperation=false) => {
@@ -70,20 +63,6 @@ const FileIterator = ({ filesArray, showPostedBy, exposeSensitiveFunctions=false
           {searchRes !== null ? (
             <>
               <div className="mt-2">
-                {searchRes.length === 0 ? (
-                  <>
-                    <h5
-                      className="text-center font-weight-light mt-2"
-                      style={{
-                        color: `${Theme.textColor}`,
-                        fontFamily: `${fontStyle}`,
-                      }}
-                    >
-                      No files yet :(
-                    </h5>
-                  </>
-                ) : (
-                  <>
                     <div
                       className="xs:text-center md:text-center font-weight-light mt-4 md:mt-0 title_search_file"
                       style={{
@@ -112,7 +91,7 @@ const FileIterator = ({ filesArray, showPostedBy, exposeSensitiveFunctions=false
                             fontFamily: `${fontStyle}`,
                           }}
                         >
-                          No such file found :(
+                          Ummm, may be it's not what you are looking for :(
                         </h4>
                       </>
                     ) : (
@@ -144,8 +123,6 @@ const FileIterator = ({ filesArray, showPostedBy, exposeSensitiveFunctions=false
                               );
                             })}
                         </div>
-                      </>
-                    )}
                   </>
                 )}
               </div>

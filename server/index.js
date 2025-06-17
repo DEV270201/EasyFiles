@@ -8,7 +8,9 @@ const app = require("./app");
 //connecting to the database
 const connect_database = () => {
     mongoose.connect(
-        process.env.DATABASE
+        process.env.NODE_ENV === 'development' ?
+        process.env.DEV_DATABASE :
+        process.env.PROD_DATABASE
     );
 }
 
@@ -25,7 +27,7 @@ mongoose.connection.on('error',(err)=>{
 
 process.on("unhandledRejection", (reason) => {
     console.log("error : ", reason.message);
-    console.log("in the handler");
+    process.exit();
 });
 
 let port = process.env.PORT || 5000;

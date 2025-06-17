@@ -14,7 +14,7 @@ const FileChangeStatusModal = ({ file, updateCallback, cancelCallback }) => {
   const updateStatus = async () => {
     try {
       setUpdateLoad(true);
-      const resp = await axios.patch(`/files/updateStatus/${file._id}`);
+      const resp = await axios.patch(`/api/files/updateStatus/${file._id}`);
       console.log("resp : ", resp);
       setUpdateLoad(false);
       updateCallback();

@@ -47,7 +47,7 @@ const Profile = () => {
     async function getFiles() {
       try {
         setFileLoad(true);
-        let statsfiles = await axios.get("/user/statsfiles");
+        let statsfiles = await axios.get("/api/user/statsfiles");
         setData(statsfiles.data.data.files);
         // setStats({
         //   num_uploads: statsfiles.data.data.stats.num_upload,
@@ -77,7 +77,7 @@ const Profile = () => {
     try {
       setLoad(true);
       const resp = await axios.patch(
-        "/user/updateprofilepic",
+        "/api/user/updateprofilepic",
         {
           profile_pic: e.target.files[0],
         },
@@ -110,7 +110,7 @@ const Profile = () => {
   const deleteProfilePic = async (e) => {
     try {
       setLoad(true);
-      const resp = await axios.post("/user/deleteprofilepic", {
+      const resp = await axios.post("/api/user/deleteprofilepic", {
         publicId: profile.p_id,
       });
       updateProfile(resp.data.data.profile_pic, null);

@@ -9,7 +9,6 @@ import Button from "../components/Button";
 //You can change based on your needs and requirements.
 
 const Register = () => {
-    console.log("register page...");
     let history = useHistory();
     const eref = useRef(null);
     const uref = useRef(null);
@@ -36,7 +35,7 @@ const Register = () => {
               return;
          }
          setLoad(true);
-         let response = await axios.post("http://localhost:4000/user/register",{
+         let response = await axios.post("/api/user/register",{
             email : eref.current.value,
             username : uref.current.value,
             password : pref.current.value

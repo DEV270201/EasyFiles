@@ -27,7 +27,7 @@ const File = ({
   // To delete the file
   const delFile = async (file) => {
     try {
-      let resp = await axios.delete(`/files/delete/${file._id}`);
+      await axios.delete(`/api/files/delete/${file._id}`);
       updateCurrentFileStatus(file, true); //updating the data from the parent component
       return;
     } catch (err) {
@@ -45,21 +45,21 @@ const File = ({
     try {
       //recieving the file from the server
       setLoad(true);
-      let resp = await axios.get(`/files/download/${file._id}`, {
+      let resp = await axios.get(`/api/files/download/${file._id}`, {
         responseType: "arraybuffer",
-        // onDownloadProgress: (progress) => {
-        //   console.log("progress : ", progress.loaded);
-        // },
+        onDownloadProgress: (progress) => {
+          console.log("progress : ", progress.loaded);
+        },
       });
       const { data } = resp;
       // //downloading the file and saving it to the device
       const blob = new Blob([data]);
       saveAs(blob, file.filename + "." + file.filetype);
-      // Swal.fire({
-      //   icon: "success",
-      //   title: "Yayy...",
-      //   text: "File downloaded successfully!",
-      // });
+      Swal.fire({
+        icon: "success",
+        title: "Yayy...",
+        text: "File downloaded successfully!",
+      });
       //update the metrics
       // incrementDownloads();
       return;
