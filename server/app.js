@@ -7,10 +7,13 @@ const cookieParser = require('cookie-parser');
 
 //middlewares
 app.use(helmet());
-app.use(cors({
-   origin: 'http://127.0.0.1:3000',
-   credentials: true,
-}));
+
+//using reverse proxy (NGINX)
+// app.use(cors({
+//    origin: 'http://127.0.0.1:3000',
+//    credentials: true,
+// }));
+
 app.use(cookieParser());
 app.use((_req,_res,next)=>{
     console.log("cookies : ",_req.cookies);

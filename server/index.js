@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 const { config } = require('dotenv');
 
 //loading the .env contents in the process.env variable
-config({ path: "./config.env", override:true });
+if(process.env.NODE_ENV === 'development') {
+    config({ path: "./config.env", override:true });
+}
 const app = require("./app");
 
 //connecting to the database
