@@ -1,36 +1,49 @@
 # EasyFiles
 
-Revamping this project and planning to integrate AWS Services....
+A web-based application for uploading, downloading, previewing, and managing PDF and DOCX files. Built to provide secure, scalable, and efficient file management. 
 
-For Now, 
-Utilizing AWS S3 with NodeJS streams for easy uploading and downloading!
+## Features
 
-Built a centralized file management application through which you can upload pdf/docx files to the server, download them whenever needed and save on your device as well as delete them from the server.
+- **File Upload & Download:** Upload PDF/DOCX files to the server and download them as needed.
+- **File Preview:** Preview files before downloading to review their contents.
+- **File Management:** Delete files from the server and save downloaded files to your device.
+- **Responsive UI:** Mobile-friendly and accessible on various devices.
+- **Secure Storage:** Leverages AWS S3 for secure, reliable, and scalable file storage as files grow.
+- **Automated Server Management:** Configured Systemd on Linux to run the application server as a background service for automatic startup and reliable request handling.
+- **Optimized Deployment:** Deployed on AWS EC2 (t2.micro) with Nginx as a reverse proxy and static file server for optimized performance and security.
 
-If you want to run the code on your device, just clone the repository and run npm install in both client and server folder if you are using npm else similar command for yarn.
-Kindly create config.env file in the server folder and paste the content:
+## AWS Integrations
 
-ENV=development 
+- **AWS S3:** Used for secure, scalable file storage.
+- **AWS EC2:** Hosts the application server.
+- **Nginx:** Acts as a reverse proxy and static file server for React build files.
 
-PORT=4000 
+## Upcoming Optimizations
 
-DATABASE=your mongodb url 
+- **AWS CloudFront:** Integrate for caching files, enabling faster delivery and reduced download times.
+- **Pagination:** Implement for listing publicly available files, reducing bandwidth and resource overload.
+- **AWS OpenSearch:** Integrate for faster document search functionality.
 
-JWT_SECRET=paste your secret 
+## Environment Variables
 
-DEFAULT= default url for profile for cloudinary 
+Below are the environment variables required for the application:
 
-CLOUD_NAME=cloud name 
+NODE_ENV = production / development <br>
+PORT = 4000 <br>
+DEV_DATABASE = your development database URL <br>
+PROD_DATABASE = your production database URL <br> 
+JWT_SECRET = paste your own JWT secret <br>
+DEFAULT = default url for profile picture <br>
+AWS_REGION = hosted region for AWS S3 Bucket <br>
+AWS_S3_BUCKET_NAME = hosted S3 bucket name <br>
 
-API_SECRET=your cloudinary secret 
+## Technologies Used
 
-API_KEY=your cludinary key 
-
-once you install all the packages, run npm start in both client and server folder and you are good to go :) 
-
-Further development: 
-1) File preview without downloading file 
-2) Indicator of how muc the file has been downloaded
+- **Frontend:** React (for responsive UI, file previews, component optimization)
+- **Backend:** Node.js (for RESTful APIs, file management, and AWS S3 integration)
+- **Database:** MongoDB (for metadata and user data)
+- **File Storage:** AWS S3 (for scalable file storage)
+- **Deployment:** AWS EC2, Nginx, Systemd (for reliable app hosting and management) (Assigned IAM Role to EC2 instance for interacting with S3 Bucket)
 
 ScreenShots:
 
@@ -47,15 +60,15 @@ UPLOAD:
 ![image](https://user-images.githubusercontent.com/56965636/205449788-c400aee3-e83b-4c74-9ff1-70f47f7c9f2b.png)
 
 FILES:
-![image](https://user-images.githubusercontent.com/56965636/205449911-615f31bd-9b77-4dd7-8c75-18fc60128ffb.png)
+![image](https://github.com/user-attachments/assets/dde17a06-5688-4bc6-8b51-bceab1a4bb58)
+
+![image](https://github.com/user-attachments/assets/6920d61c-9578-4c12-b416-7ac50a0eb5fa)
 
 PROFILE:
-![image](https://user-images.githubusercontent.com/56965636/205450087-d916d1ff-6419-4852-bdb6-d37f1275a83f.png)
+![image](https://github.com/user-attachments/assets/ca75932b-77ab-49be-ad81-18fc680df5dd)
 
 STATUS CHANGING OF FILE:
 ![image](https://user-images.githubusercontent.com/56965636/205450112-d99d894b-4b45-4255-aaac-ae8d25433dd5.png)
 
-OTHER USER PROFILE:
-![image](https://user-images.githubusercontent.com/56965636/205450150-3c068617-9d75-45c4-a952-73b550cff616.png)
 
 <h3 align="center"><b>Developed with :heart: by <a href="https://github.com/DEV270201">Devansh Shah</a></b></h3>
