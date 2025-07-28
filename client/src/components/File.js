@@ -45,7 +45,7 @@ const File = ({
     try {
       //recieving the file from the server
       setLoad(true);
-      let resp = await axios.get(`/api/files/download/${file._id}`, {
+      let resp = await axios.get(file.cloudfront, {
         responseType: "arraybuffer",
         onDownloadProgress: (progress) => {
           console.log("progress : ", progress.loaded);
@@ -271,7 +271,7 @@ const File = ({
               </div>
             </div>
           </div>
-          {showPreview ? <PreviewReviewer source={file.location} theme={Theme}/> : null}
+          {showPreview ? <PreviewReviewer source={file.cloudfront} theme={Theme}/> : null}
         </div>
       </div>
     </>
