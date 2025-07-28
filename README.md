@@ -11,6 +11,7 @@ A web-based application for uploading, downloading, previewing, and managing PDF
 - **Secure Storage:** Leverages AWS S3 for secure, reliable, and scalable file storage as files grow.
 - **Automated Server Management:** Configured Systemd on Linux to run the application server as a background service for automatic startup and reliable request handling.
 - **Optimized Deployment:** Deployed on AWS EC2 (t2.micro) with Nginx as a reverse proxy and static file server for optimized performance and security.
+- **Reduced Latency:** Integrated AWS Cloudfront CDN for caching files, enabling faster delivery and reduced latency.
 
 ## AWS Integrations
 
@@ -20,7 +21,6 @@ A web-based application for uploading, downloading, previewing, and managing PDF
 
 ## Upcoming Optimizations
 
-- **AWS CloudFront:** Integrate for caching files, enabling faster delivery and reduced download times.
 - **Pagination:** Implement for listing publicly available files, reducing bandwidth and resource overload.
 - **AWS OpenSearch:** Integrate for faster document search functionality.
 
