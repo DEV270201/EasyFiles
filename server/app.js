@@ -15,11 +15,6 @@ app.use(helmet());
 // }));
 
 app.use(cookieParser());
-app.use((_req,_res,next)=>{
-    console.log("cookies : ",_req.cookies);
-    console.log("Current Environment : ", process.env.NODE_ENV);
-    next();
-});
 app.use(express.json());
 app.use(express.urlencoded({extended : false}));
 //API 

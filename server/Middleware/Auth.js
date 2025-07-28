@@ -6,7 +6,6 @@ const User = require('../models/User');
 const Auth = async (req,_res,next)=>{
     try{      
         let token = req.cookies.s_Id;
-        console.log("token : ", token);
         if(!token){
             throw new AuthenticationError("Please login!");
         }

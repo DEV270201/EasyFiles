@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
 const { config } = require('dotenv');
 
+
 //loading the .env contents in the process.env variable
-if(process.env.NODE_ENV === 'development') {
+//not setting node_env to development 
+if(process.env.NODE_ENV === undefined) {
     config({ path: "./config.env", override:true });
 }
 const app = require("./app");
@@ -10,7 +12,7 @@ const app = require("./app");
 //connecting to the database
 const connect_database = () => {
     mongoose.connect(
-        process.env.NODE_ENV === 'development' ?
+        process.env.NODE_ENV === undefined ?
         process.env.DEV_DATABASE :
         process.env.PROD_DATABASE
     );

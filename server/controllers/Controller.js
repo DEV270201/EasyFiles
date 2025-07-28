@@ -13,6 +13,10 @@ const {
 const { Upload } = require("@aws-sdk/lib-storage");
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
+const {
+  InvokeCommand,
+  LambdaClient,
+} = require("@aws-sdk/client-lambda");
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -26,13 +30,20 @@ const s3 = new S3({
   // logger: console
 });
 
+// const cloudfront = new CloudFrontClient({});
+const lambdaClient = new LambdaClient({
+  region: "us-east-1",
+});
+
 //fetching all the public files
 exports.Fetcher = async (req) => {
   try {
-    let files = await File.find({ isPrivate: false }).populate({
-      path: "uploadedBy",
-      select: "profile_pic username _id",
-    }).select('-key -bucket');
+    let files = await File.find({ isPrivate: false })
+      .populate({
+        path: "uploadedBy",
+        select: "profile_pic username _id",
+      })
+      .select("-key -bucket");
     return files;
   } catch (err) {
     console.log("Error in fetcher controller: ", err);
@@ -52,7 +63,10 @@ exports.Uploader = async (req) => {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: `${folderName}/${filename}`,
         Body: readStream,
-        ContentType: req.extension.slice(1) === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        ContentType:
+          req.extension.slice(1) === "pdf"
+            ? "application/pdf"
+            : "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       },
       partSize: 1024 * 1024 * 5, //size of each chunk for multipart uploading
       leavePartsOnError: false,
@@ -75,14 +89,17 @@ exports.Uploader = async (req) => {
       bucket: result.Bucket, //s3 related details
       key: result.Key, //s3 related details
       location: result.Location, //s3 related details
-      isPrivate: req.body.isPrivate
+      isPrivate: req.body.isPrivate,
+      cloudfront: process.env.AWS_CLOUDFRONT + "/" + result.Key,
     };
+
+    console.log("file : ",file);
 
     await File.create(file);
     //updating the count
     await User.findByIdAndUpdate(req.user.id, { $inc: { num_upload: 1 } });
     //delete the file from the local disk
-    fs.unlink(path, (err)=> {
+    fs.unlink(path, (err) => {
       console.log("error in deleting file from the server disk : ", path);
       console.error(err);
     });
@@ -148,11 +165,10 @@ exports.LoginUser = async (req, res) => {
       httpOnly: true,
       expires: new Date(Date.now() + 8 * 3600000),
       sameSite: "Lax",
-      secure: false
+      secure: false,
     });
 
     return;
-
   } catch (err) {
     console.log("Error in login controller : ", err);
     throw err;
@@ -220,8 +236,11 @@ exports.UpdateProfile = async (req) => {
     );
 
     //deleting the file from the local disk
-    fs.unlink(req.file.path, (err)=>{
-      console.log("Unable to delete profile pic from server disk storage : ", req.file.path);
+    fs.unlink(req.file.path, (err) => {
+      console.log(
+        "Unable to delete profile pic from server disk storage : ",
+        req.file.path
+      );
       console.error(err);
     });
 
@@ -258,26 +277,32 @@ exports.DeleteProfile = async (req) => {
 
 //to make the function sleep as we try for exponential backoff
 const sleep = (delay) => {
-    return new Promise((resolve)=> {
-       setTimeout(()=>{
-          resolve(delay);
-       },delay);
-    });
-}
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(delay);
+    }, delay);
+  });
+};
 
 //deleting the file
 exports.deleteFileFromS3 = async (req, res, next) => {
   try {
-    let {fileID} = req.params;
-    
+    let { fileID } = req.params;
+
     //delete from MongoDB
     let deletedDoc = await File.findByIdAndDelete(fileID);
-    console.log("Deleted document : ", deletedDoc);
 
     //delete the file from s3
-    let params = {
+    let payload = {
       Key: deletedDoc.key,
       Bucket: deletedDoc.bucket,
+      DistributionID: process.env.AWS_CF_DISTRIBUTION_ID,
+    };
+
+    let params = {
+      FunctionName: "easy_files_s3_deletion",
+      Payload: JSON.stringify(payload),
+      InvocationType: "Event",
     };
 
     res.status(200).json({
@@ -285,26 +310,24 @@ exports.deleteFileFromS3 = async (req, res, next) => {
       msg: "file deleted successfully..",
     });
 
-    //delete from AWS S3
-    //here we will use exponential backoff for retrying logic
-
-    for(let retry=1; retry<=3; retry++) {
-      try{
-        await s3.send(new DeleteObjectCommand(params));
+    //delete from AWS S3 and invalidate cache by using asynchronous lambda function supporting exponential backoff
+    for (let retry = 1; retry <= 3; retry++) {
+      try {
+        const command = new InvokeCommand(params);
+        lambdaClient.send(command);
+        console.log("Lambda function invoked successfully!");
         break;
-      }catch(err){
-        console.log(`Retry ${retry} : Failed to delete S3 file ${deletedDoc.key}`);
+      } catch (err) {
+        console.log(
+          `Retry ${retry} : Failed to invoke lambda function for deleting S3 file and invalidating clloudfront cache!`
+        );
         //if all the retries fail, either create a queue for deleting the file or alert
-        if(retry == 3){
-            console.log("Not being deleted");
-            break;
-        }
+        if (retry == 3) 
+          break;
         await sleep(retry * 1000);
       }
     }
-
     return;
-
   } catch (err) {
     console.log("in the delete file controller : ", err);
     throw err;
@@ -342,10 +365,10 @@ exports.updateStatus = async (req) => {
       {
         $set: {
           isPrivate: {
-            $not: "$isPrivate"
-          }
-        }
-      }
+            $not: "$isPrivate",
+          },
+        },
+      },
     ]);
     return;
   } catch (err) {
@@ -354,66 +377,66 @@ exports.updateStatus = async (req) => {
   }
 };
 
-exports.downloadFileFromS3 = async (req, res, next) => {
-  try {
+// exports.downloadFileFromS3 = async (req, res, next) => {
+//   try {
 
-    //get file metadata from MongoDB before any processing
-    let {fileID} = req.params;
-    let file = await File.findById(fileID, 'bucket key filename');
-    console.log("file : ",file);
-    let { key, bucket, filename } = file;
+//     //get file metadata from MongoDB before any processing
+//     let {fileID} = req.params;
+//     let file = await File.findById(fileID, 'bucket key filename');
+//     console.log("file : ",file);
+//     let { key, bucket, filename } = file;
 
-    let params = {
-      Bucket: bucket,
-      Key: key,
-    };
+//     let params = {
+//       Bucket: bucket,
+//       Key: key,
+//     };
 
-    const command = new GetObjectCommand(params);
-    const s3Response = await s3.send(command);
-    const s3Stream = s3Response.Body;
-    res.setHeader(
-      "Content-Type",
-      s3Response.ContentType || "application/octet-stream"
-    );
-    res.setHeader("Transfer-Encoding", "chunked");
-    // res.setHeader('Content-Disposition', 'inline');
-    // res.setHeader('Content-Disposition', 'attachment; filename="example.pdf"');
-    s3Stream.on("data", (chunk) => {
-      console.log("Chunk Stream size : ", chunk.length);
-    });
+//     const command = new GetObjectCommand(params);
+//     const s3Response = await s3.send(command);
+//     const s3Stream = s3Response.Body;
+//     res.setHeader(
+//       "Content-Type",
+//       s3Response.ContentType || "application/octet-stream"
+//     );
+//     res.setHeader("Transfer-Encoding", "chunked");
+//     // res.setHeader('Content-Disposition', 'inline');
+//     // res.setHeader('Content-Disposition', 'attachment; filename="example.pdf"');
+//     s3Stream.on("data", (chunk) => {
+//       console.log("Chunk Stream size : ", chunk.length);
+//     });
 
-    try {
-      for await (const chunk of s3Stream) {
-        console.log("CHUNK: ", chunk.length);
-        const canContinue = res.write(chunk);
-        if (!canContinue) {
-          console.log("chunk length sent: ", chunk.length);
-          // throw new Error("sorry");
-          await new Promise((resolve) => res.once("drain", resolve));
-        }
-      }
-    } catch (err) {
-      console.log("Error while on-going streaming : ", err);
-      res.destroy();
-      return;
-    }
+//     try {
+//       for await (const chunk of s3Stream) {
+//         console.log("CHUNK: ", chunk.length);
+//         const canContinue = res.write(chunk);
+//         if (!canContinue) {
+//           console.log("chunk length sent: ", chunk.length);
+//           // throw new Error("sorry");
+//           await new Promise((resolve) => res.once("drain", resolve));
+//         }
+//       }
+//     } catch (err) {
+//       console.log("Error while on-going streaming : ", err);
+//       res.destroy();
+//       return;
+//     }
 
-    res.end();
-    //  //updating the count
-    //  let download_num = await User.findByIdAndUpdate(req.user.id,{$inc : {num_download:1}},{
-    //   fields : {num_download:1},
-    //   new : true
-    //  }
-    //  );
+//     res.end();
+//     //  //updating the count
+//     //  let download_num = await User.findByIdAndUpdate(req.user.id,{$inc : {num_download:1}},{
+//     //   fields : {num_download:1},
+//     //   new : true
+//     //  }
+//     //  );
 
-    //  //appending to the header
-    //  res.append('download',download_num.num_download);
+//     //  //appending to the header
+//     //  res.append('download',download_num.num_download);
 
-    //  //piping the file chunks to the response
-    // //  bucket.createReadStream()
-    //  bucket.openDownloadStreamByName(req.params.fname).pipe(res);
-  } catch (err) {
-    console.log("Error while downloading file : ", err);
-    return next(err);
-  }
-};
+//     //  //piping the file chunks to the response
+//     // //  bucket.createReadStream()
+//     //  bucket.openDownloadStreamByName(req.params.fname).pipe(res);
+//   } catch (err) {
+//     console.log("Error while downloading file : ", err);
+//     return next(err);
+//   }
+// };

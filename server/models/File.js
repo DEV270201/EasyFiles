@@ -49,6 +49,11 @@ const FileSchema = new mongoose.Schema({
    location: {
       type: String,
       required: true
+   },
+
+   cloudfront: {
+      type: String,
+      required: true
    }
 });
 
