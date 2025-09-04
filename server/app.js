@@ -65,7 +65,7 @@ app.use((error,_req,res,_)=>{
    
    console.log('Error : ', err);
    //sending the error response
-   res.status(err.statusCode).json({
+   return res.status(err.statusCode).json({
     status : "Failed",
     error : err.msg,
     name : err.name

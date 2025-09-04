@@ -132,6 +132,7 @@ exports.RegisterUser = async (user) => {
 //logging in the user
 exports.LoginUser = async (req, res) => {
   try {
+    console.log("user logging in.....");
     const signJWT = async (user_id) => {
       return await promisify(jwt.sign)({ id: user_id }, process.env.JWT_SECRET);
     };
@@ -160,6 +161,8 @@ exports.LoginUser = async (req, res) => {
 
     const token = await signJWT(user.id);
 
+    console.log("user logged in: ", token);
+
     //it will set the cookie in the browser
     res.cookie("s_Id", token, {
       httpOnly: true,
@@ -178,6 +181,7 @@ exports.LoginUser = async (req, res) => {
 //getting the profile of the user
 exports.GetProfile = async (req) => {
   try {
+    console.log("getting profile : ", req.user.id);
     let resp = await User.findById(req.user.id, { password: 0 });
     return resp;
   } catch (err) {
@@ -189,6 +193,7 @@ exports.GetProfile = async (req) => {
 //getting the statistics
 exports.GetStatsFiles = async (req) => {
   try {
+    console.log("getting stats file: ", req.user.id);
     let { num_upload, num_download } = await User.findById(req.user.id);
     let files = await File.find({ uploadedBy: req.user.id }).populate({
       path: "uploadedBy",

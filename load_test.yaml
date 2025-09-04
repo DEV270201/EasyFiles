@@ -1,0 +1,90 @@
+config:
+  target: "http://localhost:4000"
+  phases:
+    - duration: 15
+      arrivalRate: 2
+      name: "Warm Up"
+
+    # - duartion: 120
+    #   arrivalRate: 5
+    #   name: "Normal Load"
+
+    - duration: 30
+      arrivalRate: 3
+      name: "Peak Load"
+
+    # - duration: 60
+    #   arrivalRate: 2
+    #   name: "Cool Down"
+
+  payload:
+    path: "./easy_files_testing_local.csv"
+    fields:
+      - "username"
+      - "password"
+      
+  http:
+    jar: true
+    timeout: 10
+  
+  # letting artillery know to make use of custom metrics 
+  processor: "./customMetrics.js"
+  
+  # report metrics after every 5 seconds 
+  statsInterval: 5
+  
+scenarios:
+  - name: "Testing scenario with login, profile fetch and logout"
+    flow:
+      - post:
+          url: "/api/user/login"
+          beforeRequest: "beforeRequest"
+          afterResponse: "afterResponse"
+          json:
+            username: "{{ username }}"
+            password: "{{ password }}"
+          expect:
+            - statusCode: 200
+      
+      - think: 1
+      
+      - get:
+          url: "/api/user/profile"
+          beforeRequest: "beforeRequest"
+          afterResponse: "afterResponse"
+          expect:
+            - statusCode: 200
+      
+      - think: 1
+       
+      - get:
+          url: "/api/files/"
+          beforeRequest: "beforeRequest"
+          afterResponse: "afterResponse"
+          expect:
+            - statusCode: 200
+      
+      - think: 1
+       
+      - get:
+          url: "/api/user/statsfiles"
+          beforeRequest: "beforeRequest"
+          afterResponse: "afterResponse"
+          expect:
+            - statusCode: 200
+      
+      - post:
+          url: "/api/files/upload"
+          beforeRequest: 
+            - "beforeRequest"
+            - "fileUpload"
+          afterResponse: "afterResponse"
+          expect:
+            - statusCode: 201
+       
+      - get:
+          url: "/api/user/logout"
+          beforeRequest: "beforeRequest"
+          afterResponse: "afterResponse"
+          expect:
+            - statusCode: 200
