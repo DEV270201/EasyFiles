@@ -1,11 +1,11 @@
 import { useRef, useContext, useEffect } from "react";
-import { UserContext } from "../context/UserContext";
+import { ThemeContext } from "../context/ThemeContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear, faXmark } from "@fortawesome/free-solid-svg-icons";
 import "../css/Modal.css";
 
 const Modal = () => {
-    const { Theme, setDarkThemeStatus, fontStyle, setTheFontStyle } = useContext(UserContext);
+    const { Theme, setDarkThemeStatus, fontStyle, setTheFontStyle } = useContext(ThemeContext);
     const modalRef = useRef(null);
     const checkRef = useRef(null);
 

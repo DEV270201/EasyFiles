@@ -2,13 +2,13 @@ import { useState, useContext, useCallback } from "react";
 import File from "../components/File";
 import Swal from "sweetalert2";
 import Search from "../components/Search";
-import { UserContext } from "../context/UserContext";
 import Dropdown from "../components/Dropdown";
+import {ThemeContext} from "../context/ThemeContext";
 import "../css/Files.css";
 
 const FileIterator = ({ filesArray, showPostedBy, exposeSensitiveFunctions=false }) => {
   const [searchRes, setSearchRes] = useState(structuredClone(filesArray));
-  const { Theme, fontStyle } = useContext(UserContext);
+  const { Theme, fontStyle } = useContext(ThemeContext);
   const [code, setCode] = useState("Oldest");
  
   //function for searching files

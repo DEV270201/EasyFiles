@@ -1,24 +1,14 @@
 import { useState, createContext, useEffect } from "react";
 import axios from "axios";
+import { useRef } from "react";
+import { useHistory } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 export const UserContext = createContext();
 
 const UserContextProvider = ({ children }) => {
-  const darkTheme = {
-    textColor: "#E6E6F2",
-    backgroundColor: "#14141A",
-    primaryColor: "#BB86FC",
-    surfaceColor: "#2C2C2A",
-    theme: "dark",
-  };
-
-  const lightTheme = {
-    textColor: "#14141A",
-    backgroundColor: "#E6E6F2",
-    primaryColor: "#483248",
-    surfaceColor: "#dbd7d2",
-    theme: "light",
-  };
+  let clearTimeoutID = useRef(null);
+  const history = useHistory();
 
   //fetching the login status of the user
   const getLoginStatus = () => {
@@ -30,36 +20,7 @@ const UserContextProvider = ({ children }) => {
     return JSON.parse(status);
   };
 
-  //fetching the theme of the user
-  const getDarkThemeStatus = () => {
-    let status = window.localStorage.getItem("isDark");
-    if (status == null) {
-      window.localStorage.setItem("isDark", false);
-      return lightTheme;
-    }
-    status = JSON.parse(status);
-    //if any user deliberately adds any random value in the localstorage
-    if (typeof status != "boolean") {
-      status = false;
-      window.localStorage.setItem("isDark", false);
-    }
-    return status ? darkTheme : lightTheme;
-  };
-
-  //fetching the fontstyle for the application of the user
-  const getfontStyle = () => {
-    let fs = window.localStorage.getItem("fs");
-    if (fs == null) {
-      window.localStorage.setItem("fs", "'Comfortaa', cursive");
-      return "'Comfortaa', cursive";
-    }
-    // fs = JSON.parse(fs);
-    console.log("type : ", typeof fs);
-    return String(fs);
-  };
-
   const [isLoggedIn, setLogin] = useState(getLoginStatus);
-  const [Theme, setTheme] = useState(getDarkThemeStatus);
   const [profile, setProfile] = useState({
     username: "",
     profile_pic: "",
@@ -69,7 +30,10 @@ const UserContextProvider = ({ children }) => {
     num_upload: 0,
     num_download: 0,
   });
-  const [fontStyle, setFontStyle] = useState(getfontStyle);
+  const [analytics,setAnalytics] = useState({
+    uploadIncrement: 0,
+    downloadIncrement: 0
+  })
 
   //fetching the profile of the user once logged in
   async function fetchProfile() {
@@ -104,33 +68,75 @@ const UserContextProvider = ({ children }) => {
     return;
   };
 
-  //setting the theme
-  const setDarkThemeStatus = (val) => {
-    window.localStorage.setItem("isDark", val);
-    val ? setTheme(darkTheme) : setTheme(lightTheme);
-    return;
-  };
-
-  //setting the font style for the user
-  const setTheFontStyle = (val) => {
-    window.localStorage.setItem("fs", val);
-    setFontStyle(val);
-  };
-
   //updating the profile picture
   const updateProfile = (url, id) => {
     setProfile({ ...profile, profile_pic: url, p_id: id });
   };
 
-  const incrementDownloads = () => {
-    setProfile({ ...profile, num_download: profile.num_download + 1 });
+  //function for updating user analytics
+  const updateAnalytics = (currentKey, updatedKey) => {
+    let currentVal = profile[currentKey];
+    currentVal++;
+    let updatedVal = analytics[updatedKey];
+    updatedVal++;
+    setProfile({ ...profile, [currentKey]:currentVal});
+    setAnalytics({...analytics, [updatedKey]: updatedVal});
+
+    if(clearTimeoutID.current){
+       clearTimeout(clearTimeoutID.current);
+       clearTimeoutID.current = null;
+    }
+
+    clearTimeoutID.current = setTimeout(()=>{
+       triggerAnalyticsFlush();
+    },1000);
+
     return;
   };
 
-  const incrementUploads = () => {
-    setProfile({ ...profile, num_upload: profile.num_upload + 1 });
-    return;
-  };
+  const triggerAnalyticsFlush = async ()=> {
+     try{
+       //make api request for flushing
+       await axios.post('/api/user/updateuserstats', analytics);
+       setAnalytics({
+        uploadIncrement: 0,
+        downloadIncrement: 0
+       });
+     }catch(err){
+       console.log("Error in flushing analytics: ",err);
+       //implement retries and pushing to queue
+       return;
+     }
+  }
+
+  const logout = async () => {
+        try {
+            if(clearTimeoutID.current){
+                clearTimeout(clearTimeoutID.current);
+                clearTimeoutID.current = null;
+            }
+            let response = await axios.post("/api/user/logout", analytics, 
+            {
+                withCredentials: true
+            });
+            setLogin(false);
+            setAnalytics({
+              uploadIncrement: 0,
+              downloadIncrement: 0
+            });
+            if (response.data.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Yayy...',
+                    text: response.data.msg
+                });
+                history.replaceState({},'',"/");
+            }
+        } catch (err) {
+            console.log("logout err : ", err);
+        }
+    }
+
 
   return (
     <>
@@ -138,14 +144,10 @@ const UserContextProvider = ({ children }) => {
         value={{
           isLoggedIn,
           setLoginStatus,
-          Theme,
-          setDarkThemeStatus,
           profile,
           updateProfile,
-          fontStyle,
-          setTheFontStyle,
-          incrementDownloads,
-          incrementUploads,
+          updateAnalytics,
+          logout
         }}
       >
         {children}

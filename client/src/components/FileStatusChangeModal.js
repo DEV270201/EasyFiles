@@ -1,14 +1,14 @@
 //this is the modal for changing the file status
 import { useState, useContext } from "react";
 import axios from "axios";
-import { UserContext } from "../context/UserContext";
+import { ThemeContext } from "../context/ThemeContext";
 import Button from "./Button";
 import Swal from "sweetalert2";
 import "../css/PopupModal.css";
 
 const FileChangeStatusModal = ({ file, updateCallback, cancelCallback }) => {
   const [updateLoad, setUpdateLoad] = useState(false);
-  const { fontStyle } = useContext(UserContext);
+  const { fontStyle } = useContext(ThemeContext);
 
   // To change the status of the file
   const updateStatus = async () => {

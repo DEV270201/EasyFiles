@@ -11,6 +11,7 @@ import { saveAs } from "file-saver";
 import FileChangeStatusModal from "./FileStatusChangeModal";
 import PreviewReviewer from "./PreviewReviewer";
 import Loader from "./Loader";
+import { ThemeContext } from "../context/ThemeContext";
 
 const File = ({
   file,
@@ -18,8 +19,9 @@ const File = ({
   updateCurrentFileStatus = null,
   exposeSensitiveFunctions = false,
 }) => {
-  const { Theme, fontStyle, profile, incrementDownloads } =
+  const { profile, updateAnalytics } =
     useContext(UserContext);
+  const {Theme, fontStyle} = useContext(ThemeContext)
   const [showModal, setShowModal] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [load, setLoad] = useState(false);
@@ -60,8 +62,9 @@ const File = ({
         title: "Yayy...",
         text: "File downloaded successfully!",
       });
+
       //update the metrics
-      // incrementDownloads();
+      updateAnalytics('num_download', 'downloadIncrement');
       return;
     } catch (err) {
       console.log("err in file : ", err);

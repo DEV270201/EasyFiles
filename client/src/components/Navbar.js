@@ -1,38 +1,20 @@
 import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
-import Swal from 'sweetalert2';
-import axios from "axios";
-import { useHistory } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf, faBars, faUser, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import '../css/Navbar.css';
 import ProfilePic from './ProfilePic';
 
+
 const Navbar = () => {
-    const { isLoggedIn, setLoginStatus, profile } = useContext(UserContext);
-    const history = useHistory();
-    // const location = useLocation();
+    const { logout } = useContext(UserContext);
     const [menu, setMenu] = useState(false);
 
-    const logout = async () => {
-        try {
-            setMenu(false);
-            let response = await axios.get("/api/user/logout",{
-                withCredentials: true
-            });
-            setLoginStatus(false);
-            if (response.data.status === 'success') {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Yayy...',
-                    text: response.data.msg
-                });
-                history.push("/");
-            }
-        } catch (err) {
-            console.log("logout err : ", err);
-        }
+    const logoutUser = async () => {
+        setMenu(false);
+        logout();
     }
 
     return (
@@ -67,7 +49,7 @@ const Navbar = () => {
                                         <FontAwesomeIcon icon={faUser} />  Profile
                                     </NavLink>
                                 </div>
-                                <div onClick={logout} className="drop_list text-dark">
+                                <div onClick={logoutUser} className="drop_list text-dark">
                                     <FontAwesomeIcon icon={faArrowRightFromBracket} />  Logout
                                 </div>
                             </div>

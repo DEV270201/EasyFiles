@@ -15,7 +15,7 @@ const Upload = () => {
     const [status,setStatus] = useState('Private');
     const history = useHistory();
     const [load, setLoad] = useState(false);
-    const { isLoggedIn, Theme, fontStyle, incrementUploads } = useContext(UserContext);
+    const { isLoggedIn, Theme, fontStyle, updateAnalytics } = useContext(UserContext);
 
     useEffect(() => {
         if (!isLoggedIn) {
@@ -42,7 +42,7 @@ const Upload = () => {
                 }
             });
             if (response.data.status === 'success') {
-                incrementUploads(); //incrementing per user upload metric
+                updateAnalytics('num_upload','uploadIncrement'); //incrementing per user upload metric
                 Swal.fire({
                     icon: 'success',
                     title: 'Yayy...',

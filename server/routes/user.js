@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {RegisterJoi} = require("../joi/Joi");
-const {RegisterUser,LoginUser,GetProfile,UpdateProfile,DeleteProfile,GetStatsFiles,GetOtherUserProfile} = require("../controllers/Controller");
+const {RegisterUser,LoginUser,GetProfile,UpdateProfile,DeleteProfile,GetStatsFiles,GetOtherUserProfile, updateUserStats} = require("../controllers/userController");
 const ImageUploader = require('../utils/ImageUploader');
 const Auth = require('../Middleware/Auth');
 
@@ -73,6 +73,17 @@ router.patch('/updateprofilepic',[Auth,ImageUploader.single('profile_pic')],asyn
     }
 });
 
+//set this into the analytics map and flush it to the database on every 5 seconds
+router.post('/updateuserstats',Auth,async(req,res,next)=>{
+   try{
+      updateUserStats(req);
+      res.status(200).send();
+    }catch(err){
+      console.log(' : ',err);
+      return next(err);
+    }
+});
+
 router.post('/deleteprofilepic',Auth,async(req,res,next)=>{
    try{
       let resp = await DeleteProfile(req);
@@ -87,8 +98,10 @@ router.post('/deleteprofilepic',Auth,async(req,res,next)=>{
     }
 });
 
-router.get('/logout',Auth,(_req,res)=>{
+router.post('/logout',Auth,(req,res)=>{
   console.log("user logging out..");
+    //update the analytics before the user logs out
+    updateUserStats(req);
     res.clearCookie("s_Id");
     res.status(200).json({
       status : 'success',

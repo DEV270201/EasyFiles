@@ -1,8 +1,8 @@
 import React,{useContext} from "react";
-import { UserContext } from "../context/UserContext";
+import { ThemeContext } from "../context/ThemeContext";
 
 const Dropdown = ({func,name}) => {
-    const {Theme} = useContext(UserContext);
+    const {Theme} = useContext(ThemeContext);
   
     const hello = (e)=>{
           func(e.target.innerText);

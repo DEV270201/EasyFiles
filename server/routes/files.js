@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const upload = require("../utils/Upload");
-const {Uploader,Fetcher,deleteFileFromS3,updateStatus, downloadFileFromS3} = require("../controllers/Controller");
+const {Uploader,Fetcher,deleteFileFromS3,updateStatus} = require("../controllers/fileController");
 const Auth = require('../Middleware/Auth');
 
 //allowing only single files to upload
@@ -35,9 +35,6 @@ router.post("/upload",[Auth,upload.single('file')],async (req,res,next)=>{
      return next(err);
   }
 });
-
-//downloading a particular file from the server
-// router.get('/download/:fileID', downloadFileFromS3);
 
 //deleting a particular file
 router.delete('/delete/:fileID', deleteFileFromS3);

@@ -1,12 +1,12 @@
 import {useState,useContext,useRef} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass,faXmark } from '@fortawesome/free-solid-svg-icons'
-import { UserContext } from "../context/UserContext";
+import { ThemeContext } from "../context/ThemeContext";
 
 const Search = ({searchpdf})=>{
 
   const[show,setShow] = useState(false);
-  const {Theme} = useContext(UserContext);
+  const {Theme} = useContext(ThemeContext);
   const btnRef = useRef(null);
 
   const searchPDF = (event)=>{

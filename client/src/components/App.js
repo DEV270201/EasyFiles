@@ -1,4 +1,4 @@
-import {useContext,useEffect} from 'react';
+import {useContext} from 'react';
 import Navbar from './Navbar';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import Login from '../pages/Login';
@@ -9,12 +9,12 @@ import Upload from '../pages/Upload';
 import Files from '../pages/Files';
 import Profile from '../pages/Profile';
 import OthersProfile from '../pages/OthersProfile';
-import { UserContext } from '../context/UserContext';
+import { ThemeContext } from '../context/ThemeContext';
 
 
 const App = () => {
 
-    const {Theme} = useContext(UserContext);
+    const {Theme} = useContext(ThemeContext);
     return (
         <>
             <Navbar />
