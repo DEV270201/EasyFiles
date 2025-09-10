@@ -10,14 +10,14 @@
     font-size: 16px;
 }
 
+.filename::-webkit-scrollbar{
+    display: none;
+}
+
 .filedate{
     font-size: 10px;
 }
 
-/* scrollbar */
-::-webkit-scrollbar{
-    display: none;
-}
 
 .inner_files{
     height: auto;
@@ -26,7 +26,7 @@
 }
 
 .inner_files::-webkit-scrollbar{
-    display: none;
+    /* display: none; */
 }
 
 /* title + search box div  */

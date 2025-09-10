@@ -1,40 +1,7 @@
-import { useState, useEffect } from "react";
-import Loader from "./Loader";
-import axios from 'axios';
+import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
+import PdfLoader from "./customPreviewLoaders/pdfLoader";
 
-const PreviewReviewer = ({ source, theme }) => {
-  const [status, setStatus] = useState({
-    loading: true,
-    error: false,
-  });
-  const [canPreview, setPreview] = useState(false);
-
-  const handleLoad = () => {
-    setStatus({
-      loading: false,
-      error: false,
-    });
-  };
-
-  const checkPreviewResource = async ()=> {
-    try{
-      let response = await axios.head(source);
-      if(response){
-         setPreview(true);
-      }
-    }catch(err){
-      console.log("error : ",err);
-      setStatus({
-        loading: false,
-        error: true
-      })
-    }
-  }
-
-  useEffect(()=>{
-    checkPreviewResource();
-  },[]);
-
+const PreviewReviewer = ({ source, theme, fileType }) => {
   return (
     <>
       <div
@@ -48,33 +15,55 @@ const PreviewReviewer = ({ source, theme }) => {
           alignItems: "center",
         }}
       >
-        {status.loading && (
-          <Loader height="60px" width="60px" color={theme.textColor} />
-        )}
-
-        {status.error && (
-          <h6>Sorry, something went wrong :( !!</h6>
-        )}
-        
-        {
-          canPreview && (
-            <iframe
-              src={`${source}#toolbar=0`}
-              onLoad={handleLoad}
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                border: "none",
-              }}
-              className="iframe"
-              title="Embedded Content"
-            />
-          )
-        }
+        <DocViewer
+          documents={[{ uri: source, fileType }]}
+          pluginRenderers={
+            fileType === "docx" ? DocViewerRenderers : [PdfLoader]
+          }
+          prefetchMethod="HEAD"
+          style={{ height: "100%", width: "100%" }}
+          
+          />
       </div>
+          {/* <div
+            style={{
+              position: "relative",
+              overflow: "hidden",
+              width: "100%",
+              height: "300px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          > 
+            {status.loading && (
+              <Loader height="60px" width="60px" color={theme.textColor} />
+            )}
+    
+            {status.error && (
+              <h6>Sorry, something went wrong :( !!</h6>
+            )}
+            
+            {
+              canPreview && (
+                <iframe
+                  // src={`${source}#toolbar=0`}
+                  src={`https://docs.google.com/spreadsheets/d/e/2PACX-1vQ8/viewer?url=${encodeURIComponent(source)}&embedded=true`}
+                  onLoad={handleLoad}
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    border: "none",
+                  }}
+                  className="iframe"
+                  title="Embedded Content"
+                />
+              )
+            } 
+          </div> */}
     </>
   );
 };

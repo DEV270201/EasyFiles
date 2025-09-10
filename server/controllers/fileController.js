@@ -127,10 +127,7 @@ exports.Uploader = async (req) => {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: `${folderName}/${filename}`,
         Body: readStream,
-        ContentType:
-          req.extension.slice(1) === "pdf"
-            ? "application/pdf"
-            : "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        ContentType: req.mimetype
       },
       partSize: 1024 * 1024 * 5, //size of each chunk for multipart uploading
       leavePartsOnError: false,

@@ -19,10 +19,12 @@ const storage = multer.diskStorage({
         if(extension === ".pdf"){
             fileName = file.originalname.slice(0,fileNameLength-4) + "-" + String(uniqueSuffix) + path.extname(file.originalname);
             req.originalname = file.originalname.slice(0,fileNameLength-4);
+            req.mimetype = file.mimetype;
         }
-        else{
+        else if(extension === ".docx"){
             fileName = file.originalname.slice(0,fileNameLength-5) + "-" + String(uniqueSuffix) + path.extname(file.originalname); //docx
             req.originalname = file.originalname.slice(0,fileNameLength-5);
+            req.mimetype = file.mimetype;
         }
         cb(null, fileName);
     }

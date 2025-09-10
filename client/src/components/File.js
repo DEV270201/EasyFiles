@@ -152,7 +152,7 @@ const File = ({
           <div className="file">
             <div
               style={{
-                width: "1%",
+                width: "5px",
                 backgroundColor: `${
                   file.filetype === "pdf" ? "red" : "dodgerBlue"
                 }`,
@@ -254,7 +254,7 @@ const File = ({
                        <Button
                       text="Preview"
                       callback_func={() => setShowPreview(!showPreview)}
-                      disabled={file.filetype === "docx"}
+                      // disabled={file.filetype === "docx"}
                       fontStyle={fontStyle}
                       theme={Theme.theme}
                     />
@@ -274,7 +274,7 @@ const File = ({
               </div>
             </div>
           </div>
-          {showPreview ? <PreviewReviewer source={file.cloudfront} theme={Theme}/> : null}
+          {showPreview ? <PreviewReviewer source={file.cloudfront} theme={Theme} fileType={file.filetype}/> : null}
         </div>
       </div>
     </>
