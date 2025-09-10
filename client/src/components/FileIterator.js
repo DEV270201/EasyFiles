@@ -105,9 +105,9 @@ const FileIterator = ({ filesArray, showPostedBy, exposeSensitiveFunctions=false
                               } else if (code === "Newest") {
                                 return a.dateUploded > b.dateUploded ? -1 : 1;
                               } else if (code === "A-Z") {
-                                return a.filename > b.filename ? 1 : -1;
+                                return a.filename.toLowerCase() > b.filename.toLowerCase() ? 1 : -1;
                               } else {
-                                return a.filename > b.filename ? -1 : 1;
+                                return a.filename.toLowerCase() > b.filename.toLowerCase() ? -1 : 1;
                               }
                             })
                             .map((file, index) => {

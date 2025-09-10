@@ -1,8 +1,7 @@
-import { useState, createContext, useEffect } from "react";
+import { useState, createContext, useEffect, useRef } from "react";
 import axios from "axios";
-import { useRef } from "react";
 import { useHistory } from "react-router-dom";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 export const UserContext = createContext();
 
@@ -30,16 +29,16 @@ const UserContextProvider = ({ children }) => {
     num_upload: 0,
     num_download: 0,
   });
-  const [analytics,setAnalytics] = useState({
+  const analyticsRef = useRef({
     uploadIncrement: 0,
-    downloadIncrement: 0
-  })
+    downloadIncrement: 0,
+  });
 
   //fetching the profile of the user once logged in
   async function fetchProfile() {
     try {
-      let resp = await axios.get("/api/user/profile",{
-        withCredentials: true
+      let resp = await axios.get("/api/user/profile", {
+        withCredentials: true,
       });
       setProfile(resp.data.data);
     } catch (err) {
@@ -62,8 +61,7 @@ const UserContextProvider = ({ children }) => {
   //setting the login status
   const setLoginStatus = (val) => {
     window.localStorage.setItem("isLoggedIn", val);
-    if (val)
-      fetchProfile();
+    if (val) fetchProfile();
     setLogin(val);
     return;
   };
@@ -77,66 +75,71 @@ const UserContextProvider = ({ children }) => {
   const updateAnalytics = (currentKey, updatedKey) => {
     let currentVal = profile[currentKey];
     currentVal++;
-    let updatedVal = analytics[updatedKey];
+    console.log("currentkey : ", currentKey);
+    console.log("currentVal: ", currentVal);
+    let updatedVal = analyticsRef.current[updatedKey];
     updatedVal++;
-    setProfile({ ...profile, [currentKey]:currentVal});
-    setAnalytics({...analytics, [updatedKey]: updatedVal});
+    setProfile({ ...profile, [currentKey]: currentVal });
+    analyticsRef.current[updatedKey] = updatedVal;
 
-    if(clearTimeoutID.current){
-       clearTimeout(clearTimeoutID.current);
-       clearTimeoutID.current = null;
+    if (clearTimeoutID.current) {
+      clearTimeout(clearTimeoutID.current);
+      clearTimeoutID.current = null;
     }
 
-    clearTimeoutID.current = setTimeout(()=>{
-       triggerAnalyticsFlush();
-    },1000);
+    clearTimeoutID.current = setTimeout(() => {
+      triggerAnalyticsFlush();
+    }, 5000);
 
     return;
   };
 
-  const triggerAnalyticsFlush = async ()=> {
-     try{
-       //make api request for flushing
-       await axios.post('/api/user/updateuserstats', analytics);
-       setAnalytics({
+  const triggerAnalyticsFlush = async () => {
+    try {
+      //make api request for flushing
+      console.log("log: ", analyticsRef.current);
+      await axios.post("/api/user/updateuserstats", analyticsRef.current);
+      analyticsRef.current = {
         uploadIncrement: 0,
-        downloadIncrement: 0
-       });
-     }catch(err){
-       console.log("Error in flushing analytics: ",err);
-       //implement retries and pushing to queue
-       return;
-     }
-  }
+        downloadIncrement: 0,
+      };
+    } catch (err) {
+      console.log("Error in flushing analytics: ", err);
+      //implement retries and pushing to queue
+      return;
+    }
+  };
 
   const logout = async () => {
-        try {
-            if(clearTimeoutID.current){
-                clearTimeout(clearTimeoutID.current);
-                clearTimeoutID.current = null;
-            }
-            let response = await axios.post("/api/user/logout", analytics, 
-            {
-                withCredentials: true
-            });
-            setLogin(false);
-            setAnalytics({
-              uploadIncrement: 0,
-              downloadIncrement: 0
-            });
-            if (response.data.status === 'success') {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Yayy...',
-                    text: response.data.msg
-                });
-                history.replaceState({},'',"/");
-            }
-        } catch (err) {
-            console.log("logout err : ", err);
+    try {
+      if (clearTimeoutID.current) {
+        clearTimeout(clearTimeoutID.current);
+        clearTimeoutID.current = null;
+      }
+      let response = await axios.post(
+        "/api/user/logout",
+        analyticsRef.current,
+        {
+          withCredentials: true,
         }
-    }
-
+      );
+      setLogin(false);
+      analyticsRef.current = {
+        uploadIncrement: 0,
+        downloadIncrement: 0,
+      };
+      if (response.data.status === "success") {
+        Swal.fire({
+          icon: "success",
+          title: "Yayy...",
+          text: response.data.msg,
+        });
+        history.replace("/");
+      }
+    } catch (err) {
+      console.log("logout err : ", err);
+    } 
+  };
 
   return (
     <>
@@ -147,7 +150,7 @@ const UserContextProvider = ({ children }) => {
           profile,
           updateProfile,
           updateAnalytics,
-          logout
+          logout,
         }}
       >
         {children}

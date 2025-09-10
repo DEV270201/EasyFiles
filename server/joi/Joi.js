@@ -25,7 +25,7 @@ exports.RegisterJoi = async (body)=>{
      email : joi.string().regex(/^[a-z]+\d*\.?[a-z\d]*@(gmail|hotmail|yahoo|somaiya)\.(com|in|edu)$/),
      username : joi.string().max(25),
     //can use better regex than mine
-     password : joi.string().min(8).max(15).regex(/^[a-zA-Z]+[a-zA-Z\d]*[@$#]+[a-zA-Z@$#\d]*\d+$/)
+     password : joi.string().min(8).max(15).regex(/^(?=.*[@#$])(?=.*[0-9])[a-zA-Z](?=.*[a-zA-Z]).{7,14}$/)
    });
 
    try{

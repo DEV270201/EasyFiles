@@ -4,6 +4,7 @@ import ProfilePic from "../components/ProfilePic";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload, faUser, faCalendarDays, faDownload } from '@fortawesome/free-solid-svg-icons';
 import { UserContext } from "../context/UserContext";
+import { ThemeContext } from "../context/ThemeContext";
 import Swal from 'sweetalert2';
 import { useHistory,useParams } from 'react-router-dom';
 import FileIterator from "../components/FileIterator";
@@ -12,7 +13,8 @@ import FileIterator from "../components/FileIterator";
 const OthersProfile = () => {
 
    let history = useHistory();
-   const { isLoggedIn, Theme, fontStyle } = useContext(UserContext);
+   const { isLoggedIn } = useContext(UserContext);
+   const {Theme, fontStyle} = useContext(ThemeContext);
    const [isLoad, setLoad] = useState(true);
    const [data, setData] = useState({});
 

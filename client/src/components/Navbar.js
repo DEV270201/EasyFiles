@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
-import {useNavigate} from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf, faBars, faUser, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import '../css/Navbar.css';
@@ -9,7 +8,7 @@ import ProfilePic from './ProfilePic';
 
 
 const Navbar = () => {
-    const { logout } = useContext(UserContext);
+    const { isLoggedIn,profile,logout } = useContext(UserContext);
     const [menu, setMenu] = useState(false);
 
     const logoutUser = async () => {

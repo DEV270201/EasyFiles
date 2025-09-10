@@ -164,8 +164,8 @@ exports.Uploader = async (req) => {
     await User.findByIdAndUpdate(req.user.id, { $inc: { num_upload: 1 } });
     //delete the file from the local disk
     fs.unlink(path, (err) => {
-      console.log("error in deleting file from the server disk : ", path);
-      console.error(err);
+      if(err)
+         console.log("error in deleting file from the server disk : ", path);
     });
 
     return;

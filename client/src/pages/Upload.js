@@ -3,19 +3,20 @@ import Swal from 'sweetalert2';
 import { useHistory } from 'react-router-dom';
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
+import { ThemeContext } from "../context/ThemeContext";
 import Button from "../components/Button";
 
 //Here I am going to use uncontrolled components because I don't feel the of need controlled components.
 //You can change based on your needs and requirements.
 
 const Upload = () => {
-    console.log("upload page...");
     const fref = useRef(null);
-    const fnref = useRef(null);
+    // const [filename,setFilename] = useState("");
     const [status,setStatus] = useState('Private');
     const history = useHistory();
     const [load, setLoad] = useState(false);
-    const { isLoggedIn, Theme, fontStyle, updateAnalytics } = useContext(UserContext);
+    const { isLoggedIn, updateAnalytics } = useContext(UserContext);
+    const {Theme,fontStyle} = useContext(ThemeContext);
 
     useEffect(() => {
         if (!isLoggedIn) {
@@ -29,11 +30,12 @@ const Upload = () => {
 
     const upload = async () => {
         try {
-            console.log("file : ", fref.current.files[0]);
+            // if(filename.length > 15)
+            //     return;
             setLoad(true);
 
             let response = await axios.post('/api/files/upload', {
-                filename: fnref.current.value,
+                // filename: filename,
                 isPrivate: status.includes('Private') ? true : false,
                 file: fref.current.files[0],
             }, {
@@ -48,7 +50,6 @@ const Upload = () => {
                     title: 'Yayy...',
                     text: response.data.msg
                 });
-                fnref.current.value = "";
                 fref.current.value = null;
                 setLoad(false);
             }
@@ -69,6 +70,10 @@ const Upload = () => {
         }
     }
 
+    // const updateFilename = (event) => {
+    //     setFilename(event.target.value);
+    // }
+
     return (
         <>
             <div className="container p-3">
@@ -77,8 +82,12 @@ const Upload = () => {
                     <div className="inputs">
                         <div className="label font-weight-bold" htmlFor="file" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>File*</div>
                         <input type="file" className="form-control myform" id="file" aria-describedby="emailHelp" name="file" ref={fref} required />
-                        <div className="label font-weight-bold" htmlFor="Filename" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>File Name*</div>
-                        <input type="text" className="form-control myform" id="Filename" name="filename" ref={fnref} required />
+                        {/* <div className="label font-weight-bold" htmlFor="Filename" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>File Name*</div>
+                        <input type="text" className="form-control myform" id="Filename" name="filename" onChange={updateFilename} value={filename} />
+                        {
+                            filename.length > 15 &&
+                            <p style={{ color: `${Theme.danger}`, fontFamily: `${fontStyle}` }}>File name should be less than 15 characters</p>
+                        } */}
                         <div className="d-flex flex-column align-items-start mt-2">
                             <h6 className="font-weight-bold" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>Status:</h6>
                             <div className="form-check">

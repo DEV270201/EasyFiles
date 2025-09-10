@@ -8,6 +8,8 @@ const ThemeContextProvider = ({ children }) => {
     backgroundColor: "#14141A",
     primaryColor: "#BB86FC",
     surfaceColor: "#2C2C2A",
+    danger: '#FF0000',
+    secondary: ' #00FF00',
     theme: "dark",
   };
 
@@ -16,6 +18,8 @@ const ThemeContextProvider = ({ children }) => {
     backgroundColor: "#E6E6F2",
     primaryColor: "#483248",
     surfaceColor: "#dbd7d2",
+    danger: '#FF0000',
+    secondary: '#00FF00',
     theme: "light",
   };
 

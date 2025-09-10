@@ -11,6 +11,7 @@ import {
   faDownload,
 } from "@fortawesome/free-solid-svg-icons";
 import { UserContext } from "../context/UserContext";
+import { ThemeContext } from "../context/ThemeContext";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 import default_profile_pic from "../default";
@@ -21,8 +22,9 @@ import "../css/Profile.css";
 const Profile = () => {
   let history = useHistory();
   const inputRef = useRef(null);
-  const { isLoggedIn, profile, updateProfile, Theme, fontStyle } =
+  const { isLoggedIn, profile, updateProfile } =
     useContext(UserContext);
+  const {Theme, fontStyle} = useContext(ThemeContext);
   // for profile load
   const [isLoad, setLoad] = useState(false);
   // for file load

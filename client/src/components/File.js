@@ -190,9 +190,9 @@ const File = ({
                     fontFamily: `${fontStyle}`,
                   }}
                 >
-                  {file.filesize / 1e6 < 1
+                  {file.filesize / (1024 * 1024) < 1
                     ? "Less than a MB"
-                    : `${(file.filesize / 1e6).toFixed(2)} MB`}
+                    : `${(file.filesize / (1024 * 1024)).toFixed(2)} MB`}
                 </div>
                 <div
                   className="filedate"

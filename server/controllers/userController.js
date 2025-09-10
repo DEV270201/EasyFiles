@@ -203,6 +203,7 @@ exports.UpdateProfile = async (req) => {
 };
 
 exports.updateUserStats = (req)=> {
+   console.log("req: ", req.body);
    if(req.body.uploadIncrement == 0 && req.body.downloadIncrement == 0)
        return;
    if(userAnalyticsMap.has(req.user.id)){
@@ -232,6 +233,8 @@ const getBulkWriteAnalyticsRecords = (userAnalyticsMap) => {
   let bulkWrites = [];
   let count = 0;
   for (const [key, value] of userAnalyticsMap) {
+    console.log("key: ",key);
+    console.log("value: ",value);
     if (count >= 10) break;
 
     let bulkWriteObj = {
@@ -249,6 +252,7 @@ const getBulkWriteAnalyticsRecords = (userAnalyticsMap) => {
     };
 
     bulkWrites.push(bulkWriteObj);
+    console.log("obj: ", JSON.stringify(bulkWriteObj));
     userAnalyticsMap.delete(key); //releasing memory
     count++;
   }
@@ -257,21 +261,26 @@ const getBulkWriteAnalyticsRecords = (userAnalyticsMap) => {
 };
 
 const triggerDBFlush = async () => {
+  console.log("db flush start before try: ", userAnalyticsMap.size);
   try {
-    //get all the bulk write records
-    let bulkWrites = getBulkWriteAnalyticsRecords(userAnalyticsMap);
 
-    //perform bulk write operation
-    await User.bulkWrite(bulkWrites, {
-      ordered: false,
-    });
-
-    console.log("Bulk Update of user analytics is successful!!!");
+    if(userAnalyticsMap.size != 0){
+      //get all the bulk write records
+      let bulkWrites = getBulkWriteAnalyticsRecords(userAnalyticsMap);
+  
+      //perform bulk write operation
+      await User.bulkWrite(bulkWrites, {
+        ordered: false,
+      });
+  
+      console.log("Bulk Update of user analytics is successful!!!");
+    }
   } catch (err) {
     console.log("Error in processing analytics records: ", err);
     //set up a AWS SQS/ RabbitMQ for fallback mechanism
     return;
   } finally {
+    console.log("finally");
     clearTimeoutID = setTimeout(() => {
       triggerDBFlush();
     }, 5000);

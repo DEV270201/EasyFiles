@@ -1,8 +1,9 @@
-import React,{useRef,useState,useContext,useEffect} from "react";
+import {useRef,useState,useContext,useEffect} from "react";
 import Swal from 'sweetalert2';
 import {useHistory,NavLink} from 'react-router-dom';
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
+import { ThemeContext } from "../context/ThemeContext";
 import Button from "../components/Button";
 
 //Here I am going to use uncontrolled components because I don't feel the of need controlled components.
@@ -14,7 +15,8 @@ const Login = () => {
     const pref = useRef(null);
     const history = useHistory();
     const [load,setLoad] = useState(false);
-    const {isLoggedIn,setLoginStatus,Theme,fontStyle} = useContext(UserContext);
+    const {isLoggedIn,setLoginStatus} = useContext(UserContext);
+    const {Theme, fontStyle} = useContext(ThemeContext);
 
     useEffect(()=>{
         if(isLoggedIn){

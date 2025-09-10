@@ -2,13 +2,15 @@ import { useEffect, useState, useContext } from 'react';
 import axios from "axios";
 import Swal from 'sweetalert2';
 import { UserContext } from '../context/UserContext';
+import { ThemeContext } from '../context/ThemeContext';
 import { useHistory } from 'react-router-dom';
 import '../css/Files.css';
 import FileIterator from '../components/FileIterator';
 
 const Files = () => {
     const [files, setFiles] = useState([]);
-    const { Theme, isLoggedIn, fontStyle } = useContext(UserContext);
+    const { isLoggedIn } = useContext(UserContext);
+    const {Theme, fontStyle} = useContext(ThemeContext);
     let history = useHistory();
     const [isLoad, setLoad] = useState(true);
 
