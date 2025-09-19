@@ -261,7 +261,6 @@ const getBulkWriteAnalyticsRecords = (userAnalyticsMap) => {
 };
 
 const triggerDBFlush = async () => {
-  console.log("db flush start before try: ", userAnalyticsMap.size);
   try {
 
     if(userAnalyticsMap.size != 0){
@@ -280,7 +279,6 @@ const triggerDBFlush = async () => {
     //set up a AWS SQS/ RabbitMQ for fallback mechanism
     return;
   } finally {
-    console.log("finally");
     clearTimeoutID = setTimeout(() => {
       triggerDBFlush();
     }, 5000);

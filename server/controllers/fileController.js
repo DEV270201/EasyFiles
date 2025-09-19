@@ -1,6 +1,9 @@
 const {
-  S3
+  S3, PutObjectCommand,
+  CreateMultipartUploadCommand,
+  UploadPartCommand, CompleteMultipartUploadCommand
 } = require("@aws-sdk/client-s3");
+const {getSignedUrl} = require("@aws-sdk/s3-request-presigner");
 const { Upload } = require("@aws-sdk/lib-storage");
 const {
   InvokeCommand,
@@ -18,7 +21,7 @@ const s3 = new S3({
 
 // const cloudfront = new CloudFrontClient({});
 const lambdaClient = new LambdaClient({
-  region: "us-east-1",
+  region: process.env.AWS_REGION,
 });
 
 //to make the function sleep as we try for exponential backoff
@@ -95,6 +98,174 @@ exports.Fetcher = async (req) => {
     throw err;
   }
 };
+
+//function for completing the multipart upload
+exports.completeMultipart = async (req) => {
+   try{
+      let {fileName, uploadId, parts} = req.body;
+      const command = new CompleteMultipartUploadCommand({
+         Bucket: process.env.AWS_S3_BUCKET_NAME,
+         Key: `files/${fileName}`,
+         UploadId: uploadId,
+         MultipartUpload: {
+            Parts: parts.map((part,index)=>({
+              ETag: part.eTag,
+              PartNumber: index+1
+            }))
+         }
+      });
+
+     const data = await s3.send(command);
+     return data;
+   }catch(err){
+      console.log(`Error while completing the multipart upload ---> ${fileName}: `, err);
+      throw err;
+   }
+}
+//function for generating single presigned url for S3 upload
+exports.generateSinglePresignedURL = async (req) => {
+   try{      
+      let fileName = req.body.fileName;
+      const putCommand = new PutObjectCommand({
+         Bucket: process.env.AWS_S3_BUCKET_NAME,
+         Key: `files/${fileName}`,
+      });
+
+      const presignedUrl = await getSignedUrl(s3,putCommand,{
+        expiresIn: 180
+      });
+
+      return presignedUrl;
+   }catch(err){
+      console.log(`Error occurred while generating single presigned url ${fileName}: `, err);
+      throw err;
+   }
+}
+
+
+//function for generating single presigned url for S3 upload
+exports.generateSinglePresignedURL = async (req) => {
+   try{      
+      let fileName = req.body.fileName;
+      const putCommand = new PutObjectCommand({
+         Bucket: process.env.AWS_S3_BUCKET_NAME,
+         Key: `files/${fileName}`,
+      });
+
+      const presignedUrl = await getSignedUrl(s3,putCommand,{
+        expiresIn: 180
+      });
+
+      return presignedUrl;
+   }catch(err){
+      console.log(`Error occurred while generating single presigned url ${fileName}: `, err);
+      throw err;
+   }
+}
+
+//function for initiating multipart request
+exports.initiateMultipart = async (req) => {
+   try{
+
+    //initiate multipart upload process
+    let fileName = req.body.fileName;
+    let contentType = req.body.contentType;
+
+    const params = {
+      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Key: `files/${fileName}`,
+      ContentType: contentType
+    }
+    const createCommand = new CreateMultipartUploadCommand(params);
+    const {UploadId} = await s3.send(createCommand);
+    return UploadId;
+   }catch(err){
+      console.log(`Error while initiating multipart upload ${fileName}: `, err);
+      throw err;
+   }
+}
+
+//function for generating presigned urls for S3 multipart upload
+exports.generatePresignedURLs = async (req) => {
+   try{
+      let {fileName, uploadId, partsCount} = req.body;
+      let totalParts = Array.from({length: partsCount}, (_,index)=> index+1);
+      let successUrls = [];
+      let failedUrls = [];
+
+      await Promise.all(
+        //traverse through all the parts
+        totalParts.map(async (partNumber)=>{
+             try{
+              const command = new UploadPartCommand({
+                Bucket: process.env.AWS_S3_BUCKET_NAME,
+                Key: `files/${fileName}`,
+                UploadId: uploadId,
+                PartNumber: partNumber
+              });
+              
+              //generate presigned urls for each of the part number
+              const signedUrl = await getSignedUrl(s3, command, {
+                expiresIn: 120 //valid for 2 minutes
+              })
+              
+              //if generated successfully then push it in the success array
+              successUrls.push({
+                  uploadId,
+                  partNumber,
+                  fileName,
+                  url: signedUrl
+              })
+
+             }catch(err){
+                //failed then push it in the failed array with sufficient information for retries
+                console.log(`Error in generating presigned url for ${fileName} --- ${partNumber}: `,err);
+                failedUrls.push({
+                  uploadId,
+                  partNumber,
+                  fileName,
+                  retry: true
+                })
+             }
+        })
+      );
+
+      return {
+         successUrls,
+         failedUrls
+      }
+
+   }catch(err){
+      console.log(`Error occurred while generating multiple presigned urls ${fileName}: `, err);
+      throw err;
+   }
+}
+
+//saving file details into db
+exports.saveFileDetails = async (req) => {
+   try {
+    console.log(req.body);
+    let { size, type, s3FileName, originalName, isPrivate } = req.body;
+    let key = `files/${s3FileName}`;
+    let file = {
+      filename: originalName, //file related details
+      uploadedBy: req.user.id, //file related details
+      filesize: size, // file related details
+      filetype: type, //file related details
+      bucket: process.env.AWS_S3_BUCKET_NAME, //s3 related details
+      key, //s3 related details
+      isPrivate: isPrivate,
+      cloudfront: process.env.AWS_CLOUDFRONT + "/" + key,
+    };
+
+    await File.create(file);
+    return;
+  } catch (err) {
+    console.log("Error while saving file details into database: ", err);
+    throw err;
+  }
+}
+
 
 //updating the status of the file
 exports.updateStatus = async (req) => {

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const upload = require("../utils/Upload");
-const {Uploader,Fetcher,deleteFileFromS3,updateStatus} = require("../controllers/fileController");
+const {Uploader,Fetcher,deleteFileFromS3,updateStatus, generateSinglePresignedURL, saveFileDetails, initiateMultipart, generatePresignedURLs, completeMultipart} = require("../controllers/fileController");
 const Auth = require('../Middleware/Auth');
 
 //allowing only single files to upload
@@ -36,6 +36,72 @@ router.post("/upload",[Auth,upload.single('file')],async (req,res,next)=>{
   }
 });
 
+//request to complete the multipart upload request
+router.post("/completeMultipart", Auth, async(req,res,next)=>{
+   try{
+      let data = await completeMultipart(req);
+      return res.status(200).json({
+        status: "success",
+        data
+      });
+   }catch(err){
+      return next(err);
+   }
+});
+
+//request for initiating multipart
+router.post("/intiateMultipart", Auth, async(req,res,next)=> {
+  try{
+    let UploadId = await initiateMultipart(req);
+     return res.status(201).json({
+       status : "success",
+       uploadId: UploadId
+     });
+  }catch(err){
+     return next(err);
+  }
+})
+
+//generate single presigned url
+router.post("/generateSinglePresignedUrl", Auth, async(req,res,next)=>{
+   try{
+      let presignedUrl = await generateSinglePresignedURL(req);
+      return res.status(200).json({
+        status: "success",
+        data: presignedUrl,
+      });
+   }catch(err){
+      return next(err);
+   }
+});
+
+//generate batched presigned urls
+router.post("/generatePresignedUrls", Auth, async(req,res,next)=>{
+   try{
+      let resp = await generatePresignedURLs(req);
+      return res.status(200).json({
+        status: "success",
+        successUrls: resp.successUrls,
+        failedUrls: resp.failedUrls
+      });
+   }catch(err){
+      return next(err);
+   }
+});
+
+//saving the file related details into the db after file successfully uploads on s3
+router.post("/saveFile", Auth, async(req,res,next)=> {
+   try{
+      let resp = await saveFileDetails(req);
+      return res.status(200).json({
+        status: "success",
+        msg: "File uploaded successfully!"
+      });
+   }catch(err){
+      return next(err);
+   }
+});
+
 //deleting a particular file
 router.delete('/delete/:fileID', deleteFileFromS3);
 
@@ -43,7 +109,7 @@ router.delete('/delete/:fileID', deleteFileFromS3);
 router.patch('/updateStatus/:fileID',async(req,res,next)=>{
  try{
   await updateStatus(req);
-  res.status(200).json({
+  return res.status(200).json({
    status:"success",
    msg: "File status updated successfully"
   });
