@@ -17,7 +17,16 @@ A web-based application for uploading, downloading, previewing, and managing PDF
 
 - **AWS S3:** Used for secure, scalable file storage.
 - **AWS EC2:** Hosts the application server.
-- **Nginx:** Acts as a reverse proxy and static file server for React build files.
+- **AWS Cloudfront:** Integrated Cloudfront CDN for caching files.
+- **AWS Lambda:** Integrated AWS Lambda for deleting files in the background asychronously.
+- **AWS SQS:** Integrated AWS SQS to capture failed delete operations for processing later.
+- **AWS IAM:** Assigned IAM roles to different services like Lambda, EC2, SQS to interact with each other.
+- **Nginx:** Acting as a reverse proxy and static file server for React build files.
+
+## Currently Working
+
+- **Multipart Uploads:** Integrating S3 multipart file uploads enabling to upload large files conveniently and at a faster rate
+- **Load Testing:** Integrating load testing for APIs to understand bottlenecks and latency
 
 ## Upcoming Optimizations
 
@@ -29,7 +38,7 @@ A web-based application for uploading, downloading, previewing, and managing PDF
 Below are the environment variables required for the application:
 
 NODE_ENV = production / development <br>
-PORT = 4000 <br>
+PORT = your desired port number <br>
 DEV_DATABASE = your development database URL <br>
 PROD_DATABASE = your production database URL <br> 
 JWT_SECRET = paste your own JWT secret <br>
@@ -39,36 +48,11 @@ AWS_S3_BUCKET_NAME = hosted S3 bucket name <br>
 
 ## Technologies Used
 
-- **Frontend:** React (for responsive UI, file previews, component optimization)
+- **Frontend:** React.js (for responsive UI, file previews, component optimization)
 - **Backend:** Node.js (for RESTful APIs, file management, and AWS S3 integration)
 - **Database:** MongoDB (for metadata and user data)
 - **File Storage:** AWS S3 (for scalable file storage)
-- **Deployment:** AWS EC2, Nginx, Systemd (for reliable app hosting and management) (Assigned IAM Role to EC2 instance for interacting with S3 Bucket)
-
-ScreenShots:
-
-HOME:
-![image](https://user-images.githubusercontent.com/56965636/205449549-5923f4c6-230e-45fc-b7ba-d67d173427d0.png)
-
-REGISTER:
-![image](https://user-images.githubusercontent.com/56965636/205449593-4d89f118-34b3-47c2-8320-6b97be84be16.png)
-
-LOGIN:
-![image](https://user-images.githubusercontent.com/56965636/205450175-f899c8b0-4d08-4fde-838f-5dcf317e158b.png)
-
-UPLOAD:
-![image](https://user-images.githubusercontent.com/56965636/205449788-c400aee3-e83b-4c74-9ff1-70f47f7c9f2b.png)
-
-FILES:
-![image](https://github.com/user-attachments/assets/dde17a06-5688-4bc6-8b51-bceab1a4bb58)
-
-![image](https://github.com/user-attachments/assets/6920d61c-9578-4c12-b416-7ac50a0eb5fa)
-
-PROFILE:
-![image](https://github.com/user-attachments/assets/ca75932b-77ab-49be-ad81-18fc680df5dd)
-
-STATUS CHANGING OF FILE:
-![image](https://user-images.githubusercontent.com/56965636/205450112-d99d894b-4b45-4255-aaac-ae8d25433dd5.png)
-
+- **Deployment:** AWS EC2, Nginx, Systemd (for reliable app hosting and management) (Assigned IAM Role to EC2 instance for interacting with S3 Bucket), AWS Lambda, AWS SQS
+- **Load Testing** Artillery
 
 <h3 align="center"><b>Developed with :heart: by <a href="https://github.com/DEV270201">Devansh Shah</a></b></h3>
