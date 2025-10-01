@@ -7,7 +7,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import Button from "../components/Button";
 
 const Upload = () => {
-  const fref = useRef(null);
+  const [file, setFile] = useState();
   // const [filename,setFilename] = useState("");
   const [status, setStatus] = useState("Private");
   const history = useHistory();
@@ -52,7 +52,15 @@ const Upload = () => {
   //5. return success message
 
   const isVerifyFileInfoCorrect = () => {
-    let file = fref.current.files[0];
+    if(!file){
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "File not selected!",
+      });
+      return false;
+    }
+
     let { size, type } = file;
     console.log("type: ", type);
     //check the file type
@@ -81,6 +89,23 @@ const Upload = () => {
     return true;
   };
 
+  const handleFileChange = (event) => {
+    let file;
+    if (event.target.files) {
+      file = event.target.files[0];
+    }
+    setFile(file);
+  };
+
+  const getExtension = (fileType) => {
+    let obj = {
+      "application/pdf" : "pdf",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx"
+    }
+
+    return obj[fileType] ? obj[fileType] : "";
+  }
+
   const handleSinglePartUpload = async (fileDetails) => {
     try {
       setLoad(true);
@@ -91,7 +116,7 @@ const Upload = () => {
 
       //upload the file to S3
       let url = urlData.data.data;
-      await axios.put(url, fref.current.files[0], {
+      await axios.put(url, file, {
         headers: {
           "Content-Type": fileDetails.type,
         },
@@ -100,21 +125,23 @@ const Upload = () => {
       console.log("heheheh");
 
       //update the database regarding successful upload
-      await axios.post("/api/files/saveFile", {...fileDetails, isPrivate: status.includes("Private")});
-      updateAnalytics('num_upload','uploadIncrement'); //incrementing per user upload metric
+      await axios.post("/api/files/saveFile", {
+        ...fileDetails,
+        isPrivate: status.includes("Private"),
+      });
+      updateAnalytics("num_upload", "uploadIncrement"); //incrementing per user upload metric
       Swal.fire({
         icon: "success",
         title: "Yayy...",
         text: "File uploaded successfully!",
       });
 
-      fref.current.value = null;
+      setFile(undefined);
     } catch (err) {
       console.log("Error while uploading the file: ", err);
     } finally {
       setLoad(false);
     }
-
     return;
   };
 
@@ -124,7 +151,7 @@ const Upload = () => {
       return;
     }
 
-    let { size, type, name } = fref.current.files[0];
+    let { size, type, name } = file;
     let sizeForSingleUpload = 25 * 1e6;
     let { s3_file_name, original_name } = getFileName(type, name);
     let fileDetails = {
@@ -197,135 +224,125 @@ const Upload = () => {
 
   return (
     <>
-      <div className="container p-3">
-        <div className="outer">
-          <h4
-            className="text-center font-weight-light mt-1 mb-2"
-            style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}
+      <div className="w-full bg-deepblack py-6 flex justify-center items-start">
+        <div className="bg-darkaccent w-[90%] sm:w-[50%] xl:w-[25%] p-4 flex flex-col rounded my-5">
+          <h2
+            className="text-center text-gray-200 mt-1 mb-2 text-xl font-bold"
+            style={{ fontFamily: `${fontStyle}` }}
           >
-            Upload your file here...
-          </h4>
-          <div className="inputs">
-            <div
-              className="label font-weight-bold"
+            UPLOAD FILE .....
+          </h2>
+
+          <label htmlFor="file" className="text-gray-200">
+            File <sup className="-ml-1 text-red-500">*</sup>
+          </label>
+          <div className="relative">
+            <input
+              type="file"
+              className="hidden"
+              id="file"
+              aria-describedby="Upload file"
+              name="file"
+              required
+              onChange={handleFileChange}
+            />
+            <label
               htmlFor="file"
+              className={`cursor-pointer flex items-center justify-between border border-gray-200 p-2 rounded`}
+            >
+              <span className={"text-gray-200"}>
+                {file ? ( file.name.length > 20 ? file.name.slice(0,20)+'...'+getExtension(file.type) : file.name) : "Choose file..."}
+              </span>
+              <svg
+                className="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                />
+              </svg>
+            </label>
+          </div>
+
+          <div className="d-flex flex-column align-items-start mt-2">
+            <h6
+              className="text-gray-200 mb-1"
               style={{
-                color: `${Theme.textColor}`,
                 fontFamily: `${fontStyle}`,
               }}
             >
-              File*
-            </div>
-            <input
-              type="file"
-              className="form-control myform"
-              id="file"
-              aria-describedby="emailHelp"
-              name="file"
-              ref={fref}
-              required
-            />
-            {/* <div className="label font-weight-bold" htmlFor="Filename" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>File Name*</div>
-                        <input type="text" className="form-control myform" id="Filename" name="filename" onChange={updateFilename} value={filename} />
-                        {
-                            filename.length > 15 &&
-                            <p style={{ color: `${Theme.danger}`, fontFamily: `${fontStyle}` }}>File name should be less than 15 characters</p>
-                        } */}
-            <div className="d-flex flex-column align-items-start mt-2">
-              <h6
-                className="font-weight-bold"
+              Status<sup className="text-red-500">*</sup>
+            </h6>
+            <div className="form-check">
+              <input
+                className="form-check-input accent-limegreen hover:cursor-pointer"
+                type="radio"
+                name="isPrivate"
+                id="ip1"
+                value={"Private"}
+                onChange={changeStatus}
+                checked={status.includes("Private") ? true : false}
+              />
+              <div
+                className="text-gray-200"
                 style={{
-                  color: `${Theme.textColor}`,
                   fontFamily: `${fontStyle}`,
                 }}
               >
-                Status:
-              </h6>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="isPrivate"
-                  id="ip1"
-                  value={"Private"}
-                  onChange={changeStatus}
-                  checked={status.includes("Private") ? true : false}
-                />
-                <div
-                  style={{
-                    color: `${Theme.textColor}`,
-                    fontFamily: `${fontStyle}`,
-                  }}
-                >
-                  Private
-                </div>
-              </div>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="isPrivate"
-                  id="ip2"
-                  value={"Public"}
-                  onChange={changeStatus}
-                  checked={status.includes("Public") ? true : false}
-                />
-                <div
-                  style={{
-                    color: `${Theme.textColor}`,
-                    fontFamily: `${fontStyle}`,
-                  }}
-                >
-                  Public
-                </div>
+                Private
               </div>
             </div>
-            {load ? (
-              <Button
-                text={"Uploading..."}
-                disbaled={true}
-                fontStyle={fontStyle}
-                theme={Theme.theme}
-                className={"mt-3"}
+            <div className="form-check">
+              <input
+                className="form-check-input accent-limegreen hover:cursor-pointer"
+                type="radio"
+                name="isPrivate"
+                id="ip2"
+                value={"Public"}
+                onChange={changeStatus}
+                checked={status.includes("Public") ? true : false}
               />
-            ) : (
-              <Button
-                text={"Upload"}
-                callback_func={upload}
-                disbaled={false}
-                fontStyle={fontStyle}
-                theme={Theme.theme}
-                className={"mt-3"}
-              />
-            )}
+              <div
+              className="text-gray-200"
+                style={{
+                  fontFamily: `${fontStyle}`,
+                }}
+              >
+                Public
+              </div>
+            </div>
           </div>
+
+          {load ? (
+            <Button
+              text={"Uploading..."}
+              disabled={true}
+              fontStyle={fontStyle}
+              className={
+                "mt-3 border-limegreen text-limegreen hover:bg-limegreen hover:text-black"
+              }
+            />
+          ) : (
+            <Button
+              text={"Upload"}
+              callback_func={upload}
+              disabled={false}
+              fontStyle={fontStyle}
+              className={
+                "mt-3 border-limegreen text-limegreen hover:bg-limegreen hover:text-black"
+              }
+            />
+          )}
+
           <div className="mt-3">
-            <div
-              style={{
-                color: `${Theme.textColor}`,
-                fontFamily: `${fontStyle}`,
-              }}
-            >
-              NOTE :{" "}
-            </div>
-            <div
-              style={{
-                color: `${Theme.textColor}`,
-                fontFamily: `${fontStyle}`,
-              }}
-            >
-              1] If you set the status of the file as <b>Private</b> then nobody
-              would have access to it.
-            </div>
-            <div
-              style={{
-                color: `${Theme.textColor}`,
-                fontFamily: `${fontStyle}`,
-              }}
-            >
-              2] If you set the status of the file as <b>Public</b> then
-              everyone can have access to it.
-            </div>
+            <p className="text-lg font-bold text-gray-200">NOTE: </p>
+            <p className="text-sm md:text-lg text-gray-200">1) <span className="font-semibold">PUBLIC</span> files would be accessible to everyone!</p>
+            <p className="text-sm md:text-lg text-gray-200">2) <span className="font-semibold">PRIVATE</span> files would be accessible only by you!</p>
           </div>
         </div>
       </div>

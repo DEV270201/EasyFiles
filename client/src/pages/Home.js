@@ -1,12 +1,12 @@
-import Modal from "../components/Modal";
 
-const Home = ()=>{
 
-    return(
-        <>
-         <Modal />
-        </>
-    );
-}
+const Home = () => {
+
+  return (
+    <>
+      
+    </>
+  );
+};
 
 export default Home;

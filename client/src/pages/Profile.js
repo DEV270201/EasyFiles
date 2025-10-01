@@ -136,20 +136,19 @@ const Profile = () => {
 
   return (
     <>
-      <div className="container">
+      <div className="bg-deepblack w-full">
         {/* profile page  */}
         <div
-          className="d-flex flex-md-row flex-column mt-2 align-items-center"
-          style={{ width: "100%" }}
+          className="d-flex flex-md-row flex-column my-4 align-items-center container"
         >
           {/* profile picture */}
           <div className="prof_pic_div p-2 mx-2">
             {/* animator */}
             {isLoad ? (
-              <Loader height="150px" width="150px" color={Theme.textColor} />
+              <Loader height="150px" width="150px" className="bg-limegreen" />
             ) : (
               <div
-                className="p-1 rounded-circle"
+                className={`p-2 rounded-circle ${!isLoad && 'border'}`}
                 style={{ boxShadow: `1px 1px 4px ${Theme.textColor}` }}
               >
                 <ProfilePic
@@ -159,7 +158,7 @@ const Profile = () => {
                 />
               </div>
             )}
-            <div
+            {/* <div
               className="d-flex justify-content-between mt-3"
               style={{ width: "200px" }}
             >
@@ -191,54 +190,49 @@ const Profile = () => {
                 onChange={updateProfilePic}
                 style={{ display: "none" }}
               />
-            </div>
+            </div> */}
           </div>
 
           {/* profile details */}
           <div
-            className="prof_details_div p-4 my-2"
-            style={{ boxShadow: `1px 1px 4px ${Theme.textColor}` }}
+            className="prof_details_div p-4 my-2 border"
           >
             <div
-              className="my-2"
+              className="text-gray-200 my-2"
               style={{
-                color: `${Theme.textColor}`,
                 fontFamily: `${fontStyle}`,
               }}
             >
               <span className="font-weight-bold">
-                <FontAwesomeIcon icon={faUser} /> Username:
+                <FontAwesomeIcon icon={faUser} /> Username :
               </span>{" "}
               {profile.username}
             </div>
             <div
-              className="my-2"
+              className="text-gray-200 my-2"
               style={{
-                color: `${Theme.textColor}`,
                 fontFamily: `${fontStyle}`,
               }}
             >
               <span className="font-weight-bold">
-                <FontAwesomeIcon icon={faEnvelope} /> MailID:
+                <FontAwesomeIcon icon={faEnvelope} /> MailID :
               </span>{" "}
               {profile.email}
             </div>
             <div
-              className="my-2"
+              className="text-gray-200 my-2"
               style={{
-                color: `${Theme.textColor}`,
                 fontFamily: `${fontStyle}`,
               }}
             >
               <span className="font-weight-bold">
-                <FontAwesomeIcon icon={faCalendarDays} /> Joined Date:
+                <FontAwesomeIcon icon={faCalendarDays} /> Joined Date :
               </span>{" "}
               {profile.dateJoined.substring(0, profile.dateJoined.indexOf("T"))}
             </div>
             <div
-              className="my-2"
+              className="text-gray-200 my-2"
               style={{
-                color: `${Theme.textColor}`,
                 fontFamily: `${fontStyle}`,
               }}
             >
@@ -246,12 +240,11 @@ const Profile = () => {
                 <FontAwesomeIcon icon={faUpload} /> File Uploads{" "}
                 <span className="font-weight-lighter">(till date)</span> :
               </span>
-              {profile.num_upload}
+              {profile.num_upload > 10 ? profile.num_upload : '0' + profile.num_upload}
             </div>
             <div
-              className="my-2"
+              className="text-gray-200 my-2"
               style={{
-                color: `${Theme.textColor}`,
                 fontFamily: `${fontStyle}`,
               }}
             >
@@ -259,7 +252,7 @@ const Profile = () => {
                 <FontAwesomeIcon icon={faDownload} /> File Downloads{" "}
                 <span className="font-weight-lighter">(till date)</span> :
               </span>
-              {profile.num_download}
+              {profile.num_download > 10 ? profile.num_download : '0' + profile.num_download}
             </div>
           </div>
         </div>
@@ -267,8 +260,8 @@ const Profile = () => {
         {/* files uploaded by the user */}
         {fileLoad ?
           <h5
-            className="xs:text-center md:text-left font-weight-light my-3"
-            style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}
+            className="text-center font-weight-light my-3 text-gray-200"
+            style={{fontFamily: `${fontStyle}` }}
           >
             Loading..it may take a while..
           </h5>

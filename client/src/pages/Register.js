@@ -28,7 +28,7 @@ const Register = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      history.push("/");
+      history.push("/upload");
     }
   }, [isLoggedIn, history]);
 
@@ -153,100 +153,63 @@ const Register = () => {
   };
   return (
     <>
-      <div className="container p-3">
-        <div className="outer" style={{ marginBottom: "35px" }}>
-          <h4
-            className="text-center font-weight-light mt-1 mb-2"
-            style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}
+      <div className="w-full bg-deepblack flex justify-center items-start py-6">
+        <div className="bg-darkaccent w-[90%] sm:w-[50%] xl:w-[25%] px-3 py-3 flex flex-col rounded my-5">
+            <h2
+            className="text-center text-gray-200 mt-1 mb-2 text-xl font-bold"
+            style={{ fontFamily: `${fontStyle}` }}
           >
-            Register Yourself...
-          </h4>
-          <div className="inputs">
-            <div
-              className="label"
-              htmlFor="Email"
-              style={{
-                color: `${Theme.textColor}`,
-                fontFamily: `${fontStyle}`,
-              }}
-            >
-              Email address*
-            </div>
+            REGISTER YOURSELF....
+          </h2>
+
             <input
               type="email"
-              className="form-control myform"
+              className="form-control my-2 p-4 bg-deepblack outline-none border-none text-white focus:bg-deepblack focus:outline-none focus:ring-1 focus:ring-limegreen"
               id="Email"
               aria-describedby="emailHelp"
               name="email"
               onChange={collectDetails}
               value={data.email}
+              placeholder="Your Email"
               required
             />
-            <div
-              className="label"
-              htmlFor="Username"
-              style={{
-                color: `${Theme.textColor}`,
-                fontFamily: `${fontStyle}`,
-              }}
-            >
-              Username*
-            </div>
             <input
               type="text"
-              className="form-control myform"
+              className="form-control my-2 p-4 bg-deepblack outline-none border-none text-white focus:bg-deepblack focus:outline-none focus:ring-1 focus:ring-limegreen"
               id="Username"
               aria-describedby="emailHelp"
               name="username"
               onChange={collectDetails}
               value={data.username}
+              placeholder="Your Username"
               required
             />
-            <div
-              className="label"
-              htmlFor="Password"
-              style={{
-                color: `${Theme.textColor}`,
-                fontFamily: `${fontStyle}`,
-              }}
-            >
-              Password*
-            </div>
             <input
               type="password"
-              className="form-control myform"
+              className="form-control my-2 p-4 bg-deepblack outline-none border-none text-white focus:bg-deepblack focus:outline-none focus:ring-1 focus:ring-limegreen"
               id="Password"
               name="password"
               onChange={collectDetails}
               value={data.password}
               required
+              placeholder="Your Password"
             />
-            <div
-              className="label"
-              htmlFor="ConfirmPassword"
-              style={{
-                color: `${Theme.textColor}`,
-                fontFamily: `${fontStyle}`,
-              }}
-            >
-              Confirm Password*
-            </div>
             <input
               type="password"
-              className="form-control myform"
+              className="form-control my-2 p-4 bg-deepblack outline-none border-none text-white focus:bg-deepblack focus:outline-none focus:ring-1 focus:ring-limegreen"
               id="ConfirmPassword"
               name="confirmPassword"
               onChange={collectDetails}
               value={data.confirmPassword}
               required
+              placeholder="Repeat Your Password"
             />
             {load ? (
               <Button
                 text={"Loading..."}
                 disabled={true}
                 fontStyle={fontStyle}
-                theme={Theme.theme}
-                className={"mt-3"}
+                 className={"mt-3 border-limegreen text-limegreen hover:bg-limegreen hover:text-black"}
               />
             ) : (
               <Button
@@ -254,131 +217,129 @@ const Register = () => {
                 callback_func={register}
                 disabled={false}
                 fontStyle={fontStyle}
-                theme={Theme.theme}
-                className={"mt-3"}
+                className={"mt-3 border-limegreen text-limegreen hover:bg-limegreen hover:text-black"}
               />
             )}
-          </div>
-          <div className="mt-3">
+              <div className="my-3">
             <div
+            className="text-gray-200"
               style={{
-                color: `${Theme.textColor}`,
                 fontFamily: `${fontStyle}`,
               }}
             >
-              NOTE :{" "}
+              For Password: 
             </div>
             {rules.startAlphabet ? (
               <div
+                className="text-gray-200"
                 style={{
-                  color: `${Theme.secondary}`,
                   fontFamily: `${fontStyle}`,
                 }}
               >
                 <span>
                   <FontAwesomeIcon icon={faCheck} size="lg" className="mr-2"/>
                 </span>
-                Password should begin with an alphatbet.
+                Begins with an alphatbet.
               </div>
             ) : (
               <div
+              className="text-red-500"
                 style={{
-                  color: `${Theme.danger}`,
                   fontFamily: `${fontStyle}`,
                 }}
               >
                 <span>
                   <FontAwesomeIcon icon={faXmark} size="lg" className="mr-2"/>
                 </span>
-                Password should begin with an alphatbet.
+                           Begins with an alphatbet.
               </div>
             )}
             {rules.isLengthPerfect ? (
               <div
+                   className="text-gray-200"
                 style={{
-                  color: `${Theme.secondary}`,
                   fontFamily: `${fontStyle}`,
                 }}
               >
                 <span>
                   <FontAwesomeIcon icon={faCheck} size="lg"  className="mr-2"/>
                 </span>
-                Password should be minimum 8 characters and maximum 15
-                characters long.
+                Min. 8 characters and Max. 15
+                characters.
               </div>
             ) : (
               <div
+                          className="text-red-500"
                 style={{
-                  color: `${Theme.danger}`,
                   fontFamily: `${fontStyle}`,
                 }}
               >
                 <span>
                   <FontAwesomeIcon icon={faXmark} size="lg" className="mr-2" />
                 </span>
-                Password should be minimum 8 characters and maximum 15
-                characters long.
+                    Min. 8 characters and Max. 15
+                characters.
               </div>
             )}
             {rules.containsDigit ? (
               <div
+                   className="text-gray-200"
                 style={{
-                  color: `${Theme.secondary}`,
                   fontFamily: `${fontStyle}`,
                 }}
               >
                 <span>
                   <FontAwesomeIcon icon={faCheck} size="lg" className="mr-2" />
                 </span>
-                Password should contain a digit between 0-9.
+                A digit between 0-9.
               </div>
             ) : (
               <div
+                          className="text-red-500"
                 style={{
-                  color: `${Theme.danger}`,
                   fontFamily: `${fontStyle}`,
                 }}
               >
                 <span>
                   <FontAwesomeIcon icon={faXmark} size="lg" className="mr-2" />
                 </span>
-                Password should contain a digit between 0-9.
+                 A digit between 0-9.
               </div>
             )}
             {rules.containsSpecialChars ? (
               <div
+                   className="text-gray-200"
                 style={{
-                  color: `${Theme.secondary}`,
                   fontFamily: `${fontStyle}`,
                 }}
               >
                 <span>
                   <FontAwesomeIcon icon={faCheck} size="lg" className="mr-2" />
                 </span>
-                Password should contain atleast one special character like '@'
-                '#' or '$' only.
+                 Atleast 1 special character (@
+                # or $).
               </div>
             ) : (
               <div
+                          className="text-red-500"
                 style={{
-                  color: `${Theme.danger}`,
                   fontFamily: `${fontStyle}`,
                 }}
               >
                 <span>
                   <FontAwesomeIcon icon={faXmark} size="lg" className="mr-2"/>
                 </span>
-                Password should contain atleast one special character like '@'
-                '#' or '$' only.
+                   Atleast 1 special character (@
+                # or $).
               </div>
             )}
-          </div>
-          <p
-            className="my-1 font-weight-bold"
-            style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}
+              <p
+            className="mt-3 font-bold text-gray-200"
+            style={{fontFamily: `${fontStyle}` }}
           >
-            Already have an account? <NavLink to={"/user/login"}>Login</NavLink>
+            Already have an account? <NavLink className="text-blue-400" to={"/user/login"}>Login</NavLink>
           </p>
+          </div>
         </div>
       </div>
     </>

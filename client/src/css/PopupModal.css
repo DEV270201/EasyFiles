@@ -3,12 +3,14 @@
     width: 100vw;
     display: flex;
     justify-content: center;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0,0,0,0.3);
     overflow: hidden;
     position: fixed;
     top:0%;
     left: 0%;
     z-index: 100;
+    backdrop-filter: blur(2px); /* Adjust blur intensity as needed */
+    -webkit-backdrop-filter: blur(2px); /* For Safari compatibility */
 }
 
 body:has(.modalOuter) {

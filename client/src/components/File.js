@@ -3,7 +3,7 @@ import { UserContext } from "../context/UserContext";
 import ProfilePic from "./ProfilePic";
 import Button from "./Button";
 import { NavLink } from "react-router-dom";
-import { faTrashCan, faDownload } from "@fortawesome/free-solid-svg-icons";
+import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -12,6 +12,7 @@ import FileChangeStatusModal from "./FileStatusChangeModal";
 import PreviewReviewer from "./PreviewReviewer";
 import Loader from "./Loader";
 import { ThemeContext } from "../context/ThemeContext";
+import FileDeleteModal from "./FileDeleteModal";
 
 const File = ({
   file,
@@ -19,28 +20,12 @@ const File = ({
   updateCurrentFileStatus = null,
   exposeSensitiveFunctions = false,
 }) => {
-  const { profile, updateAnalytics } =
-    useContext(UserContext);
-  const {Theme, fontStyle} = useContext(ThemeContext)
+  const { profile, updateAnalytics } = useContext(UserContext);
+  const { Theme, fontStyle } = useContext(ThemeContext);
   const [showModal, setShowModal] = useState(false);
+  const [showFileDeleteModal, setShowFileDeleteModal] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [load, setLoad] = useState(false);
-
-  // To delete the file
-  const delFile = async (file) => {
-    try {
-      await axios.delete(`/api/files/delete/${file._id}`);
-      updateCurrentFileStatus(file, true); //updating the data from the parent component
-      return;
-    } catch (err) {
-      console.log("err : ", err);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: err.response.data.error,
-      });
-    }
-  };
 
   //function for downloading the file
   const downloadFile = async (file) => {
@@ -64,7 +49,7 @@ const File = ({
       });
 
       //update the metrics
-      updateAnalytics('num_download', 'downloadIncrement');
+      updateAnalytics("num_download", "downloadIncrement");
       return;
     } catch (err) {
       console.log("err in file : ", err);
@@ -73,13 +58,12 @@ const File = ({
         title: "Oops...",
         text: err.response.data.error,
       });
-    }finally{
+    } finally {
       setLoad(false);
     }
   };
 
   const openStatusModal = () => {
-    console.log("called");
     setShowModal(true);
   };
 
@@ -87,9 +71,29 @@ const File = ({
     setShowModal(false);
   };
 
-  const updateFileStatus = () => {
-    updateCurrentFileStatus(file);
+  const openFileDeleteModal = () => {
+    setShowFileDeleteModal(true);
+  };
+
+  const closeFileDeleteModal = () => {
+    setShowFileDeleteModal(false);
+  };
+
+  const updateFileStatus = (isDeleteOperation) => {
+    updateCurrentFileStatus(file, isDeleteOperation);
     closeStatusModal();
+  };
+
+  const performDeleteAction = () => {
+    openFileDeleteModal();
+  };
+
+  const performPerviewAction = () => {
+    setShowPreview(!showPreview);
+  };
+
+  const performStatusAction = () => {
+    openStatusModal();
   };
 
   return (
@@ -101,23 +105,17 @@ const File = ({
           updateCallback={updateFileStatus}
         />
       )}
+        {showFileDeleteModal && (
+        <FileDeleteModal
+          file={file}
+          cancelCallback={closeFileDeleteModal}
+          updateCallback={updateFileStatus}
+        />
+      )}
       <div className="d-flex flex-column my-3">
         {showPostedBy ? (
           <div className="d-flex align-items-center my-1">
-            <div
-              className="mr-1"
-              style={{
-                color: `${Theme.textColor}`,
-                fontFamily: `${fontStyle}`,
-                fontSize: "12px",
-              }}
-            >
-              By:
-            </div>
-            <div
-              className="rounded-circle p-1 mx-1"
-              style={{ border: `1px solid ${Theme.textColor} ` }}
-            >
+            <div className="rounded-circle p-1 mx-1 border">
               <ProfilePic
                 image={file.uploadedBy.profile_pic}
                 height="12px"
@@ -125,9 +123,8 @@ const File = ({
               />
             </div>
             <div
-              className="mx-1"
+              className="mx-1 text-gray-200"
               style={{
-                color: `${Theme.textColor}`,
                 fontFamily: `${fontStyle}`,
                 fontSize: "12px",
               }}
@@ -138,7 +135,6 @@ const File = ({
                 <NavLink
                   to={`/profile/${file.uploadedBy.username}`}
                   style={{
-                    color: `${Theme.textColor}`,
                     textDecoration: "underline",
                   }}
                 >
@@ -148,45 +144,39 @@ const File = ({
             </div>
           </div>
         ) : null}
-        <div style={{ backgroundColor: `${Theme.surfaceColor}` }}>
+        <div className="bg-gradient-to-tr from-deepblack 90% to-deepblack/70 rounded-md">
           <div className="file">
             <div
+              className={`${
+                file.filetype === "pdf" ? "bg-red-600" : "bg-blue-600"
+              }`}
               style={{
                 width: "5px",
-                backgroundColor: `${
-                  file.filetype === "pdf" ? "red" : "dodgerBlue"
-                }`,
               }}
             ></div>
-            <div
-              className="d-flex justify-content-between align-items-center"
-              style={{ width: "99%" }}
-            >
-              <div className="d-flex flex-column justify-center flex-1 mx-2">
+            <div className="flex items-center justify-between w-full">
+              <div className="flex flex-col justify-items-center mx-2">
                 <div
-                  className="filename"
+                  className="filename text-gray-200 text-xs  xs:w-[140px] overflow-auto"
                   style={{
-                    color: `${Theme.textColor}`,
                     fontFamily: `${fontStyle}`,
-                    width: "100%",
-                    overflowX: "scroll",
                   }}
                 >
-                  {file.filename}
+                  {file.filename.length > 17
+                    ? file.filename.slice(0, 17) + "..."
+                    : file.filename}
                 </div>
                 <div
-                  className="filedate"
+                  className="filedate text-gray-200"
                   style={{
-                    color: `${Theme.textColor}`,
                     fontFamily: `${fontStyle}`,
                   }}
                 >
                   {file.dateUploded.substring(0, file.dateUploded.indexOf("T"))}
                 </div>
                 <div
-                  className="filedate"
+                  className="filedate text-gray-200"
                   style={{
-                    color: `${Theme.textColor}`,
                     fontFamily: `${fontStyle}`,
                   }}
                 >
@@ -195,18 +185,16 @@ const File = ({
                     : `${(file.filesize / (1024 * 1024)).toFixed(2)} MB`}
                 </div>
                 <div
-                  className="filedate"
+                  className="filedate text-gray-200 font-semibold"
                   style={{
-                    color: `${Theme.textColor}`,
                     fontFamily: `${fontStyle}`,
                   }}
                 >
-                  {file.filetype}
+                  {file.filetype.toUpperCase()}
                 </div>
                 <div
-                  className="filedate"
+                  className="filedate text-gray-200"
                   style={{
-                    color: `${Theme.textColor}`,
                     fontFamily: `${fontStyle}`,
                   }}
                 >
@@ -216,65 +204,74 @@ const File = ({
               <div className="d-flex flex-column align-items-center">
                 <div className="d-flex align-items-center">
                   {/* donwloading the file */}
-                  { 
-                  
-                    load ? <div className="mr-2"><Loader height="20px" width="20px" color={Theme.textColor} /></div>
-                    :
-                  <Button
-                    icon={
-                      <FontAwesomeIcon icon={faDownload} title="Download" />
-                    }
-                    callback_func={() => downloadFile(file)}
-                    disabled={false}
-                    fontStyle={fontStyle}
-                    theme={Theme.theme}
-                  />
-                  }
-                  {exposeSensitiveFunctions ? (
+                  {load ? (
+                    <div className="mr-2 ">
+                      <Loader height="20px" width="20px" />
+                    </div>
+                  ) : (
                     <Button
                       icon={
-                        <FontAwesomeIcon icon={faTrashCan} title="Delete" />
+                        <FontAwesomeIcon icon={faDownload} title="Download" />
                       }
-                      className="btn-outline-danger"
-                      callback_func={() => delFile(file)}
+                      callback_func={() => downloadFile(file)}
                       disabled={false}
                       fontStyle={fontStyle}
+                      className="border-limegreen text-limegreen hover:bg-limegreen hover:text-black"
                     />
-                  ) : null}
-                  {
-                    showPreview ? 
-                    <Button
-                      text="Close"
-                      callback_func={() => setShowPreview(!showPreview)}
-                      className="btn-outline-danger"
-                      disabled={false}
-                      fontStyle={fontStyle}
-                    />
-                    :
-                       <Button
-                      text="Preview"
-                      callback_func={() => setShowPreview(!showPreview)}
-                      // disabled={file.filetype === "docx"}
-                      fontStyle={fontStyle}
-                      theme={Theme.theme}
-                    />
-                    
-                  }
+                  )}
+
+                  {/* Rest all of the actions should go here  */}
+                  <div className="w-20">
+                    <button
+                      className={`dropdown-toggle outline-none w-full btn bg-deepblack border-limegreen text-limegreen hover:bg-limegreen hover:text-black text-sm`}
+                      id="dropdownMenuLink"
+                      data-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Actions
+                    </button>
+                    <ul
+                      className="dropdown-menu bg-deepblack border-gray-400 text-gray-200"
+                      aria-labelledby="dropdownMenuLink"
+                    >
+                      <li
+                        className={`mx-1 p-1 hover:cursor-pointer hover:bg-darkaccent`}
+                        onClick={performPerviewAction}
+                      >
+                        {showPreview ? "Close Preview" : "Preview"}
+                      </li>
+                      {
+                  exposeSensitiveFunctions ? 
+                  <>
+                      <li
+                        className={`mx-1 p-1 hover:cursor-pointer hover:bg-darkaccent`}
+                        onClick={performStatusAction}
+                      >
+                        Change Status
+                      </li>
+                      <li
+                        className={`mx-1 p-1 hover:cursor-pointer hover:bg-darkaccent`}
+                        onClick={performDeleteAction}
+                      >
+                        Delete
+                      </li>
+                      </>
+                   :
+                 null
+                }
+                    </ul>
+                  </div>
                 </div>
-                {exposeSensitiveFunctions ? (
-                  // status of the file
-                  <Button
-                    text={"Status"}
-                    callback_func={openStatusModal}
-                    disabled={false}
-                    fontStyle={fontStyle}
-                    theme={Theme.theme}
-                  />
-                ) : null}
               </div>
             </div>
           </div>
-          {showPreview ? <PreviewReviewer source={file.cloudfront} theme={Theme} fileType={file.filetype}/> : null}
+          {showPreview ? (
+            <PreviewReviewer
+              source={file.cloudfront}
+              theme={Theme}
+              fileType={file.filetype}
+            />
+          ) : null}
         </div>
       </div>
     </>

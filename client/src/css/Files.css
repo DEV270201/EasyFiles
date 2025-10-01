@@ -6,10 +6,6 @@
     border-radius: 5px;
 }
 
-.filename{
-    font-size: 16px;
-}
-
 .filename::-webkit-scrollbar{
     display: none;
 }
@@ -21,12 +17,12 @@
 
 .inner_files{
     height: auto;
-    max-height: 60vh;
+    max-height: 70vh;
     overflow-y: scroll;
 }
 
 .inner_files::-webkit-scrollbar{
-    /* display: none; */
+    display: none;
 }
 
 /* title + search box div  */
@@ -62,11 +58,9 @@
 /* search box related css */
 .search_outer{
     display: flex;
-    max-width: 300px;
     position: relative;
     height: 100%;
     overflow: hidden;
-    height: 35px;
 }
 
 @media(max-width:575px){
@@ -120,8 +114,4 @@
 
 .drop_list:hover{
     cursor: pointer;
-}
-
-.dropdown-toggle {
-    width: 100px;
 }

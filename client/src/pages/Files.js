@@ -27,19 +27,14 @@ const Files = () => {
             try {
                 let files = await axios.get('/api/files');
                 setLoad(false);
-                console.log("files : ", files.data.data);
+                console.log("files : ", files?.data.data);
                 setFiles(files.data.data);
             } catch (err) {
                 console.log("err in files : ", err);
                 setLoad(false);
                 setFiles(null);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: err.response.data.error
-                });
                 //if the auth cookie expire then log the user out 
-                if (err.response.data.error.toLowerCase().includes('please login')) {
+                if (err?.response?.data.error.toLowerCase().includes('please login')) {
                     window.localStorage.setItem('isLoggedIn', false);
                     history.push("/user/login");
                     return;
@@ -51,19 +46,17 @@ const Files = () => {
 
     return (
         <>
-            <div className="container p-3">
-                <div className="outer" style={{ marginBottom: '35px' }}>
+            <div className="bg-deepblack w-full p-3">
                     {
                         isLoad ?
                             <>
                                 <div className="d-flex justify-content-center align-items-center">
-                                    <h5 className="text-center font-weight-light" style={{ color: `${Theme.textColor}`, fontFamily: `${fontStyle}` }}>Loading....It may take a while...</h5>
+                                    <h5 className="text-center font-weight-light text-gray-200" style={{fontFamily: `${fontStyle}` }}>Loading....It may take a while...</h5>
                                 </div>
                             </>
                             :
                         <FileIterator filesArray={files} showPostedBy={true}/>
                     }
-                </div>
             </div>
         </>
     );

@@ -5,34 +5,17 @@ import { ThemeContext } from "../context/ThemeContext";
 
 const Search = ({searchpdf})=>{
 
-  const[show,setShow] = useState(false);
-  const {Theme} = useContext(ThemeContext);
-  const btnRef = useRef(null);
-
   const searchPDF = (event)=>{
     searchpdf(event.target.value);
   }
 
-  const changeVisibility = ()=>{
-    setShow(!show);
-  }
-
    return(
     <>
-      <div className="search_outer">
-         <input type="text" disabled={!show} placeholder="Search PDF..."  className={`search_input myform ${show ? 'search_animate' : ''}`} onChange={searchPDF}/>
-         <button className="search_btn" onClick={changeVisibility} ref={btnRef} style={{backgroundColor : `${Theme.backgroundColor}`,border: `1px solid ${Theme.primaryColor}`}}>
-          {
-          !show ?
-          <>
-          <FontAwesomeIcon icon={faMagnifyingGlass} title="Search" color={`${Theme.primaryColor}`}/>
-          </>
-          :
-          <>
-          <FontAwesomeIcon icon={faXmark} title="Hide" color={`${Theme.primaryColor}`}/>
-          </>
-          }
-        </button>
+      <div className="w-full flex items-center my-4 relative">
+         <input type="text" placeholder="Search Files By Name..."  className={` pl-10 py-2 bg-deepblack flex-1 text-gray-200 focus:outline-none focus:ring-1 focus:ring-limegreen`} onChange={searchPDF}/>
+         <div className="absolute px-3">
+         <FontAwesomeIcon icon={faMagnifyingGlass} title="Search" color={`#edf2f7`}/>
+         </div>
       </div>
     </>
    )

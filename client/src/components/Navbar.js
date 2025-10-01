@@ -20,13 +20,16 @@ const Navbar = () => {
         <>
             <nav className="nav_bar">
                 <div className="menu_logo" onClick={() => setMenu(!menu)}><FontAwesomeIcon icon={faBars} color="white" size="lg" /></div>
-                <h5 className="nav_logo"><NavLink to="/" exact><FontAwesomeIcon size="lg" className="pdf" icon={faFilePdf} />EasyFiles</NavLink></h5>
+                <NavLink to="/" exact className="flex items-center hover:no-underline">
+                <img src="/easyfiles_logo.png" className="h-12 w-12" />
+                <span className="easyfiles_logo font-semibold text-lg">EasyFiles</span>
+                </NavLink>
                 <ul className={menu ? "list activeList" : "list"}>
-                    <li><NavLink onClick={() => setMenu(false)} className="nav_link" exact to="/" >Home</NavLink></li>
+                    {/* <li><NavLink onClick={() => setMenu(false)} className="nav_link" exact to="/" >Home</NavLink></li> */}
                     {
                         !isLoggedIn ?
                             <>
-                                <li><NavLink onClick={() => setMenu(false)} className="nav_link" to="/user/register" >Register</NavLink></li>
+                                <li><NavLink onClick={() => setMenu(false)} className="nav_link" exact to="/" >Register</NavLink></li>
                                 <li><NavLink onClick={() => setMenu(false)} className="nav_link" to="/user/login" >Login</NavLink></li>
                             </>
                             :
@@ -39,16 +42,16 @@ const Navbar = () => {
                 {
                     isLoggedIn ?
                         <div className="dropdown mx-2">
-                            <div className="d-flex align-items-center p-1" role="button" data-toggle="dropdown" aria-expanded="false" style={{boxShadow: `1px 1px 4px #555555`}} >
+                            <div className="d-flex align-items-center p-1 border rounded-full" role="button" data-toggle="dropdown" aria-expanded="false" >
                                 <ProfilePic image={profile.profile_pic} height="35px" width="35px" />
                             </div>
-                            <div className="dropdown-menu">
-                                <div className="drop_list">
-                                    <NavLink onClick={() => setMenu(false)} to="/profile" className="text-dark" style={{ textDecoration: 'none' }}>
+                            <div className="dropdown-menu bg-deepblack border-gray-400 text-gray-200 w-full">
+                                <div className="w-full hover:cursor-pointer hover:bg-darkaccent">
+                                    <NavLink onClick={() => setMenu(false)} to="/profile" className="px-2 hover:text-gray-200 w-full" style={{ textDecoration: 'none' }}>
                                         <FontAwesomeIcon icon={faUser} />  Profile
                                     </NavLink>
                                 </div>
-                                <div onClick={logoutUser} className="drop_list text-dark">
+                                <div onClick={logoutUser} className=" px-2 hover:cursor-pointer hover:bg-darkaccent w-full">
                                     <FontAwesomeIcon icon={faArrowRightFromBracket} />  Logout
                                 </div>
                             </div>

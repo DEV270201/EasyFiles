@@ -1,4 +1,4 @@
-const Loader = ({ height = "15px", width = "15px", color }) => {
+const Loader = ({ height = "15px", width = "15px", color="#98F190" }) => {
   return (
     <>
       <div

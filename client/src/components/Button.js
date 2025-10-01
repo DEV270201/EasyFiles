@@ -15,7 +15,7 @@ const Button = ({text="",callback_func=null,disabled,fontStyle,theme="",classNam
 
     return(
       <>
-          <button className={`btn mybtn mr-1 my-1 ${theme && (theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light')} ${className} `} onClick={callFunc} style={{fontFamily:`${fontStyle}` }} disabled={disabled} data-target={dataTarget}>{(text && text) || (icon)}</button>
+          <button className={`btn mybtn mr-1 my-1 ${theme && (theme === 'light' ? 'btn-outline-dark' : 'btn-outline-success')} ${className} `} onClick={callFunc} style={{fontFamily:`${fontStyle}` }} disabled={disabled} data-target={dataTarget}>{(text && text) || (icon)}</button>
       </>
     );
 }

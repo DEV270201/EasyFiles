@@ -241,6 +241,11 @@ exports.generatePresignedURLs = async (req) => {
    }
 }
 
+let fileTypes = {
+  'application/pdf': 'pdf',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document' : 'docx'
+}
+
 //saving file details into db
 exports.saveFileDetails = async (req) => {
    try {
@@ -251,7 +256,7 @@ exports.saveFileDetails = async (req) => {
       filename: originalName, //file related details
       uploadedBy: req.user.id, //file related details
       filesize: size, // file related details
-      filetype: type, //file related details
+      filetype: fileTypes[type], //file related details
       bucket: process.env.AWS_S3_BUCKET_NAME, //s3 related details
       key, //s3 related details
       isPrivate: isPrivate,

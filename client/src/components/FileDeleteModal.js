@@ -6,21 +6,20 @@ import Button from "./Button";
 import Swal from "sweetalert2";
 import "../css/PopupModal.css";
 
-const FileChangeStatusModal = ({ file, updateCallback, cancelCallback }) => {
-  const [updateLoad, setUpdateLoad] = useState(false);
+const FileDeleteModal = ({ file, updateCallback, cancelCallback }) => {
+  const [deleteLoad, setDeleteLoad] = useState(false);
   const { fontStyle } = useContext(ThemeContext);
 
   // To change the status of the file
-  const updateStatus = async () => {
+  const deleteFile = async () => {
     try {
-      setUpdateLoad(true);
-      const resp = await axios.patch(`/api/files/updateStatus/${file._id}`);
-      console.log("resp : ", resp);
-      setUpdateLoad(false);
-      updateCallback(false);
+      setDeleteLoad(true);
+      await axios.delete(`/api/files/delete/${file._id}`);
+      setDeleteLoad(false);
+      updateCallback(true);
     } catch (err) {
-      setUpdateLoad(false);
-      console.log("Error in updatestatus : ", err);
+      setDeleteLoad(false);
+      console.log("Error in deleting file: ", err);
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -37,14 +36,14 @@ const FileChangeStatusModal = ({ file, updateCallback, cancelCallback }) => {
       <div
         className="modalOuter"
         tabIndex="-1"
-        aria-labelledby="fileStatusChangeModal"
+        aria-labelledby="fileDeleteModal"
         // aria-hidden=
       >
         <div className="modal-dialog">
           <div className="modal-content bg-deepblack border-gray-400">
             <div className="modal-header">
-              <h5 className="modal-title text-gray-200" id="fileStatusChangeTitle">
-                Update Status
+              <h5 className="modal-title text-gray-200" id="fileDeleteModalTitle">
+                Remove File
               </h5>
               <button
                 type="button"
@@ -68,32 +67,28 @@ const FileChangeStatusModal = ({ file, updateCallback, cancelCallback }) => {
               </div>
               <div className="text-sm" style={{ fontFamily: `${fontStyle}` }}>
                 {" "}
-                Do you want to make it{" "}
-                <b>{file && (file.isPrivate ? "Public" : "Private")}</b> ?
+                Do you want to delete it permanently?{" "}
               </div>
               <hr className="my-1"/>
               <div style={{ fontFamily: `${fontStyle}`, color: "red" }}>
-                <b>Public - Accessible by everyone</b>
-              </div>
-              <div style={{ fontFamily: `${fontStyle}`, color: "red" }}>
-                <b>Private - Accessible only by you</b>
+                <b>This action won't be reversed</b>
               </div>
             </div>
             <div className="modal-footer">
-              {updateLoad ? (
+              {deleteLoad ? (
                 <Button
                   disabled={true}
-                  text={"Updating"}
+                  text={"Deleting..."}
                   fontStyle={fontStyle}
-                  className={"border-limegreen text-limegreen hover:bg-limegreen hover:text-black"}
+                  className={"btn-outline-danger"}
                 />
               ) : (
                 <Button
                   disabled={false}
-                  text={"Update"}
-                  callback_func={updateStatus}
+                  text={"Confirm Delete"}
+                  callback_func={deleteFile}
                   fontStyle={fontStyle}
-                  className={"border-limegreen text-limegreen hover:bg-limegreen hover:text-black"}
+                  className={"btn-outline-danger"}
                 />
               )}
             </div>
@@ -104,4 +99,4 @@ const FileChangeStatusModal = ({ file, updateCallback, cancelCallback }) => {
   );
 };
 
-export default FileChangeStatusModal;
+export default FileDeleteModal;

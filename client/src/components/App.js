@@ -20,19 +20,19 @@ const App = () => {
             <Navbar />
             <Switch>
                 <>
-                <div style={{ paddingTop: '75px',paddingBottom:'30px', backgroundColor: `${Theme.backgroundColor}`, minHeight: '100vh' }}>
-                    <Route exact component={withRouter(Home)} path="/" />
+                <main className='min-h-screen w-full flex pt-[75px]'>
+                    {/* <Route exact component={withRouter(Home)} path="/" /> */}
+                    <Route exact component={withRouter(Register)} path="/" />
                     <Route exact component={withRouter(Upload)} path="/upload" />
                     <Route exact component={withRouter(Files)} path="/files" />
                     <Route exact component={withRouter(Profile)} path="/profile" />
-                    <Route exact component={withRouter(Register)} path="/user/register" />
                     <Route exact component={withRouter(Login)} path="/user/login" />
                     <Route exact component={withRouter(OthersProfile)} path="/profile/:user" />
-                </div>
+                </main>
                 <Redirect to="/" />
                 </>
             </Switch>
-            <Footer />
+            {/* <Footer /> */}
         </>
     );
 }

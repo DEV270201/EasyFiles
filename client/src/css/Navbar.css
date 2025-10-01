@@ -11,15 +11,15 @@
     align-items: center;
     padding: 0 30px;
     position: fixed;
+    top: 0%;
     z-index: 99;
 }
 
-.nav_logo a{
+
+
+.easyfiles_logo {
     color: var(--txtclr);
-    font-weight: 400;
-    font-style: italic;
     text-decoration: none;
-    font-family: 'Brush Script MT', cursive;
 }
 
 .pdf{
@@ -53,9 +53,12 @@
     color: var(--txtclr);
 }
 
+.list a:hover{
+    color: #98F190;
+}
+
 .list a.active{
-    border-top: 1px solid var(--txtclr);
-    border-bottom: 1px solid var(--txtclr);
+   color:#98F190
 }
 
 .nav_link{
