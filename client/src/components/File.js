@@ -81,7 +81,7 @@ const File = ({
 
   const updateFileStatus = (isDeleteOperation) => {
     updateCurrentFileStatus(file, isDeleteOperation);
-    closeStatusModal();
+    isDeleteOperation ? closeFileDeleteModal() : closeStatusModal();
   };
 
   const performDeleteAction = () => {
