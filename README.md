@@ -55,4 +55,27 @@ AWS_S3_BUCKET_NAME = hosted S3 bucket name <br>
 - **Deployment:** AWS EC2, Nginx, Systemd (for reliable app hosting and management) (Assigned IAM Role to EC2 instance for interacting with S3 Bucket), AWS Lambda, AWS SQS
 - **Load Testing** Artillery
 
+## UI
+
+### REGISTER
+<img width="1907" height="915" alt="image" src="https://github.com/user-attachments/assets/90fd396c-1f35-454c-a833-45a3ae94079f" />
+
+### LOGIN
+<img width="1907" height="910" alt="image" src="https://github.com/user-attachments/assets/394001f8-78d0-4df3-9655-212471531418" />
+
+### UPLOAD FILE
+<img width="1912" height="920" alt="image" src="https://github.com/user-attachments/assets/419d1b97-4f2d-4ddf-bfb5-7d5897b880a6" />
+
+### ALL FILES
+<img width="1871" height="920" alt="image" src="https://github.com/user-attachments/assets/d930ffa1-f7f3-4d70-94a6-347363eb1186" />
+
+### ALL FILES [WITH PREVIEW]
+<img width="1872" height="906" alt="image" src="https://github.com/user-attachments/assets/17642673-60d4-4cac-bad4-b81be0399cfe" />
+
+### PROFILE
+<img width="1881" height="912" alt="image" src="https://github.com/user-attachments/assets/a5ea8125-b3e8-44c3-b66c-27c7ab198844" />
+
+### FILE DELETE CONFIRMATION
+<img width="1899" height="915" alt="image" src="https://github.com/user-attachments/assets/17483883-5a40-4e26-a511-96966e954eb4" />
+
 <h3 align="center"><b>Developed with :heart: by <a href="https://github.com/DEV270201">Devansh Shah</a></b></h3>
